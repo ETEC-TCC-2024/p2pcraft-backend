@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "p2pcraft-connection-mod",
+  "version": "${version}",
+  "name": "p2pcraft-connection-mod",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/p2pcraft-connection-mod/icon.png",
+  "environment": "client",
+  "entrypoints": {},
+  "mixins": [
+    "p2pcraft-connection-mod.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
