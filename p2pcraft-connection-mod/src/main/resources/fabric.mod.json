@@ -9,7 +9,14 @@
   "license": "MIT",
   "icon": "assets/p2pcraft-connection-mod/icon.png",
   "environment": "client",
-  "entrypoints": {},
+  "entrypoints": {
+    "client": [
+      "io.github.seujorgenochurras.p2pcraftmod.client.P2pCraftConnectModClient"
+    ],
+    "main": [
+      "io.github.seujorgenochurras.p2pcraftmod.P2pCraftConnectMod"
+    ]
+  },
   "mixins": [
     "p2pcraft-connection-mod.mixins.json"
   ],
