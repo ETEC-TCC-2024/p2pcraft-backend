@@ -38,7 +38,7 @@ public abstract class ConnectionMixin {
 
         if (!p2pServer.exists()) return;
 
-        setStatus(Text.of("Entrando no servidor P2PCraft..."));
+        setStatus(Text.translatable("connect.p2pCraftMod.connecting_p2pcraft_ip"));
 
         String realAddress = p2pServer.getRealAddress();
 
@@ -49,6 +49,7 @@ public abstract class ConnectionMixin {
         serverAddress = ServerAddress.parse(realAddress);
         ci.cancel();
         connect(client, serverAddress, serverInfo);
+        setStatus(Text.translatable("connect.p2pCraftMod.joining_p2pcraft_ip"));
     }
 
     @Unique
