@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.github.seujorgenochurras"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.1"
 
 repositories {
     mavenCentral()
@@ -13,7 +13,7 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-websocket")
+    implementation("org.springframework.data:spring-data-jpa:3.2.5")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
