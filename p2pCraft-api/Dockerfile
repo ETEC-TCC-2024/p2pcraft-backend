@@ -1,7 +1,8 @@
-FROM openjdk:22
-
-COPY build/libs/p2pCraft-api-0.0.1.jar api.jar
-
-ENTRYPOINT ["java", "-jar", "api.jar"]
-
+FROM gradle:8.7.0-jdk-graal as BUILD
+ENV APP_PATH=/usr/app/
+WORKDIR $APP_PATH
+COPY build.gradle.kts $APP_PATH
+COPY src src
 EXPOSE 8080
+
+ENTRYPOINT gradle bootRun & gradle -t classes
