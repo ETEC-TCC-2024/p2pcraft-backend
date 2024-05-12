@@ -24,7 +24,7 @@ public class MinecraftTestController {
     @PostMapping("/server/find")
     public ResponseEntity<FindServerResponse> findServer(@RequestBody FindServerDto findServerDto) {
         System.out.println(findServerDto);
-        if(lastNgrokIp == null){
+        if (lastNgrokIp == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         FindServerResponse response = new FindServerResponse();

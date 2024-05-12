@@ -14,11 +14,12 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
-    public Client save(Client client){
+    public Client save(Client client) {
         client.setUuid(UUID.randomUUID().toString());
         return clientRepository.save(client);
     }
-    public List<Client> getAllClients(){
+
+    public List<Client> getAllClients() {
         return clientRepository.findAll();
     }
 

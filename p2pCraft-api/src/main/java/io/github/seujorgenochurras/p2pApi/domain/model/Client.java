@@ -19,7 +19,7 @@ public class Client {
     private String uuid;
 
     @NotNull
-    @Size(max=100, min = 1)
+    @Size(max = 100, min = 1)
     private String name;
 
     public String getUuid() {
