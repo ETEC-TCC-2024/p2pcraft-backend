@@ -11,14 +11,14 @@ public class P2pServer {
     private String staticAddress;
 
     @Nullable
-    @SerializedName("realIp")
-    private String realAddress;
+    @SerializedName("volatileIp")
+    private String volatileIp;
 
-    public boolean exists(){
-        return this.state != P2pServerState.NONEXISTENT;
-    }
-    public boolean isOnline(){
-        return this.exists() && this.state != P2pServerState.OFFLINE;
+    @SerializedName("online")
+    private boolean online;
+
+    public boolean isOnline() {
+        return online;
     }
 
     public P2pServerState getState() {
@@ -39,12 +39,12 @@ public class P2pServer {
         return this;
     }
 
-    public String getRealAddress() {
-        return realAddress;
+    public String getVolatileIp() {
+        return volatileIp;
     }
 
-    public P2pServer setRealAddress(String realAddress) {
-        this.realAddress = realAddress;
+    public P2pServer setVolatileIp(String volatileIp) {
+        this.volatileIp = volatileIp;
         return this;
     }
 }

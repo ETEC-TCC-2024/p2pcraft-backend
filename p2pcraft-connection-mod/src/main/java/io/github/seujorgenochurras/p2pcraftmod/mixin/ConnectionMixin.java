@@ -2,6 +2,7 @@ package io.github.seujorgenochurras.p2pcraftmod.mixin;
 
 import io.github.seujorgenochurras.p2pcraftmod.api.P2pCraftApi;
 import io.github.seujorgenochurras.p2pcraftmod.api.model.P2pServer;
+import io.github.seujorgenochurras.p2pcraftmod.api.model.P2pServerState;
 import io.github.seujorgenochurras.p2pcraftmod.ngrok.NgrokHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConnectScreen;
@@ -36,11 +37,11 @@ public abstract class ConnectionMixin {
 
         P2pServer p2pServer = p2pApi.findServer(staticAddress);
 
-        if (!p2pServer.exists()) return;
+        if (p2pServer.getState().equals(P2pServerState.NONEXISTENT)) return;
 
         setStatus(Text.translatable("connect.p2pCraftMod.connecting_p2pcraft_ip"));
 
-        String realAddress = p2pServer.getRealAddress();
+        String realAddress = p2pServer.getVolatileIp();
 
         if (!p2pServer.isOnline()) {
             realAddress = startP2pHost();

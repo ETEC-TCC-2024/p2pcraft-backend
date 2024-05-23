@@ -2,14 +2,14 @@ package io.github.seujorgenochurras.p2pcraftmod.api.dto;
 
 public class SendNewHostDto {
     private String staticIp;
-    private String realIp;
+    private String volatileIp;
 
     public SendNewHostDto() {
     }
 
-    public SendNewHostDto(String staticIp, String realIp) {
+    public SendNewHostDto(String staticIp, String volatileIp) {
         this.staticIp = staticIp;
-        this.realIp = realIp;
+        this.volatileIp = volatileIp;
     }
 
     public String getStaticIp() {
@@ -21,12 +21,12 @@ public class SendNewHostDto {
         return this;
     }
 
-    public String getRealIp() {
-        return realIp;
+    public String getVolatileIp() {
+        return volatileIp;
     }
 
-    public SendNewHostDto setRealIp(String realIp) {
-        this.realIp = realIp;
+    public SendNewHostDto setVolatileIp(String volatileIp) {
+        this.volatileIp = volatileIp;
         return this;
     }
 }
