@@ -26,6 +26,25 @@ public class HttpUtil {
         return trySendRequest(request);
     }
 
+    public static HttpResponse<String> sendPutRequest(Object body, String url) {
+        String jsonBody = gson.toJson(body);
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(url))
+            .setHeader("Content-Type", "application/json")
+            .PUT(BodyPublishers.ofString(jsonBody))
+            .build();
+        return trySendRequest(request);
+    }
+
+    public static HttpResponse<String> sendGetRequest(String url) {
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(url))
+            .setHeader("Content-Type", "application/json")
+            .GET()
+            .build();
+        return trySendRequest(request);
+    }
+
     public static HttpResponse<String> trySendRequest(HttpRequest request) {
         try {
             return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
