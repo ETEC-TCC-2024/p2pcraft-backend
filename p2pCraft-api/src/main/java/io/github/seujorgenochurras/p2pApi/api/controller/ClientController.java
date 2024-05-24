@@ -27,4 +27,16 @@ public class ClientController {
         List<Client> clients = clientService.getAllClients();
         return new ResponseEntity<>(clients, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> findClientById(@PathVariable(value = "id") String id) {
+        Client fetchedClient = clientService.findById(id);
+
+        if (fetchedClient == null) {
+            return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body("Client not found");
+        }
+        return ResponseEntity.ok(clientService.findById(id));
+    }
 }
