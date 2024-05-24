@@ -1,0 +1,10 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    develop:
+      watch:
+        - action: sync
+          path: src/
+          target: usr/app/src/
