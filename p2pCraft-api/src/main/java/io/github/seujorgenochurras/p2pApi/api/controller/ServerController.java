@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 @RestController()
 @RequestMapping("/server")
 public class ServerController {
@@ -23,7 +25,7 @@ public class ServerController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Server not found");
         }
 
-        return ResponseEntity.ok(fetchedServer);
+        return ok(fetchedServer);
     }
 
     @PutMapping(value = "/{staticIp}")
@@ -33,13 +35,18 @@ public class ServerController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Server not found");
         }
         Server persistedServer = serverService.update(fetchedServer.getUuid(), serverDto);
-        return ResponseEntity.ok(persistedServer);
+        return ok(persistedServer);
     }
 
     @PostMapping()
     public ResponseEntity<?> registerServer(@RequestBody Server server) {
         Server persistedServer = serverService.save(server);
         return new ResponseEntity<>(persistedServer, HttpStatus.CREATED);
+    }
+
+    @GetMapping()
+    public ResponseEntity<?> findAllServers(){
+        return  ResponseEntity.ok(serverService.findAll());
     }
 
 
