@@ -45,8 +45,8 @@ public class ServerController {
     }
 
     @GetMapping()
-    public ResponseEntity<?> findAllServers(){
-        return  ResponseEntity.ok(serverService.findAll());
+    public ResponseEntity<?> findAllServers() {
+        return ResponseEntity.ok(serverService.findAll());
     }
 
 

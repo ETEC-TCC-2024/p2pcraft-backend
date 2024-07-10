@@ -44,7 +44,7 @@ public class ServerService {
         return serverRepository.findById(uuid).orElse(null);
     }
 
-    public List<Server> findAll(){
+    public List<Server> findAll() {
         return serverRepository.findAll();
     }
 

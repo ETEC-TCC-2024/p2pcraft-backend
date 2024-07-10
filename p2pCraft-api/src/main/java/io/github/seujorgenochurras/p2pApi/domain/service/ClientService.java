@@ -23,7 +23,7 @@ public class ClientService {
         return clientRepository.findAll();
     }
 
-    public Client findById(String uuid){
+    public Client findById(String uuid) {
         return clientRepository.findById(uuid).orElse(null);
     }
 }
