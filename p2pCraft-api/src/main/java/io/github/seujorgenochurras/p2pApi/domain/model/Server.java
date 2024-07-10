@@ -3,7 +3,6 @@ package io.github.seujorgenochurras.p2pApi.domain.model;
 import io.github.seujorgenochurras.p2pApi.common.HostAndPort;
 import io.github.seujorgenochurras.p2pApi.common.util.TcpUtils;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -26,7 +25,8 @@ public class Server {
     private String volatileIp = "";
 
     public boolean isOnline() {
-        return TcpUtils.ping(new HostAndPort(volatileIp));
+
+        return volatileIp != null && TcpUtils.ping(new HostAndPort(volatileIp));
     }
 
     public String getUuid() {

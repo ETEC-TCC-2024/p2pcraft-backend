@@ -20,15 +20,16 @@ public class HostAndPort {
 
         if (portSeparatorIndex != -1) {
             this.host = ip.substring(0, portSeparatorIndex);
-            this.port = Integer.parseInt(ip.substring(portSeparatorIndex+1));
+            this.port = Integer.parseInt(ip.substring(portSeparatorIndex + 1));
         } else {
             this.host = ip;
         }
     }
 
-    public String getFullIp(){
+    public String getFullIp() {
         return getHost() + getPort();
     }
+
     public String getHost() {
         return host;
     }
