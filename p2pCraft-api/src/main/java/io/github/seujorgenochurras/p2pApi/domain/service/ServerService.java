@@ -33,9 +33,9 @@ public class ServerService {
     public Server update(String uuid, ServerDto serverDto) {
         Server newServer = findServerById(uuid);
 
-        if (serverDto.getName() != null) newServer.setName(serverDto.getName());
-        if (serverDto.getStaticIp() != null) newServer.setStaticIp(serverDto.getStaticIp());
-        if (serverDto.getVolatileIp() != null) newServer.setVolatileIp(serverDto.getVolatileIp());
+       newServer.setName(serverDto.getName());
+       newServer.setStaticIp(serverDto.getStaticIp());
+       newServer.setVolatileIp(serverDto.getVolatileIp());
 
         return serverRepository.save(newServer);
     }
