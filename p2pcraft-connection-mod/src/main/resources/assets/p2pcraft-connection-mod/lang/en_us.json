@@ -1,0 +1,8 @@
+{
+  "connect.p2pcraftmod.joining": "Joining on a P2PCraft Server...",
+  "connect.p2pcraftmod.clonning_git": "Cloning Github repository...",
+  "connect.p2pcraftmod.connecting": "Connecting to a P2PCraft Server...",
+  "connect.p2pcraftmod.open_ngrok": "Openning Ngrok TCP Tunnel...",
+  "connect.p2pcraftmod.starting_server_jar": "Starting server jar",
+  "connect.p2pcraftmod.fetching_git": "Fetching Github Repository"
+}
