@@ -33,9 +33,10 @@ public class ServerService {
     public Server update(String uuid, ServerDto serverDto) {
         Server newServer = findServerById(uuid);
 
-       newServer.setName(serverDto.getName());
-       newServer.setStaticIp(serverDto.getStaticIp());
-       newServer.setVolatileIp(serverDto.getVolatileIp());
+        if (serverDto.getName() != null) newServer.setName(serverDto.getName());
+        if (serverDto.getStaticIp() != null) newServer.setStaticIp(serverDto.getStaticIp());
+        if (serverDto.getVolatileIp() != null) newServer.setVolatileIp(serverDto.getVolatileIp());
+        if (serverDto.getMapUrl() != null) newServer.setMapUrl(serverDto.getMapUrl());
 
         return serverRepository.save(newServer);
     }

@@ -1,15 +1,20 @@
 package io.github.seujorgenochurras.p2pApi.api.dto;
 
-import jakarta.validation.constraints.NotNull;
 
 public class ServerDto {
-    @NotNull
     private String name;
-
-    @NotNull
     private String staticIp;
-    @NotNull
     private String volatileIp;
+    private String mapUrl;
+
+    public String getMapUrl() {
+        return mapUrl;
+    }
+
+    public ServerDto setMapUrl(String mapUrl) {
+        this.mapUrl = mapUrl;
+        return this;
+    }
 
     public String getName() {
         return name;

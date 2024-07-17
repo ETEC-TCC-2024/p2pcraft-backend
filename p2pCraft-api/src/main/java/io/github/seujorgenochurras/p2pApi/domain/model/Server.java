@@ -24,9 +24,21 @@ public class Server {
     @Column(name = "last_volatile_ip")
     private String volatileIp = "";
 
+    @Column(name = "map_url")
+    private String mapUrl;
+
     public boolean isOnline() {
 
         return volatileIp != null && TcpUtils.ping(new HostAndPort(volatileIp));
+    }
+
+    public String getMapUrl() {
+        return mapUrl;
+    }
+
+    public Server setMapUrl(String mapUrl) {
+        this.mapUrl = mapUrl;
+        return this;
     }
 
     public String getUuid() {
