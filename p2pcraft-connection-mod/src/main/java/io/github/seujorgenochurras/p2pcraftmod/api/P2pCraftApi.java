@@ -6,6 +6,7 @@ import io.github.seujorgenochurras.p2pcraftmod.api.dto.SendNewHostDto;
 import io.github.seujorgenochurras.p2pcraftmod.api.model.P2pServer;
 import io.github.seujorgenochurras.p2pcraftmod.api.util.HttpUtil;
 import io.github.seujorgenochurras.p2pcraftmod.client.P2pCraftConnectModClient;
+import io.github.seujorgenochurras.p2pcraftmod.client.config.ConfigFile;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -75,30 +76,8 @@ public class P2pCraftApi {
 
     public static final class P2pApiHttpUtils {
 
-        private static final String P2P_API_URL;
-        private static final String P2P_API_SERVER_URL;
-
-        static {
-            File configFile = new File(P2pCraftConnectModClient.getResourcesDirPath() + "/config.yaml");
-            try {
-
-                if (!configFile.exists()) {
-                    FileWriter fileWriter = new FileWriter(configFile);
-                    fileWriter.write("P2PCRAFT_API_URL: \"http://127.0.0.1:8080\"");
-                    fileWriter.close();
-                }
-
-
-                FileReader fileReader = new FileReader(configFile);
-                Yaml yaml = new Yaml();
-                Map<String, Object> configObj = yaml.load(fileReader);
-                P2P_API_URL = (String) configObj.get("P2PCRAFT_API_URL");
-                P2P_API_SERVER_URL = P2P_API_URL + "/server/";
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        private static final String P2P_API_URL = ConfigFile.get("P2PCRAFT_API_URL");
+        private static final String P2P_API_SERVER_URL = P2P_API_URL + "/server/";
 
         private static HttpResponse<String> sendNewHost(String staticAddress, String newRealAddress) {
             SendNewHostDto sendNewHostDto = new SendNewHostDto(staticAddress, newRealAddress);

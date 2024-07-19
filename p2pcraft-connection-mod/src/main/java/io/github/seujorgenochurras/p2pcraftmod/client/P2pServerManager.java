@@ -1,8 +1,8 @@
 package io.github.seujorgenochurras.p2pcraftmod.client;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import io.github.seujorgenochurras.p2pcraftmod.api.model.P2pServer;
 import io.github.seujorgenochurras.p2pcraftmod.api.util.Terminal;
+import io.github.seujorgenochurras.p2pcraftmod.client.config.ConfigFile;
 import net.minecraft.text.Text;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 public class P2pServerManager {
 
     private static final String RESOURCES_DIR = P2pCraftConnectModClient.getResourcesDirPath();
-    private static final String P2PCRAFT_GITHUB_BOT_TOKEN = Dotenv.load().get("P2PCRAFT_GITHUB_BOT_TOKEN");
+    private static final String P2PCRAFT_GITHUB_BOT_TOKEN = ConfigFile.get("P2PCRAFT_GITHUB_BOT_TOKEN");
     private static Process serverProcess;
     private static Git git;
 
