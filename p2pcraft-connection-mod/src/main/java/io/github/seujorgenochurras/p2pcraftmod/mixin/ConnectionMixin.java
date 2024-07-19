@@ -31,13 +31,13 @@ public abstract class ConnectionMixin {
     @Unique
     protected MinecraftClient client;
 
-    @Shadow
-    protected abstract void setStatus(Text status);
-
     @Unique
     private static String openNgrokTcpTunnel() {
         return NgrokHelper.openTunnel();
     }
+
+    @Shadow
+    protected abstract void setStatus(Text status);
 
     @Shadow
     protected abstract void connect(MinecraftClient client, ServerAddress address, @Nullable ServerInfo info);

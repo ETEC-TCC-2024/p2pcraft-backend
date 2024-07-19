@@ -5,16 +5,9 @@ import com.google.gson.GsonBuilder;
 import io.github.seujorgenochurras.p2pcraftmod.api.dto.SendNewHostDto;
 import io.github.seujorgenochurras.p2pcraftmod.api.model.P2pServer;
 import io.github.seujorgenochurras.p2pcraftmod.api.util.HttpUtil;
-import io.github.seujorgenochurras.p2pcraftmod.client.P2pCraftConnectModClient;
 import io.github.seujorgenochurras.p2pcraftmod.client.config.ConfigFile;
-import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.net.http.HttpResponse;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import static io.github.seujorgenochurras.p2pcraftmod.api.model.P2pServerState.*;
