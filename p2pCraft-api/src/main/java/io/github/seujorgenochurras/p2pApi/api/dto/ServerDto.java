@@ -1,9 +1,20 @@
 package io.github.seujorgenochurras.p2pApi.api.dto;
 
+
 public class ServerDto {
     private String name;
     private String staticIp;
     private String volatileIp;
+    private String mapUrl;
+
+    public String getMapUrl() {
+        return mapUrl;
+    }
+
+    public ServerDto setMapUrl(String mapUrl) {
+        this.mapUrl = mapUrl;
+        return this;
+    }
 
     public String getName() {
         return name;

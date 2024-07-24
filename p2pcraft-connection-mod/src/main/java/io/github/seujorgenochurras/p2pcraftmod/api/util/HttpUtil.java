@@ -49,8 +49,7 @@ public class HttpUtil {
         try {
             return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+            return null;
         }
     }
 }

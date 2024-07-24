@@ -12,6 +12,7 @@ base {
 }
 
 repositories {
+    mavenCentral()
     // Add repositories to retrieve artifacts from in here.
     // You should only use this when depending on other mods because
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
@@ -20,8 +21,11 @@ repositories {
 }
 
 dependencies {
-    implementation ("com.google.code.gson:gson:2.10.1")
-    implementation ("com.github.alexdlaird:java-ngrok:2.3.0")
+    include(implementation("org.eclipse.jgit:org.eclipse.jgit:6.10.0.202406032230-r"))
+    include(implementation("com.github.alexdlaird:java-ngrok:2.3.0"))
+    include(implementation("org.yaml:snakeyaml:2.2"))
+
+    implementation ("io.github.cdimascio:dotenv-java:3.0.1")
 
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -30,6 +34,7 @@ dependencies {
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
 }
 
 processResources {
@@ -91,7 +96,7 @@ publishing {
         // retrieving dependencies.
     }
 }
-runClient{
+runClient {
     args = [
             "--username=Timbo"
     ]
