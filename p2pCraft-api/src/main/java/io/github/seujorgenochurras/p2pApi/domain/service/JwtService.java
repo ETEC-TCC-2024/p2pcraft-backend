@@ -41,15 +41,8 @@ public class JwtService {
 
         String requestSignature = decodedJWT.getSignature();
 
-        System.out.println("request uuid: " + createJwt(userDetails));
-        System.out.println("decoded uuid: " + decodedJWT.getToken());
-
         DecodedJWT validJwt = decodeJwt(createJwt(userDetails, decodedJWT.getExpiresAtAsInstant(), decodedJWT.getIssuedAtAsInstant()));
         Instant expiresAt = decodedJWT.getExpiresAtAsInstant();
-        System.out.println("request is " + requestSignature);
-        System.out.println("valid is " + validJwt.getSignature());
-        System.out.println(validJwt.getSignature().equals(requestSignature));
-
         return requestSignature.equals(validJwt.getSignature()) && expiresAt.isAfter(currentTime());
     }
 
