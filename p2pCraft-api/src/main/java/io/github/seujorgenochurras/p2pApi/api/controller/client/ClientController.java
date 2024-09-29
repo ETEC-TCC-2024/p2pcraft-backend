@@ -1,11 +1,14 @@
-package io.github.seujorgenochurras.p2pApi.api.controller;
+package io.github.seujorgenochurras.p2pApi.api.controller.client;
 
 import io.github.seujorgenochurras.p2pApi.domain.model.Client;
 import io.github.seujorgenochurras.p2pApi.domain.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -16,14 +19,8 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
-    @PostMapping
-    public ResponseEntity<Client> registerClient(@RequestBody Client client) {
-        Client persistedClient = clientService.save(client);
-        return new ResponseEntity<>(persistedClient, HttpStatus.CREATED);
-    }
-
     @GetMapping
-    public ResponseEntity<List<Client>> getClients() {
+    public ResponseEntity<?> getClients() {
         List<Client> clients = clientService.getAllClients();
         return new ResponseEntity<>(clients, HttpStatus.OK);
     }

@@ -22,6 +22,32 @@ public class Client {
     @Size(max = 100, min = 1)
     private String name;
 
+    @NotNull
+    @Size(max = 300, min = 10)
+    private String email;
+
+    @NotNull
+    @Size(max = 60)
+    private String password;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Client setEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public Client setPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
     public String getUuid() {
         return uuid;
     }
