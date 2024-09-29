@@ -3,7 +3,9 @@ use db_p2p;
 
 create table client(
 uuid varchar(36) primary key not null,
-name varchar(100) not null
+name varchar(100) not null,
+email varchar(300) not null,
+password varchar(60) not null
 );
 
 create table client_friend(
@@ -19,3 +21,7 @@ static_ip varchar(150) not null,
 last_volatile_ip varchar(150),
 map_url varchar(300) not null
 );
+
+
+select * from client;
+select * from server;
