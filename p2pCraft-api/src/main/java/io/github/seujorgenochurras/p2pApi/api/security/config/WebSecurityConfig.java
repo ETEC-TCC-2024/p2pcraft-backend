@@ -2,9 +2,9 @@ package io.github.seujorgenochurras.p2pApi.api.security.config;
 
 import io.github.seujorgenochurras.p2pApi.api.security.auth.JwtFilter;
 import io.github.seujorgenochurras.p2pApi.api.security.detail.UserDetailsImplService;
+import io.github.seujorgenochurras.p2pApi.domain.exception.handler.AuthenticationExceptionHandler;
 import io.github.seujorgenochurras.p2pApi.domain.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -34,6 +34,9 @@ public class WebSecurityConfig {
 
     @Autowired
     private UserDetailsImplService userDetailsImplService;
+
+    @Autowired
+    private AuthenticationExceptionHandler exceptionHandler;
 
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
@@ -65,7 +68,8 @@ public class WebSecurityConfig {
         http.securityMatcher("/home", "/", "/signup", "/login")
             .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
             .httpBasic(Customizer.withDefaults())
-            .csrf(AbstractHttpConfigurer::disable); // Disable CSRF if necessary for testing
+            .csrf(AbstractHttpConfigurer::disable)
+            .exceptionHandling(configurer -> configurer.authenticationEntryPoint(exceptionHandler));
 
         return http.build();
     }
@@ -81,13 +85,6 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public FilterRegistrationBean<JwtFilter> jwtFilterRegistrationBean() {
-        FilterRegistrationBean<JwtFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(jwtFilter);
-        registrationBean.addUrlPatterns("/client/*");  // Limit to specific patterns
-        return registrationBean;
-    }
 
     @Bean
     public PasswordEncoder encoder() {

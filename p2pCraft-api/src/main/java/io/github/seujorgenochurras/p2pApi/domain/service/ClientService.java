@@ -4,7 +4,9 @@ import io.github.seujorgenochurras.p2pApi.api.dto.client.ClientLoginDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.client.ClientRegisterDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.client.ClientTokenDto;
 import io.github.seujorgenochurras.p2pApi.api.security.detail.UserDetailsImplService;
+import io.github.seujorgenochurras.p2pApi.domain.exception.ClientNotFoundException;
 import io.github.seujorgenochurras.p2pApi.domain.exception.EmailExistsException;
+import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidEmailException;
 import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidPasswordException;
 import io.github.seujorgenochurras.p2pApi.domain.model.Client;
 import io.github.seujorgenochurras.p2pApi.domain.repository.ClientRepository;
@@ -49,7 +51,12 @@ public class ClientService {
 
 
     public ClientTokenDto login(ClientLoginDto clientDto) {
-        Client client = findByEmail(clientDto.getEmail());
+        Client client;
+        try {
+            client = findByEmail(clientDto.getEmail());
+        } catch (ClientNotFoundException e) {
+            throw new InvalidEmailException("Invalid email " + clientDto.getEmail());
+        }
 
         boolean valid = passwordEncoder.matches(clientDto.getPassword(), client.getPassword());
 
@@ -61,7 +68,6 @@ public class ClientService {
         if (emailExists(clientDto.getEmail())) {
             throw new EmailExistsException("Email already exists " + clientDto.getEmail());
         }
-
         String dtoPassword = clientDto.getPassword();
 
         Client client = new Client();
@@ -87,6 +93,6 @@ public class ClientService {
     }
 
     public Client findById(String uuid) {
-        return clientRepository.findById(uuid).orElse(null);
+        return clientRepository.findById(uuid).orElseThrow(() -> new ClientNotFoundException("Client with UUID :'" + uuid + "' not found"));
     }
 }
