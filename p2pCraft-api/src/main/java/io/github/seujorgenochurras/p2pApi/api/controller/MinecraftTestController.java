@@ -1,8 +1,8 @@
 package io.github.seujorgenochurras.p2pApi.api.controller;
 
-import io.github.seujorgenochurras.p2pApi.api.dto.FindServerDto;
-import io.github.seujorgenochurras.p2pApi.api.dto.SendNewHostDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.reponse.FindServerResponse;
+import io.github.seujorgenochurras.p2pApi.api.dto.server.FindServerDto;
+import io.github.seujorgenochurras.p2pApi.api.dto.server.SendNewHostDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

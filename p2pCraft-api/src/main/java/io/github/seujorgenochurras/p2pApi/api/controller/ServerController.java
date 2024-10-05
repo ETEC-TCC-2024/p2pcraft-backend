@@ -1,7 +1,9 @@
 package io.github.seujorgenochurras.p2pApi.api.controller;
 
-import io.github.seujorgenochurras.p2pApi.api.dto.ServerDto;
+import io.github.seujorgenochurras.p2pApi.api.dto.server.RegisterServerDto;
+import io.github.seujorgenochurras.p2pApi.api.dto.server.ServerDto;
 import io.github.seujorgenochurras.p2pApi.domain.model.Server;
+import io.github.seujorgenochurras.p2pApi.domain.model.ServerClientAccess;
 import io.github.seujorgenochurras.p2pApi.domain.service.ServerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,9 +41,10 @@ public class ServerController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> registerServer(@RequestBody Server server) {
-        Server persistedServer = serverService.save(server);
-        return new ResponseEntity<>(persistedServer, HttpStatus.CREATED);
+    public ResponseEntity<?> registerServer(@RequestBody RegisterServerDto serverDto) {
+        ServerClientAccess access = serverService.register(serverDto);
+
+        return new ResponseEntity<>(access.getServer(), HttpStatus.CREATED);
     }
 
     @GetMapping()

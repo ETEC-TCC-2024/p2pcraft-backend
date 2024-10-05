@@ -14,26 +14,26 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(InvalidPasswordException.class)
     public ResponseEntity<?> handleInvalidPasswordException(InvalidPasswordException ex) {
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-        return ResponseEntity.status(httpStatus).body(genResponse(ex, httpStatus));
+        HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
+        return ResponseEntity.status(httpStatus).body(genResponse(ex));
     }
 
     @ExceptionHandler(ClientNotFoundException.class)
     public ResponseEntity<?> handleUsernameNotFoundException(ClientNotFoundException ex) {
         HttpStatus status = HttpStatus.NOT_FOUND;
-        return ResponseEntity.status(status).body(genResponse(ex, status));
+        return ResponseEntity.status(status).body(genResponse(ex));
     }
 
     @ExceptionHandler(InvalidEmailException.class)
     public ResponseEntity<?> handleUsernameNotFoundException(InvalidEmailException ex) {
         HttpStatus status = HttpStatus.UNAUTHORIZED;
-        return ResponseEntity.status(status).body(genResponse(ex, status));
+        return ResponseEntity.status(status).body(genResponse(ex));
     }
 
     @ExceptionHandler(EmailExistsException.class)
     public ResponseEntity<?> handleEmailExistsException(EmailExistsException ex) {
         HttpStatus status = HttpStatus.CONFLICT;
-        return ResponseEntity.status(status).body(ex.getMessage());
+        return ResponseEntity.status(status).body(genResponse(ex));
     }
 
     @ExceptionHandler(InvalidTokenException.class)
@@ -42,7 +42,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(status).body(ex.getMessage());
     }
 
-    private GenericErrorResponse genResponse(RuntimeException ex, HttpStatus status) {
-        return new GenericErrorResponse(ex.getMessage(), LocalDateTime.now(), status.value());
+    private GenericErrorResponse genResponse(RuntimeException ex) {
+        return new GenericErrorResponse(ex.getMessage(), LocalDateTime.now());
     }
 }

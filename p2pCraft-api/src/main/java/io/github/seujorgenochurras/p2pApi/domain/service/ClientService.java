@@ -51,16 +51,13 @@ public class ClientService {
 
 
     public ClientTokenDto login(ClientLoginDto clientDto) {
-        Client client;
-        try {
-            client = findByEmail(clientDto.getEmail());
-        } catch (ClientNotFoundException e) {
+        Client client = findByEmail(clientDto.getEmail());
+        if (client == null)
             throw new InvalidEmailException("Invalid email " + clientDto.getEmail());
-        }
 
         boolean valid = passwordEncoder.matches(clientDto.getPassword(), client.getPassword());
-
         if (!valid) throw new InvalidPasswordException("Invalid password");
+        
         return new ClientTokenDto(createJwt(client));
     }
 
