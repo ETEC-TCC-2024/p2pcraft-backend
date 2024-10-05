@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class ServerService {
@@ -64,7 +63,6 @@ public class ServerService {
     }
 
     private Server save(Server server) {
-        server.setUuid(UUID.randomUUID().toString());
         return serverRepository.save(server);
     }
 
