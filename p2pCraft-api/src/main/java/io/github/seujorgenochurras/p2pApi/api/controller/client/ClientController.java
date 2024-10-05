@@ -5,6 +5,7 @@ import io.github.seujorgenochurras.p2pApi.domain.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,12 @@ public class ClientController {
     public ResponseEntity<?> getCurrentClient(Principal principal) {
         Client client = clientService.findById(principal.getName());
         return ResponseEntity.ok(client);
+    }
+
+    @GetMapping("/servers")
+    public ResponseEntity<?> getServers(Authentication authentication) {
+        Client client = clientService.findById(authentication.getName());
+        return ResponseEntity.ok(client.getServerAccesses());
     }
 
     @GetMapping("/all")
