@@ -22,6 +22,16 @@ last_volatile_ip varchar(150),
 map_url varchar(300) not null
 );
 
+create table server_access(
+	uuid varchar(36) primary key not null,
+    server_uuid varchar(36) not null,
+    client_uuid varchar(36) not null,
+    role varchar(20) not null,
+
+    foreign key (client_uuid) references client(uuid),
+    foreign key (server_uuid) references server(uuid)
+);
+
 
 select * from client;
 select * from server;

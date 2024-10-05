@@ -1,4 +1,4 @@
-package io.github.seujorgenochurras.p2pApi.api.dto;
+package io.github.seujorgenochurras.p2pApi.api.dto.server;
 
 public class FindServerDto {
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -19,7 +20,13 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
-    @GetMapping
+    @GetMapping()
+    public ResponseEntity<?> getCurrentClient(Principal principal) {
+        Client client = clientService.findById(principal.getName());
+        return ResponseEntity.ok(client);
+    }
+
+    @GetMapping("/all")
     public ResponseEntity<?> getClients() {
         List<Client> clients = clientService.getAllClients();
         return new ResponseEntity<>(clients, HttpStatus.OK);
