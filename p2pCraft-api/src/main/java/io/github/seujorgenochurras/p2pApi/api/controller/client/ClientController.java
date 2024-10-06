@@ -1,5 +1,6 @@
 package io.github.seujorgenochurras.p2pApi.api.controller.client;
 
+import io.github.seujorgenochurras.p2pApi.api.dto.client.response.ClientResponseDto;
 import io.github.seujorgenochurras.p2pApi.domain.model.Client;
 import io.github.seujorgenochurras.p2pApi.domain.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class ClientController {
     @GetMapping()
     public ResponseEntity<?> getCurrentClient(Principal principal) {
         Client client = clientService.findById(principal.getName());
-        return ResponseEntity.ok(client);
+        return ResponseEntity.ok(genClientResponse(client));
     }
 
     @GetMapping("/servers")
@@ -36,7 +37,8 @@ public class ClientController {
     @GetMapping("/all")
     public ResponseEntity<?> getClients() {
         List<Client> clients = clientService.getAllClients();
-        return new ResponseEntity<>(clients, HttpStatus.OK);
+        List<ClientResponseDto> clientResponses = clients.stream().map(this::genClientResponse).toList();
+        return new ResponseEntity<>(clientResponses, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
@@ -48,6 +50,15 @@ public class ClientController {
                 .status(HttpStatus.NOT_FOUND)
                 .body("Client not found");
         }
-        return ResponseEntity.ok(clientService.findById(id));
+
+        return ResponseEntity.ok(genClientResponse(fetchedClient));
+    }
+
+    private ClientResponseDto genClientResponse(Client client) {
+
+        return new ClientResponseDto().setEmail(client.getEmail())
+            .setName(client.getName())
+            .setUuid(client.getUuid())
+            .setServerAccesses(client.getServerAccesses());
     }
 }

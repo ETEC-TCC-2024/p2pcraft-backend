@@ -1,4 +1,4 @@
-package io.github.seujorgenochurras.p2pApi.api.dto.reponse;
+package io.github.seujorgenochurras.p2pApi.api.dto.server.reponse;
 
 public class FindServerResponse {
     private String staticIp;
