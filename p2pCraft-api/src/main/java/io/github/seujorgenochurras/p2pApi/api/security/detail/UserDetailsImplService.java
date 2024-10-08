@@ -1,5 +1,6 @@
 package io.github.seujorgenochurras.p2pApi.api.security.detail;
 
+import io.github.seujorgenochurras.p2pApi.domain.exception.ClientNotFoundException;
 import io.github.seujorgenochurras.p2pApi.domain.model.Client;
 import io.github.seujorgenochurras.p2pApi.domain.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class UserDetailsImplService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Client user = clientRepository.findById(username).orElse(null);
+        Client user = clientRepository.findById(username).orElseThrow(() -> new UsernameNotFoundException("Client not found " + username));
         return loadUserByUsername(user);
     }
 

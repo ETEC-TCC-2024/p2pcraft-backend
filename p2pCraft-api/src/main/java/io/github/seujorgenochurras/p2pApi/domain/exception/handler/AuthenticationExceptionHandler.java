@@ -19,7 +19,6 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 public class AuthenticationExceptionHandler implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        System.out.println("oi mae");
         Exception exception = (Exception) request.getAttribute("exception");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(APPLICATION_JSON_VALUE);
