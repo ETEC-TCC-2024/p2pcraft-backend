@@ -3,10 +3,8 @@ package io.github.seujorgenochurras.p2pApi.domain.service;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.AddAccessDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.RegisterServerDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.ServerDto;
-import io.github.seujorgenochurras.p2pApi.domain.model.Client;
-import io.github.seujorgenochurras.p2pApi.domain.model.Server;
-import io.github.seujorgenochurras.p2pApi.domain.model.ServerAccessRoles;
-import io.github.seujorgenochurras.p2pApi.domain.model.ServerClientAccess;
+import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidIpAddressException;
+import io.github.seujorgenochurras.p2pApi.domain.model.*;
 import io.github.seujorgenochurras.p2pApi.domain.repository.ServerClientAccessRepository;
 import io.github.seujorgenochurras.p2pApi.domain.repository.ServerRepository;
 import jakarta.annotation.Nullable;
@@ -31,13 +29,21 @@ public class ServerService {
     @Autowired
     private ClientService clientService;
 
+    @Autowired
+    public MapConfigurationsService mapConfigurationsService;
+
     public ServerClientAccess register(RegisterServerDto registerServerDto) {
+        String serverIp = "p2pcraft.connect." + registerServerDto.getName() + ".xyz";
+        if (findByStaticIp(serverIp) != null) {
+            throw new InvalidIpAddressException("Server with that ip already exists");
+        }
+
         Server server = new Server();
 
-        //TODO github service
-        server.setMapUrl("https://github.com/P2PCraft-bot/server-hardcuore-do-timbao.git");
+        ServerMapConfigurations mapConfigurations = mapConfigurationsService.save(registerServerDto.getMapConfig());
 
-        server.setStaticIp(registerServerDto.getStaticIp());
+        server.setMapConfigurations(mapConfigurations);
+        server.setStaticIp(serverIp);
         server.setName(registerServerDto.getName());
         server = save(server);
 
@@ -79,7 +85,7 @@ public class ServerService {
         if (serverDto.getName() != null) newServer.setName(serverDto.getName());
         if (serverDto.getStaticIp() != null) newServer.setStaticIp(serverDto.getStaticIp());
         if (serverDto.getVolatileIp() != null) newServer.setVolatileIp(serverDto.getVolatileIp());
-        if (serverDto.getMapUrl() != null) newServer.setMapUrl(serverDto.getMapUrl());
+        if (serverDto.getMapUrl() != null) newServer.getMapConfigurations().setMapUrl(serverDto.getMapUrl());
 
         return serverRepository.save(newServer);
     }

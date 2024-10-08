@@ -39,9 +39,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<?> handleEmailExistsException(InvalidTokenException ex) {
         HttpStatus status = HttpStatus.UNAUTHORIZED;
-        return ResponseEntity.status(status).body(ex.getMessage());
+        return ResponseEntity.status(status).body(genResponse(ex));
     }
 
+    @ExceptionHandler(InvalidIpAddressException.class)
+    public ResponseEntity<?> handleIpAddressException(InvalidIpAddressException ex) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        return ResponseEntity.status(status).body(genResponse(ex));
+    }
     private GenericErrorResponse genResponse(RuntimeException ex) {
         return new GenericErrorResponse(ex.getMessage(), LocalDateTime.now());
     }

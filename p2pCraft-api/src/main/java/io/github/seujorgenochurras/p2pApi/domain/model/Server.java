@@ -22,23 +22,23 @@ public class Server {
     private String staticIp;
 
     @Column(name = "last_volatile_ip")
-    private String volatileIp = "";
+    private String volatileIp;
 
-    @Column(name = "map_url")
-    private String mapUrl;
+    @OneToOne
+    @JoinColumn(name = "map_config")
+    private ServerMapConfigurations mapConfigurations;
+
+    public ServerMapConfigurations getMapConfigurations() {
+        return mapConfigurations;
+    }
+
+    public Server setMapConfigurations(ServerMapConfigurations mapConfigurations) {
+        this.mapConfigurations = mapConfigurations;
+        return this;
+    }
 
     public boolean isOnline() {
-
         return volatileIp != null && TcpUtils.ping(new HostAndPort(volatileIp));
-    }
-
-    public String getMapUrl() {
-        return mapUrl;
-    }
-
-    public Server setMapUrl(String mapUrl) {
-        this.mapUrl = mapUrl;
-        return this;
     }
 
     public String getUuid() {
