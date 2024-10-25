@@ -1,10 +1,13 @@
 package io.github.seujorgenochurras.p2pApi.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.github.seujorgenochurras.p2pApi.common.HostAndPort;
 import io.github.seujorgenochurras.p2pApi.common.util.TcpUtils;
+import io.github.seujorgenochurras.p2pApi.domain.service.github.GithubService;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 public class Server {
@@ -24,9 +27,18 @@ public class Server {
     @Column(name = "last_volatile_ip")
     private String volatileIp;
 
+
     @OneToOne
     @JoinColumn(name = "map_config")
     private ServerMapConfigurations mapConfigurations;
+
+    @Transient
+    @JsonInclude
+    private ServerProperties properties;
+
+    @Autowired
+    @Transient
+    private final GithubService githubService = new GithubService();
 
     public ServerMapConfigurations getMapConfigurations() {
         return mapConfigurations;
@@ -35,6 +47,14 @@ public class Server {
     public Server setMapConfigurations(ServerMapConfigurations mapConfigurations) {
         this.mapConfigurations = mapConfigurations;
         return this;
+    }
+
+    public void updateProperties() {
+        this.properties = githubService.getProperties(this.getMapConfigurations().getMapUrl());
+    }
+
+    public ServerProperties getProperties() {
+        return properties;
     }
 
     public boolean isOnline() {

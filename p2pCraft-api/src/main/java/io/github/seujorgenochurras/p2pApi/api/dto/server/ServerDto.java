@@ -1,11 +1,23 @@
 package io.github.seujorgenochurras.p2pApi.api.dto.server;
 
 
+import io.github.seujorgenochurras.p2pApi.domain.model.ServerProperties;
+
 public class ServerDto {
     private String name;
     private String staticIp;
     private String volatileIp;
     private String mapUrl;
+    private ServerProperties properties;
+
+    public ServerProperties getProperties() {
+        return properties;
+    }
+
+    public ServerDto setProperties(ServerProperties properties) {
+        this.properties = properties;
+        return this;
+    }
 
     public String getMapUrl() {
         return mapUrl;
