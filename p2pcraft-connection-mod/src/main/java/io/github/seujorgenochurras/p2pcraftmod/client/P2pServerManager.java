@@ -76,6 +76,7 @@ public class P2pServerManager {
 
     public static void saveServer() throws GitAPIException {
         git.add().addFilepattern(".")
+
             .setRenormalize(false)
             .call();
 
@@ -85,6 +86,7 @@ public class P2pServerManager {
         git.push()
             .setCredentialsProvider(new UsernamePasswordCredentialsProvider(P2PCRAFT_GITHUB_BOT_TOKEN, ""))
             .call();
+
     }
 
 

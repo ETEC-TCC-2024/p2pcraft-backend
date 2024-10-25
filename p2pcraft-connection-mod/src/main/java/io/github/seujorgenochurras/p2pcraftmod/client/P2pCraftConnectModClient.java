@@ -31,7 +31,6 @@ public class P2pCraftConnectModClient implements ClientModInitializer {
     }
 
     public void setClientName(MinecraftClient client) {
-
         playerName = client.getSession().getUsername();
     }
 

@@ -47,6 +47,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus status = HttpStatus.CONFLICT;
         return ResponseEntity.status(status).body(genResponse(ex));
     }
+
+    @ExceptionHandler(ServerNotFoundException.class)
+    public ResponseEntity<?> handleServerNotFoundException(ServerNotFoundException ex) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status).body(genResponse(ex));
+
+
+    }
+
     private GenericErrorResponse genResponse(RuntimeException ex) {
         return new GenericErrorResponse(ex.getMessage(), LocalDateTime.now());
     }

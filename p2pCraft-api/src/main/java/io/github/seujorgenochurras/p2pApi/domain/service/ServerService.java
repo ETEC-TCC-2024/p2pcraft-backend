@@ -7,6 +7,7 @@ import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidIpAddressExcep
 import io.github.seujorgenochurras.p2pApi.domain.model.*;
 import io.github.seujorgenochurras.p2pApi.domain.repository.ServerClientAccessRepository;
 import io.github.seujorgenochurras.p2pApi.domain.repository.ServerRepository;
+import io.github.seujorgenochurras.p2pApi.domain.service.github.GithubService;
 import jakarta.annotation.Nullable;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +30,8 @@ public class ServerService {
 
     @Autowired
     private ClientService clientService;
+
+    private final GithubService githubService = new GithubService();
 
     @Autowired
     public MapConfigurationsService mapConfigurationsService;
@@ -78,6 +82,12 @@ public class ServerService {
         return fetchedServer.orElse(null);
     }
 
+    @Nullable
+    public Server findByName(String name) {
+        Optional<Server> fetchedServer = serverRepository.findByStaticIp("p2pcraft.connect." + name + ".xyz");
+        return fetchedServer.orElse(null);
+    }
+
     @Transactional
     public Server update(String uuid, ServerDto serverDto) {
         Server newServer = findServerById(uuid);
@@ -86,6 +96,14 @@ public class ServerService {
         if (serverDto.getStaticIp() != null) newServer.setStaticIp(serverDto.getStaticIp());
         if (serverDto.getVolatileIp() != null) newServer.setVolatileIp(serverDto.getVolatileIp());
         if (serverDto.getMapUrl() != null) newServer.getMapConfigurations().setMapUrl(serverDto.getMapUrl());
+
+        if (serverDto.getProperties() != null) {
+            try {
+                githubService.updateProperties(serverDto.getProperties(), newServer.getMapConfigurations().getMapUrl());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         return serverRepository.save(newServer);
     }

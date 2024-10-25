@@ -3,6 +3,7 @@ package io.github.seujorgenochurras.p2pApi.api.controller;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.RegisterServerDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.ServerDto;
 import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidIpAddressException;
+import io.github.seujorgenochurras.p2pApi.domain.exception.ServerNotFoundException;
 import io.github.seujorgenochurras.p2pApi.domain.model.Client;
 import io.github.seujorgenochurras.p2pApi.domain.model.Server;
 import io.github.seujorgenochurras.p2pApi.domain.model.ServerClientAccess;
@@ -27,29 +28,32 @@ public class ServerController {
     @Autowired
     private ClientService clientService;
 
-    @GetMapping(value = "/{staticIp}")
-    public ResponseEntity<?> findByStaticAddress(@PathVariable String staticIp, Principal principal) {
+    @GetMapping(value = "/{name}")
+    public ResponseEntity<?> findByStaticAddress(@PathVariable String name, Principal principal) {
         String clientUuid = principal.getName();
         Client client = clientService.findById(clientUuid);
 
         ServerClientAccess access = client.getServerAccesses().stream()
-                .filter((serverClientAccess -> serverClientAccess.getServer().getStaticIp().equals(staticIp)))
-                .findFirst().orElse(null);
+            .filter((serverClientAccess -> serverClientAccess.getServer().getName().equals(name)))
+            .findFirst().orElse(null);
 
         if (access == null) {
-            throw new InvalidIpAddressException("No server with ip " + staticIp + "found");
+            throw new ServerNotFoundException("No server with ip '" + name + "' found");
         }
-
+        access.getServer().updateProperties();
         return ok(access);
     }
 
-    @PutMapping(value = "/{staticIp}")
-    public ResponseEntity<?> putServer(@PathVariable String staticIp, @RequestBody ServerDto serverDto) {
-        Server fetchedServer = serverService.findByStaticIp(staticIp);
+    @PutMapping(value = "/{serverName}")
+    public ResponseEntity<?> putServer(@PathVariable String serverName, @RequestBody ServerDto serverDto) {
+        Server fetchedServer = serverService.findByName(serverName);
+
         if (fetchedServer == null) {
-            throw new InvalidIpAddressException("No server with ip " + staticIp + "found");
+            throw new InvalidIpAddressException("No server with ip " + serverName + " found");
         }
+
         Server persistedServer = serverService.update(fetchedServer.getUuid(), serverDto);
+        persistedServer.updateProperties();
         return ok(persistedServer);
     }
 
@@ -61,8 +65,10 @@ public class ServerController {
     }
 
     @GetMapping()
-    public ResponseEntity<?> findAllServers() {
-        return ResponseEntity.ok(serverService.findAll());
+    public ResponseEntity<?> findAllServers(Principal principal) {
+        String clientUuid = principal.getName();
+        Client client = clientService.findById(clientUuid);
+        return ResponseEntity.ok(client.getServerAccesses());
     }
 
 
