@@ -8,7 +8,7 @@ import io.github.seujorgenochurras.p2pApi.domain.exception.ClientNotFoundExcepti
 import io.github.seujorgenochurras.p2pApi.domain.exception.EmailExistsException;
 import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidEmailException;
 import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidPasswordException;
-import io.github.seujorgenochurras.p2pApi.domain.model.Client;
+import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
 import io.github.seujorgenochurras.p2pApi.domain.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,7 +57,7 @@ public class ClientService {
 
         boolean valid = passwordEncoder.matches(clientDto.getPassword(), client.getPassword());
         if (!valid) throw new InvalidPasswordException("Invalid password");
-        
+
         return new ClientTokenDto(createJwt(client));
     }
 

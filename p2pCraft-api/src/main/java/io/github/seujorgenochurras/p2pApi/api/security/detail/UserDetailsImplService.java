@@ -1,7 +1,6 @@
 package io.github.seujorgenochurras.p2pApi.api.security.detail;
 
-import io.github.seujorgenochurras.p2pApi.domain.exception.ClientNotFoundException;
-import io.github.seujorgenochurras.p2pApi.domain.model.Client;
+import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
 import io.github.seujorgenochurras.p2pApi.domain.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

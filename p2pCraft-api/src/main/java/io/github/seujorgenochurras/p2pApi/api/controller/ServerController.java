@@ -1,12 +1,14 @@
 package io.github.seujorgenochurras.p2pApi.api.controller;
 
+import io.github.seujorgenochurras.p2pApi.api.dto.server.PlayerDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.RegisterServerDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.ServerDto;
 import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidIpAddressException;
 import io.github.seujorgenochurras.p2pApi.domain.exception.ServerNotFoundException;
-import io.github.seujorgenochurras.p2pApi.domain.model.Client;
-import io.github.seujorgenochurras.p2pApi.domain.model.Server;
-import io.github.seujorgenochurras.p2pApi.domain.model.ServerClientAccess;
+import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
+import io.github.seujorgenochurras.p2pApi.domain.model.server.Server;
+import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess;
+import io.github.seujorgenochurras.p2pApi.domain.model.server.player.Player;
 import io.github.seujorgenochurras.p2pApi.domain.service.ClientService;
 import io.github.seujorgenochurras.p2pApi.domain.service.ServerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -55,6 +58,23 @@ public class ServerController {
         Server persistedServer = serverService.update(fetchedServer.getUuid(), serverDto);
         persistedServer.updateProperties();
         return ok(persistedServer);
+    }
+
+    @GetMapping(value = "/{serverName}/whitelist")
+    public ResponseEntity<?> getWhitelist(@PathVariable String serverName) {
+        return ResponseEntity.ok(serverService.getWhitelist(serverName));
+    }
+
+    @PostMapping(value = "/{serverName}/whitelist")
+    public ResponseEntity<?> addPlayerToWhitelist(@PathVariable String serverName, @RequestBody PlayerDto playerDto) {
+        ArrayList<Player> whitelist = serverService.addToWhitelist(playerDto.getPlayerName(), serverName);
+        return ResponseEntity.ok(whitelist);
+    }
+
+    @DeleteMapping(value = "/{serverName}/whitelist/{playerName}")
+    public ResponseEntity<?> removePlayerFromWhitelist(@PathVariable String serverName, @PathVariable String playerName) {
+        ArrayList<Player> whitelist = serverService.removeFromWhitelist(playerName, serverName);
+        return ResponseEntity.ok(whitelist);
     }
 
     @PostMapping()

@@ -44,13 +44,20 @@ public class HttpUtil {
         return sendPutRequest(body, url, new Header[]{});
     }
 
-    public static HttpResponse<String> sendGetRequest(String url) {
-        HttpRequest request = HttpRequest.newBuilder()
+    public static HttpResponse<String> sendGetRequest(String url, Header... headers) {
+        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
             .uri(URI.create(url))
             .setHeader("Content-Type", "application/json")
-            .GET()
-            .build();
+
+            .GET();
+        Arrays.stream(headers).forEach((header) -> requestBuilder.header(header.name, header.value));
+        HttpRequest request = requestBuilder.build();
         return trySendRequest(request);
+    }
+
+    public static HttpResponse<String> sendGetRequest(String url) {
+
+        return sendGetRequest(url, new Header[]{});
     }
 
     public static HttpResponse<String> trySendRequest(HttpRequest request) {

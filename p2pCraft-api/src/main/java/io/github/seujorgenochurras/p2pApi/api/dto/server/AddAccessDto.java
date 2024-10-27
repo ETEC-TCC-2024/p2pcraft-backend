@@ -1,6 +1,6 @@
 package io.github.seujorgenochurras.p2pApi.api.dto.server;
 
-import io.github.seujorgenochurras.p2pApi.domain.model.ServerAccessRoles;
+import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerAccessRoles;
 
 public class AddAccessDto {
     private String serverUuid;

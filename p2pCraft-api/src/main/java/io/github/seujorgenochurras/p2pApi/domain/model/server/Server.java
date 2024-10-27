@@ -1,4 +1,4 @@
-package io.github.seujorgenochurras.p2pApi.domain.model;
+package io.github.seujorgenochurras.p2pApi.domain.model.server;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.github.seujorgenochurras.p2pApi.common.HostAndPort;
@@ -32,6 +32,9 @@ public class Server {
     @JoinColumn(name = "map_config")
     private ServerMapConfigurations mapConfigurations;
 
+    @Column(name = "open")
+    private boolean open;
+
     @Transient
     @JsonInclude
     private ServerProperties properties;
@@ -39,6 +42,15 @@ public class Server {
     @Autowired
     @Transient
     private final GithubService githubService = new GithubService();
+
+    public boolean isOpen() {
+        return open;
+    }
+
+    public Server setOpen(boolean open) {
+        this.open = open;
+        return this;
+    }
 
     public ServerMapConfigurations getMapConfigurations() {
         return mapConfigurations;
