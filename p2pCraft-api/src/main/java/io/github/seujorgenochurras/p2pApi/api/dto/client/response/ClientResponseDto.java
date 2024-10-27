@@ -1,6 +1,6 @@
 package io.github.seujorgenochurras.p2pApi.api.dto.client.response;
 
-import io.github.seujorgenochurras.p2pApi.domain.model.ServerClientAccess;
+import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess;
 
 import java.util.List;
 

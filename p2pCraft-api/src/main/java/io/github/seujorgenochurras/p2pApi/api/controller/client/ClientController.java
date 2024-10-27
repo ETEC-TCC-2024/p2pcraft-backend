@@ -1,7 +1,7 @@
 package io.github.seujorgenochurras.p2pApi.api.controller.client;
 
 import io.github.seujorgenochurras.p2pApi.api.dto.client.response.ClientResponseDto;
-import io.github.seujorgenochurras.p2pApi.domain.model.Client;
+import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
 import io.github.seujorgenochurras.p2pApi.domain.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

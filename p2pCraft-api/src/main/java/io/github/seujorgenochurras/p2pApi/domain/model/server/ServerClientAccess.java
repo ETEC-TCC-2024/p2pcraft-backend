@@ -1,6 +1,7 @@
-package io.github.seujorgenochurras.p2pApi.domain.model;
+package io.github.seujorgenochurras.p2pApi.domain.model.server;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 

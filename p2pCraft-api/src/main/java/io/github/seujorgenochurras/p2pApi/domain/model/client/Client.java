@@ -1,5 +1,6 @@
-package io.github.seujorgenochurras.p2pApi.domain.model;
+package io.github.seujorgenochurras.p2pApi.domain.model.client;
 
+import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

@@ -1,6 +1,6 @@
 package io.github.seujorgenochurras.p2pApi.api.security.detail;
 
-import io.github.seujorgenochurras.p2pApi.domain.model.Client;
+import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,4 +1,4 @@
-package io.github.seujorgenochurras.p2pApi.domain.model;
+package io.github.seujorgenochurras.p2pApi.domain.model.server;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
