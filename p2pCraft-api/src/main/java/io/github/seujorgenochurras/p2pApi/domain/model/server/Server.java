@@ -3,7 +3,7 @@ package io.github.seujorgenochurras.p2pApi.domain.model.server;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.github.seujorgenochurras.p2pApi.common.HostAndPort;
 import io.github.seujorgenochurras.p2pApi.common.util.TcpUtils;
-import io.github.seujorgenochurras.p2pApi.domain.service.github.GithubService;
+import io.github.seujorgenochurras.p2pApi.domain.service.server.ServerFilesService;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -33,7 +33,7 @@ public class Server {
     private ServerMapConfigurations mapConfigurations;
 
     @Column(name = "open")
-    private boolean open;
+    private boolean open = false;
 
     @Transient
     @JsonInclude
@@ -41,7 +41,7 @@ public class Server {
 
     @Autowired
     @Transient
-    private final GithubService githubService = new GithubService();
+    private final ServerFilesService serverFilesService = new ServerFilesService();
 
     public boolean isOpen() {
         return open;
@@ -62,7 +62,7 @@ public class Server {
     }
 
     public void updateProperties() {
-        this.properties = githubService.getProperties(this.getMapConfigurations().getMapUrl());
+        this.properties = serverFilesService.getProperties(this.getMapConfigurations().getMapUrl());
     }
 
     public ServerProperties getProperties() {

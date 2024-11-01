@@ -7,7 +7,16 @@ public class ServerProperties {
     private boolean pvpEnabled;
     private boolean whitelist;
     private boolean cracked;
+    private String seed;
 
+    public String getSeed() {
+        return seed;
+    }
+
+    public ServerProperties setSeed(String seed) {
+        this.seed = seed;
+        return this;
+    }
 
     public GameModes getGameMode() {
         return gameMode;
@@ -71,6 +80,7 @@ public class ServerProperties {
                 "max-players=" + playerSlots + "\n" +
                 "pvp=" + pvpEnabled + "\n" +
                 "white-list=" + whitelist + "\n" +
+                "level-seed=" + seed + "\n" +
                 "online-mode=" + cracked;
 
     }

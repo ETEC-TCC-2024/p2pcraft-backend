@@ -10,7 +10,8 @@ import io.github.seujorgenochurras.p2pApi.domain.model.server.Server;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.player.Player;
 import io.github.seujorgenochurras.p2pApi.domain.service.ClientService;
-import io.github.seujorgenochurras.p2pApi.domain.service.ServerService;
+import io.github.seujorgenochurras.p2pApi.domain.service.server.ServerFilesService;
+import io.github.seujorgenochurras.p2pApi.domain.service.server.ServerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,8 @@ public class ServerController {
     @Autowired
     private ClientService clientService;
 
+    private ServerFilesService serverFilesService = new ServerFilesService();
+
     @GetMapping(value = "/{name}")
     public ResponseEntity<?> findByStaticAddress(@PathVariable String name, Principal principal) {
         String clientUuid = principal.getName();
@@ -45,6 +48,12 @@ public class ServerController {
         }
         access.getServer().updateProperties();
         return ok(access);
+    }
+
+    @GetMapping(value = "/server/public/name")
+    public ResponseEntity<?> getPublicServerInfo(@PathVariable String serverName) {
+        Server server = serverService.findByName(serverName);
+        return ResponseEntity.ok(server);
     }
 
     @PutMapping(value = "/{serverName}")

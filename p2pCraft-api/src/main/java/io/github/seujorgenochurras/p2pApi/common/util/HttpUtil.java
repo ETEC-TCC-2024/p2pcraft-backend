@@ -18,14 +18,21 @@ public class HttpUtil {
     private static final HttpClient httpClient = HttpClient.newHttpClient();
 
     public static HttpResponse<String> sendPostRequest(Object body, String url) {
+        return sendPostRequest(body, url, new Header[]{});
+    }
+
+    public static HttpResponse<String> sendPostRequest(Object body, String url, Header... headers) {
         String jsonBody = gson.toJson(body);
-        HttpRequest request = HttpRequest.newBuilder()
+        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
             .uri(URI.create(url))
             .setHeader("Content-Type", "application/json")
-            .POST(BodyPublishers.ofString(jsonBody))
-            .build();
+            .POST(BodyPublishers.ofString(jsonBody));
+        Arrays.stream(headers).forEach((header) -> requestBuilder.header(header.name, header.value));
+
+        HttpRequest request = requestBuilder.build();
         return trySendRequest(request);
     }
+
 
     public record Header(String name, String value) {
     }
@@ -48,7 +55,6 @@ public class HttpUtil {
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
             .uri(URI.create(url))
             .setHeader("Content-Type", "application/json")
-
             .GET();
         Arrays.stream(headers).forEach((header) -> requestBuilder.header(header.name, header.value));
         HttpRequest request = requestBuilder.build();

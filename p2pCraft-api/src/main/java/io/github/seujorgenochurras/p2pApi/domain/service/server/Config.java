@@ -1,4 +1,4 @@
-package io.github.seujorgenochurras.p2pApi.domain.service.github;
+package io.github.seujorgenochurras.p2pApi.domain.service.server;
 
 public class Config {
     protected static final String DEFAULT_PROPERTIES = """
