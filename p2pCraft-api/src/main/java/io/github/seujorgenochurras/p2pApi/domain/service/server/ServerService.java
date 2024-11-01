@@ -1,4 +1,4 @@
-package io.github.seujorgenochurras.p2pApi.domain.service;
+package io.github.seujorgenochurras.p2pApi.domain.service.server;
 
 import io.github.seujorgenochurras.p2pApi.api.dto.server.AddAccessDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.RegisterServerDto;
@@ -6,14 +6,13 @@ import io.github.seujorgenochurras.p2pApi.api.dto.server.ServerDto;
 import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidIpAddressException;
 import io.github.seujorgenochurras.p2pApi.domain.exception.ServerNotFoundException;
 import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
-import io.github.seujorgenochurras.p2pApi.domain.model.server.Server;
-import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerAccessRoles;
-import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess;
-import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerMapConfigurations;
+import io.github.seujorgenochurras.p2pApi.domain.model.server.*;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.player.Player;
 import io.github.seujorgenochurras.p2pApi.domain.repository.ServerClientAccessRepository;
 import io.github.seujorgenochurras.p2pApi.domain.repository.ServerRepository;
-import io.github.seujorgenochurras.p2pApi.domain.service.github.GithubService;
+import io.github.seujorgenochurras.p2pApi.domain.service.ClientService;
+import io.github.seujorgenochurras.p2pApi.domain.service.MapConfigurationsService;
+import io.github.seujorgenochurras.p2pApi.domain.service.MojangService;
 import jakarta.annotation.Nullable;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,19 +36,19 @@ public class ServerService {
     @Autowired
     private ClientService clientService;
 
-    private final GithubService githubService = new GithubService();
-
     private final MojangService mojangService = new MojangService();
 
     @Autowired
     public MapConfigurationsService mapConfigurationsService;
 
+    private ServerFilesService serverFilesService = new ServerFilesService();
 
     public ArrayList<Player> getWhitelist(String serverName) {
         Server server = findByName(serverName);
-        return githubService.getWhitelist(server.getMapConfigurations().getMapUrl());
+        return serverFilesService.getWhitelist(server.getMapConfigurations().getMapUrl());
     }
 
+    @Transactional
     public ServerClientAccess register(RegisterServerDto registerServerDto) {
         String serverIp = "p2pcraft.connect." + registerServerDto.getName() + ".xyz";
         if (findByStaticIp(serverIp) != null) {
@@ -58,16 +57,26 @@ public class ServerService {
 
         Server server = new Server();
 
-        ServerMapConfigurations mapConfigurations = mapConfigurationsService.save(registerServerDto.getMapConfig());
+        ServerMapConfigurations mapConfigurations = mapConfigurationsService.save(registerServerDto.getMapConfig(), registerServerDto.getName());
 
         server.setMapConfigurations(mapConfigurations);
         server.setStaticIp(serverIp);
-        server.setName(registerServerDto.getName());
+        server.setName(registerServerDto.getName().replace(" ", "-"));
         server = save(server);
 
         AddAccessDto accessDto = new AddAccessDto();
         accessDto.setServerUuid(server.getUuid());
         accessDto.setRole(ServerAccessRoles.OWNER);
+
+        ServerProperties newProperties = new ServerProperties();
+        newProperties.setSeed(mapConfigurations.getSeed());
+        serverFilesService.createServer(server.getName());
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException ignored) {
+
+        }
+        serverFilesService.updateProperties(newProperties, mapConfigurations.getMapUrl());
 
         return addAccess(accessDto);
     }
@@ -113,7 +122,7 @@ public class ServerService {
         if (serverDto.getMapUrl() != null) newServer.getMapConfigurations().setMapUrl(serverDto.getMapUrl());
 
         if (serverDto.getProperties() != null) {
-            githubService.updateProperties(serverDto.getProperties(), newServer.getMapConfigurations().getMapUrl());
+            serverFilesService.updateProperties(serverDto.getProperties(), newServer.getMapConfigurations().getMapUrl());
         }
 
         return serverRepository.save(newServer);
@@ -124,7 +133,7 @@ public class ServerService {
         Server server = findByName(serverName);
         if (server == null) throw new ServerNotFoundException("Didn't find server");
 
-        return githubService.addToWhitelist(player, server.getMapConfigurations().getMapUrl());
+        return serverFilesService.addToWhitelist(player, server.getMapConfigurations().getMapUrl());
     }
 
     public ArrayList<Player> removeFromWhitelist(String playerName, String serverName) {
@@ -132,7 +141,7 @@ public class ServerService {
         Server server = findByName(serverName);
         if (server == null) throw new ServerNotFoundException("Didn't find server");
 
-        return githubService.removeFromWhitelist(player, server.getMapConfigurations().getMapUrl());
+        return serverFilesService.removeFromWhitelist(player, server.getMapConfigurations().getMapUrl());
     }
 
     public Server findServerById(String uuid) {

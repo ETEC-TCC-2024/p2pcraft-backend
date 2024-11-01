@@ -65,7 +65,7 @@ public class WebSecurityConfig {
     @Bean
     @Order(1)
     public SecurityFilterChain clientFilterChain(HttpSecurity http) throws Exception {
-        http.securityMatcher("/home", "/", "/signup", "/login")
+        http.securityMatcher("/home", "/", "/signup", "/login", "/server/public/**")
             .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
             .httpBasic(Customizer.withDefaults())
             .csrf(AbstractHttpConfigurer::disable)
