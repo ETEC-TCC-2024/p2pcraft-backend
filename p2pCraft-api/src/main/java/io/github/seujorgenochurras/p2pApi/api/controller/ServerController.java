@@ -3,6 +3,7 @@ package io.github.seujorgenochurras.p2pApi.api.controller;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.PlayerDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.RegisterServerDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.ServerDto;
+import io.github.seujorgenochurras.p2pApi.api.dto.server.UpdateServerVolatileIpDto;
 import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidIpAddressException;
 import io.github.seujorgenochurras.p2pApi.domain.exception.ServerNotFoundException;
 import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
@@ -10,7 +11,6 @@ import io.github.seujorgenochurras.p2pApi.domain.model.server.Server;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.player.Player;
 import io.github.seujorgenochurras.p2pApi.domain.service.ClientService;
-import io.github.seujorgenochurras.p2pApi.domain.service.server.ServerFilesService;
 import io.github.seujorgenochurras.p2pApi.domain.service.server.ServerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,8 +32,8 @@ public class ServerController {
     @Autowired
     private ClientService clientService;
 
-    private ServerFilesService serverFilesService = new ServerFilesService();
 
+    //TODO create a specific rout for reading server properties, it takes so long to get them
     @GetMapping(value = "/{name}")
     public ResponseEntity<?> findByStaticAddress(@PathVariable String name, Principal principal) {
         String clientUuid = principal.getName();
@@ -44,15 +44,27 @@ public class ServerController {
             .findFirst().orElse(null);
 
         if (access == null) {
-            throw new ServerNotFoundException("No server with ip '" + name + "' found");
+            throw new ServerNotFoundException("No server with name '" + name + "' found");
         }
         access.getServer().updateProperties();
         return ok(access);
     }
 
-    @GetMapping(value = "/server/public/name")
-    public ResponseEntity<?> getPublicServerInfo(@PathVariable String serverName) {
-        Server server = serverService.findByName(serverName);
+    @GetMapping(value = "/public/{serverStaticIp}")
+    public ResponseEntity<?> getPublicServerInfo(@PathVariable String serverStaticIp) {
+        Server server = serverService.findByStaticIp(serverStaticIp);
+        if (server == null) throw new ServerNotFoundException("Server not found");
+        return ResponseEntity.ok(server);
+    }
+
+    @PutMapping(value = "/public/{serverStaticIp}")
+    public ResponseEntity<?> setServerVolatileIp(@PathVariable String serverStaticIp, @RequestBody UpdateServerVolatileIpDto volatileIpDto) {
+        Server server = serverService.findByStaticIp(serverStaticIp);
+        if (server == null) throw new ServerNotFoundException("Server not found");
+
+        ServerDto serverDto = new ServerDto();
+        serverDto.setVolatileIp(volatileIpDto.getVolatileIp());
+        serverService.update(server.getUuid(), serverDto);
         return ResponseEntity.ok(server);
     }
 

@@ -8,4 +8,5 @@ public class P2pCraftConnectMod implements ModInitializer {
     @Override
     public void onInitialize() {
     }
+
 }

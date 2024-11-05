@@ -25,7 +25,10 @@ public class ConfigFile {
     }
 
     private static Map<String, Object> loadYaml() {
-        Dotenv dotenv = Dotenv.load();
+        Dotenv dotenv = Dotenv
+            .configure()
+            .directory("../")
+            .load();
         try {
             File configFile = new File(P2pCraftConnectModClient.getResourcesDirPath() + "/config.yaml");
             if (!configFile.exists()) {
