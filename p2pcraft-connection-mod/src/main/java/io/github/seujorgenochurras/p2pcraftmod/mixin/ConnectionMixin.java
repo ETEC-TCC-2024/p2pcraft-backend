@@ -40,6 +40,9 @@ public abstract class ConnectionMixin {
     protected abstract void setStatus(Text status);
 
     @Shadow
+    public abstract void tick();
+
+    @Shadow
     protected abstract void connect(MinecraftClient client, ServerAddress address, @Nullable ServerInfo info);
 
     @Inject(method = "connect(Lnet/minecraft/client/MinecraftClient;Lnet/minecraft/client/network/ServerAddress;Lnet/minecraft/client/network/ServerInfo;)V",
@@ -49,39 +52,32 @@ public abstract class ConnectionMixin {
 
         String staticAddress = serverAddress.getAddress();
         P2pServer p2pServer = p2pApi.findServer(staticAddress);
-        if (p2pServer.getState().equals(P2pServerState.NONEXISTENT)) return;
-
-        setScreenText(Text.translatable("connect.p2pcraftmod.connecting"));
-
-        AtomicReference<String> volatileAddress = new AtomicReference<>(p2pServer.getVolatileIp());
-        if (p2pServer.isOffline()) {
-            new Thread(() -> {
+        if (p2pServer.getState().equals(P2pServerState.NONEXISTENT) || !p2pServer.isOpen()) return;
+        ci.cancel();
+        new Thread(() -> {
+            setScreenText(Text.translatable("connect.p2pcraftmod.connecting"));
+            AtomicReference<String> volatileAddress = new AtomicReference<>(p2pServer.getVolatileIp());
+            if (p2pServer.isOffline()) {
                 try {
-                    synchronized (client.currentScreen) {
-                        P2pServerManager.startServer(p2pServer, this::setScreenText);
-                    }
+                    P2pServerManager.startServer(p2pServer, this::setScreenText);
+
+                    setScreenText(Text.translatable("connect.p2pcraftmod.open_ngrok"));
+                    volatileAddress.set(openNgrokTcpTunnel());
+                    p2pApi.sendHosting(p2pServer, volatileAddress.get());
+
+                    setScreenText(Text.translatable("connect.p2pcraftmod.joining"));
                 } catch (IOException | GitAPIException | InterruptedException e) {
                     throw new RuntimeException(e);
                 }
 
-                setScreenText(Text.translatable("connect.p2pcraftmod.open_ngrok"));
-                volatileAddress.set(openNgrokTcpTunnel());
-                p2pApi.sendHosting(p2pServer, volatileAddress.get());
-
-            }).start();
-        }
-        setScreenText(Text.translatable("connect.p2pcraftmod.joining"));
-
-        serverAddress = ServerAddress.parse(volatileAddress.get());
-        ci.cancel();
-        connect(client, serverAddress, serverInfo);
+            }
+            var newAddress = ServerAddress.parse(volatileAddress.get());
+            connect(client, newAddress, serverInfo);
+        }).start();
     }
 
     @Unique
     private void setScreenText(Text status) {
-        for (int i = 0; i < 20; i++) {
-            setStatus(status);
-            client.currentScreen.tick();
-        }
+        setStatus(status);
     }
 }

@@ -16,14 +16,12 @@ public class MinecraftTestController {
 
     @PostMapping("/server/host")
     public ResponseEntity<Object> sendNewHost(@RequestBody SendNewHostDto sendNewHostDto) {
-        System.out.println(sendNewHostDto);
         this.lastNgrokIp = sendNewHostDto.getRealIp();
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/server/find")
     public ResponseEntity<FindServerResponse> findServer(@RequestBody FindServerDto findServerDto) {
-        System.out.println(findServerDto);
         if (lastNgrokIp == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
