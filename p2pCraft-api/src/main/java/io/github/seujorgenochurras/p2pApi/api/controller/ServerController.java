@@ -33,9 +33,9 @@ public class ServerController {
     private ClientService clientService;
 
 
-    //TODO create a specific rout for reading server properties, it takes so long to get them
-    @GetMapping(value = "/{name}")
-    public ResponseEntity<?> findByStaticAddress(@PathVariable String name, Principal principal) {
+    //TODO refactor this shit
+    @GetMapping(value = "/{name}/properties")
+    public ResponseEntity<?> findPropertiesByName(@PathVariable String name, Principal principal) {
         String clientUuid = principal.getName();
         Client client = clientService.findById(clientUuid);
 
@@ -47,6 +47,21 @@ public class ServerController {
             throw new ServerNotFoundException("No server with name '" + name + "' found");
         }
         access.getServer().updateProperties();
+        return ok(access);
+    }
+
+    @GetMapping(value = "/{name}")
+    public ResponseEntity<?> findByName(@PathVariable String name, Principal principal) {
+        String clientUuid = principal.getName();
+        Client client = clientService.findById(clientUuid);
+
+        ServerClientAccess access = client.getServerAccesses().stream()
+            .filter((serverClientAccess -> serverClientAccess.getServer().getName().equals(name)))
+            .findFirst().orElse(null);
+
+        if (access == null) {
+            throw new ServerNotFoundException("No server with name '" + name + "' found");
+        }
         return ok(access);
     }
 
