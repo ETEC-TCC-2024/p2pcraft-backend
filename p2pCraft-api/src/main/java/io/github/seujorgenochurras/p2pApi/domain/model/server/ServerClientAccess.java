@@ -25,7 +25,7 @@ public class ServerClientAccess {
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    private ServerAccessRoles role;
+    private ServerAccessTypes role;
 
     public String getUuid() {
         return uuid;
@@ -54,11 +54,11 @@ public class ServerClientAccess {
         return this;
     }
 
-    public ServerAccessRoles getRole() {
+    public ServerAccessTypes getRole() {
         return role;
     }
 
-    public ServerClientAccess setRole(ServerAccessRoles role) {
+    public ServerClientAccess setRole(ServerAccessTypes role) {
         this.role = role;
         return this;
     }
