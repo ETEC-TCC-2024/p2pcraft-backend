@@ -7,6 +7,7 @@ import io.github.seujorgenochurras.p2pApi.domain.model.server.GameModes;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerProperties;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.player.Player;
 import io.github.seujorgenochurras.p2pApi.domain.service.github.GithubService;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -17,6 +18,7 @@ import java.util.Properties;
 
 import static io.github.seujorgenochurras.p2pApi.domain.service.server.Config.DEFAULT_PROPERTIES;
 
+@Component
 public class ServerFilesService {
     private final GithubService githubService = new GithubService();
     private static final Gson gson = new Gson();

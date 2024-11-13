@@ -1,18 +1,20 @@
 package io.github.seujorgenochurras.p2pApi.api.dto.server;
 
-import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerAccessRoles;
+import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerAccessTypes;
 
 public class AddAccessDto {
     private String serverUuid;
-    private ServerAccessRoles role;
+    private String clientUuid;
+    private ServerAccessTypes role;
 
-    public ServerAccessRoles getRole() {
-        return role;
+    public AddAccessDto() {
     }
 
-    public AddAccessDto setRole(ServerAccessRoles role) {
+    public AddAccessDto(String serverUuid, String clientUuid, ServerAccessTypes role) {
+        this.serverUuid = serverUuid;
+        this.clientUuid = clientUuid;
         this.role = role;
-        return this;
+
     }
 
     public String getServerUuid() {
@@ -21,6 +23,24 @@ public class AddAccessDto {
 
     public AddAccessDto setServerUuid(String serverUuid) {
         this.serverUuid = serverUuid;
+        return this;
+    }
+
+    public String getClientUuid() {
+        return clientUuid;
+    }
+
+    public AddAccessDto setClientUuid(String clientUuid) {
+        this.clientUuid = clientUuid;
+        return this;
+    }
+
+    public ServerAccessTypes getRole() {
+        return role;
+    }
+
+    public AddAccessDto setRole(ServerAccessTypes role) {
+        this.role = role;
         return this;
     }
 }

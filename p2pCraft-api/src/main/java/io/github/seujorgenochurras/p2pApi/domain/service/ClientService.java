@@ -92,4 +92,8 @@ public class ClientService {
     public Client findById(String uuid) {
         return clientRepository.findById(uuid).orElseThrow(() -> new ClientNotFoundException("Client with UUID :'" + uuid + "' not found"));
     }
+
+    public Client findByName(String clientName) {
+        return clientRepository.findByName(clientName).orElseThrow(() -> new ClientNotFoundException("Client with name :'" + clientName + "' not found"));
+    }
 }

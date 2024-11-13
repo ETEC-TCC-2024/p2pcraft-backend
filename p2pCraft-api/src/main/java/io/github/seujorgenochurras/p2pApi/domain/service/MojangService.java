@@ -4,9 +4,11 @@ import com.google.gson.Gson;
 import io.github.seujorgenochurras.p2pApi.common.util.HttpUtil;
 import io.github.seujorgenochurras.p2pApi.common.util.UUIDUtils;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.player.Player;
+import org.springframework.stereotype.Component;
 
 import java.net.http.HttpResponse;
 
+@Component
 public class MojangService {
 
     private record PlayerResponse(String name, String id) {
