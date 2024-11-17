@@ -39,12 +39,24 @@ public class Server {
     @JsonInclude
     private ServerProperties properties;
 
+    @Column(name = "active")
+    private boolean active = true;
+
     @Autowired
     @Transient
     private final ServerFilesService serverFilesService = new ServerFilesService();
 
     public boolean isOpen() {
         return open;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public Server setActive(boolean active) {
+        this.active = active;
+        return this;
     }
 
     public Server setOpen(boolean open) {

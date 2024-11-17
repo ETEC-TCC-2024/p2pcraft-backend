@@ -44,7 +44,8 @@ public class ServerController {
         Client client = clientService.findById(clientUuid);
 
         ServerClientAccess access = client.getServerAccesses().stream()
-            .filter((serverClientAccess -> serverClientAccess.getServer().getName().equals(name)))
+            .filter((serverClientAccess -> serverClientAccess.getServer().isActive() &&
+                serverClientAccess.getServer().getName().equals(name)))
             .findFirst().orElse(null);
 
         if (access == null) {
@@ -84,5 +85,10 @@ public class ServerController {
         return ResponseEntity.ok(client.getServerAccesses());
     }
 
-
+    @DeleteMapping(value = "/{name}")
+    public ResponseEntity<?> deleteServer(@PathVariable String name) {
+        Server server = serverService.findByName(name);
+        serverService.update(server.getUuid(), new ServerDto().setActive(false));
+        return noContent().build();
+    }
 }

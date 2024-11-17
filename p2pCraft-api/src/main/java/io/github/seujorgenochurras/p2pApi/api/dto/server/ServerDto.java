@@ -10,6 +10,20 @@ public class ServerDto {
     private String mapUrl;
     private ServerProperties properties;
     private Boolean open;
+    private Boolean active;
+
+    public Boolean getOpen() {
+        return open;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public ServerDto setActive(Boolean active) {
+        this.active = active;
+        return this;
+    }
 
     public Boolean isOpen() {
         return open;
