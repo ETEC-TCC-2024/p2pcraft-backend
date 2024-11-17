@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ServerService {
@@ -30,14 +29,19 @@ public class ServerService {
 
     @Nullable
     public Server findByStaticIp(String staticIp) {
-        Optional<Server> fetchedServer = serverRepository.findByStaticIp(staticIp);
-        return fetchedServer.orElse(null);
+        Server fetchedServer = serverRepository.findByStaticIp(staticIp).orElse(null);
+
+        if (fetchedServer == null || !fetchedServer.isActive())
+            return null;
+        return fetchedServer;
     }
 
     @Nullable
     public Server findByName(String name) {
-        Optional<Server> fetchedServer = serverRepository.findByStaticIp("p2pcraft.connect." + name + ".xyz");
-        return fetchedServer.orElse(null);
+        Server fetchedServer = serverRepository.findByStaticIp("p2pcraft.connect." + name + ".xyz").orElse(null);
+        if (fetchedServer == null || !fetchedServer.isActive())
+            return null;
+        return fetchedServer;
     }
 
     @Transactional
@@ -49,7 +53,7 @@ public class ServerService {
         if (serverDto.getStaticIp() != null) newServer.setStaticIp(serverDto.getStaticIp());
         if (serverDto.getVolatileIp() != null) newServer.setVolatileIp(serverDto.getVolatileIp());
         if (serverDto.getMapUrl() != null) newServer.getMapConfigurations().setMapUrl(serverDto.getMapUrl());
-
+        if (serverDto.getActive() != null) newServer.setActive(serverDto.getActive());
         if (serverDto.getProperties() != null) {
             serverFilesService.updateProperties(serverDto.getProperties(), newServer.getMapConfigurations().getMapUrl());
         }
@@ -58,11 +62,14 @@ public class ServerService {
     }
 
     public Server findServerById(String uuid) {
-        return serverRepository.findById(uuid).orElse(null);
+        Server fetchedServer = serverRepository.findById(uuid).orElse(null);
+        if (fetchedServer == null || !fetchedServer.isActive())
+            return null;
+        return fetchedServer;
     }
 
     public List<Server> findAll() {
-        return serverRepository.findAll();
+        return serverRepository.findAll().stream().filter(Server::isActive).toList();
     }
 
 }

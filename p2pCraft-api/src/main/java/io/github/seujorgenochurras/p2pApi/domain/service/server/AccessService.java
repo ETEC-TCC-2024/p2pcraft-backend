@@ -73,6 +73,6 @@ public class AccessService {
     }
 
     public ServerClientAccess getAccessLevel(Server server, Client client) {
-        return accessRepository.findByClientUuidAndServerUuid(server.getUuid(), client.getUuid()).orElse(null);
+        return accessRepository.findByClientUuidAndServerUuid(client.getUuid(), server.getUuid()).orElse(null);
     }
 }

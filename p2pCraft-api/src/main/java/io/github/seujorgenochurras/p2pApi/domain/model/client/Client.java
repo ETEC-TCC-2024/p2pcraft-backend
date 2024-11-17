@@ -32,7 +32,7 @@ public class Client {
     private List<ServerClientAccess> serverAccesses;
 
     public List<ServerClientAccess> getServerAccesses() {
-        return serverAccesses;
+        return serverAccesses.stream().filter(serverClientAccess -> serverClientAccess.getServer().isActive()).toList();
     }
 
     public Client setServerAccesses(List<ServerClientAccess> serverAccesses) {

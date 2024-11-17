@@ -25,7 +25,7 @@ dependencies {
     include(implementation("com.github.alexdlaird:java-ngrok:2.3.0"))
     include(implementation("org.yaml:snakeyaml:2.2"))
 
-    implementation ("io.github.cdimascio:dotenv-java:3.0.1")
+    include(implementation("io.github.cdimascio:dotenv-java:3.0.1"))
 
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
