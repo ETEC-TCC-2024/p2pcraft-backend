@@ -98,7 +98,6 @@ public class ServerFilesService {
 
     public ServerProperties getProperties(String repoUrl) {
         try {
-
             String rawProperties = getRawProperties(repoUrl);
 
             Properties properties = new Properties();

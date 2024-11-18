@@ -30,6 +30,7 @@ name varchar(100) not null,
 static_ip varchar(150) not null,
 last_volatile_ip varchar(150),
 open boolean default false,
+active boolean default true,
 foreign key (map_config) references map_configuration(uuid)
 
 );
