@@ -33,6 +33,7 @@ public class P2pCraftApi {
         if (!isValidP2pAddress(staticAddress)) return p2pServer.setState(NONEXISTENT);
 
         HttpResponse<String> apiResponse = P2pApiHttpUtils.findServer(staticAddress);
+
         //TODO send an error message saying api might be offline to the user
         if (apiResponse == null) return p2pServer.setState(NONEXISTENT);
 
@@ -70,7 +71,7 @@ public class P2pCraftApi {
     public static final class P2pApiHttpUtils {
 
         private static final String P2P_API_URL = ConfigFile.get("P2PCRAFT_API_URL");
-        private static final String P2P_API_SERVER_URL = P2P_API_URL + "/server/";
+        private static final String P2P_API_SERVER_URL = P2P_API_URL + "/server/public/";
 
         private static HttpResponse<String> sendNewHost(String staticAddress, String newRealAddress) {
             SendNewHostDto sendNewHostDto = new SendNewHostDto(staticAddress, newRealAddress);

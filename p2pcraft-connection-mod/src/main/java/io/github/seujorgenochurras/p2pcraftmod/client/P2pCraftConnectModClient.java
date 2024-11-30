@@ -26,12 +26,10 @@ public class P2pCraftConnectModClient implements ClientModInitializer {
         System.out.println("Initialized client :P");
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> onClientClose());
         ClientLifecycleEvents.CLIENT_STARTED.register(this::setClientName);
-
         new File(getResourcesDirPath()).mkdir();
     }
 
     public void setClientName(MinecraftClient client) {
-
         playerName = client.getSession().getUsername();
     }
 
@@ -43,7 +41,7 @@ public class P2pCraftConnectModClient implements ClientModInitializer {
             } catch (GitAPIException e) {
                 throw new RuntimeException(e);
             }
-            serverProcess.destroy();
+            serverProcess.destroyForcibly();
         }
     }
 

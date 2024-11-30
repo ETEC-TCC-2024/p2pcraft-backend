@@ -1,13 +1,12 @@
-package io.github.seujorgenochurras.p2pApi.domain.model;
+package io.github.seujorgenochurras.p2pApi.domain.model.client;
 
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -29,6 +28,31 @@ public class Client {
     @NotNull
     @Size(max = 60)
     private String password;
+
+    @NotNull
+    @Column(name="active")
+    private boolean active = true;
+
+    @OneToMany(mappedBy = "client")
+    private List<ServerClientAccess> serverAccesses;
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public Client setActive(boolean active) {
+        this.active = active;
+        return this;
+    }
+
+    public List<ServerClientAccess> getServerAccesses() {
+        return serverAccesses.stream().filter(serverClientAccess -> serverClientAccess.getServer().isActive()).toList();
+    }
+
+    public Client setServerAccesses(List<ServerClientAccess> serverAccesses) {
+        this.serverAccesses = serverAccesses;
+        return this;
+    }
 
     public String getPassword() {
         return password;

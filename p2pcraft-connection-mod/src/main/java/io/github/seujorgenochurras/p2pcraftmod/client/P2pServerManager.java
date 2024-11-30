@@ -1,6 +1,7 @@
 package io.github.seujorgenochurras.p2pcraftmod.client;
 
 import io.github.seujorgenochurras.p2pcraftmod.api.model.P2pServer;
+import io.github.seujorgenochurras.p2pcraftmod.api.model.P2pServerMap;
 import io.github.seujorgenochurras.p2pcraftmod.api.util.Terminal;
 import io.github.seujorgenochurras.p2pcraftmod.client.config.ConfigFile;
 import net.minecraft.text.Text;
@@ -26,7 +27,7 @@ public class P2pServerManager {
     }
 
     public static void startServer(P2pServer p2pServer, Consumer<Text> screenTextConsumer) throws IOException, GitAPIException, InterruptedException {
-        P2pServer.P2pServerMap p2pServerMap = p2pServer.getMap();
+        P2pServerMap p2pServerMap = p2pServer.getMap();
         File mapDir = new File(RESOURCES_DIR + "/" + p2pServer.getName());
 
         if (mapDir.exists()) {
@@ -36,7 +37,7 @@ public class P2pServerManager {
             git = Git
                 .cloneRepository()
                 .setDirectory(mapDir)
-                .setURI(p2pServerMap.getMapGithubURL())
+                .setURI(p2pServerMap.getMapUrl())
                 .call();
         }
         screenTextConsumer.accept(Text.translatable("connect.p2pcraftmod.fetching_git"));
@@ -48,8 +49,8 @@ public class P2pServerManager {
             .setRemoteBranchName("main")
             .call();
         screenTextConsumer.accept(Text.translatable("connect.p2pcraftmod.starting_server_jar"));
-        serverProcess = Terminal.execute(mapDir.getPath(), "java", "-Xmx2048M", "-jar", "server.jar", "nogui");
 
+        serverProcess = Terminal.execute(mapDir.getPath(), "java", "-Xmx2048M", "-jar", "server.jar", "nogui");
 
         //TODO properly wait for server to start
         int secondsInMillis = 1000;
@@ -67,7 +68,7 @@ public class P2pServerManager {
                 }
             }
         };
-        timer.schedule(saveServerTimerTask, 0, secondsInMillis * 600);
+        timer.schedule(saveServerTimerTask, 30000, secondsInMillis * 600);
     }
 
     public static Process getServerProcess() {
@@ -85,6 +86,7 @@ public class P2pServerManager {
         git.push()
             .setCredentialsProvider(new UsernamePasswordCredentialsProvider(P2PCRAFT_GITHUB_BOT_TOKEN, ""))
             .call();
+
     }
 
 

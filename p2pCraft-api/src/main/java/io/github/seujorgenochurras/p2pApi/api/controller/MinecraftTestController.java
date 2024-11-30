@@ -1,8 +1,8 @@
 package io.github.seujorgenochurras.p2pApi.api.controller;
 
-import io.github.seujorgenochurras.p2pApi.api.dto.FindServerDto;
-import io.github.seujorgenochurras.p2pApi.api.dto.SendNewHostDto;
-import io.github.seujorgenochurras.p2pApi.api.dto.reponse.FindServerResponse;
+import io.github.seujorgenochurras.p2pApi.api.dto.server.FindServerDto;
+import io.github.seujorgenochurras.p2pApi.api.dto.server.SendNewHostDto;
+import io.github.seujorgenochurras.p2pApi.api.dto.server.reponse.FindServerResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,14 +16,12 @@ public class MinecraftTestController {
 
     @PostMapping("/server/host")
     public ResponseEntity<Object> sendNewHost(@RequestBody SendNewHostDto sendNewHostDto) {
-        System.out.println(sendNewHostDto);
         this.lastNgrokIp = sendNewHostDto.getRealIp();
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/server/find")
     public ResponseEntity<FindServerResponse> findServer(@RequestBody FindServerDto findServerDto) {
-        System.out.println(findServerDto);
         if (lastNgrokIp == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

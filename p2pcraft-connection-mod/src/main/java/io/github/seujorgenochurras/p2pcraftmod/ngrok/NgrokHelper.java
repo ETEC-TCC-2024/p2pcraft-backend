@@ -15,6 +15,7 @@ public class NgrokHelper {
     private final static String NGROK_TOKEN = ConfigFile.get("NGROK_TOKEN");
 
     public static String openTunnel() {
+
         final NgrokClient ngrokClient = new NgrokClient
             .Builder()
             .withJavaNgrokConfig(new JavaNgrokConfig.Builder().withAuthToken(NGROK_TOKEN).build())

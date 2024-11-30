@@ -1,7 +1,6 @@
 package io.github.seujorgenochurras.p2pcraftmod.api.model;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,12 +27,28 @@ public class P2pServer {
     private boolean online;
 
     @Expose
-    @SerializedName("mapUrl")
-    @JsonAdapter(P2pServerMapJsonAdapter.class)
+    @SerializedName("open")
+    private boolean open;
+
+    @Expose
+    @SerializedName("mapConfigurations")
     private P2pServerMap map;
 
     public P2pServerMap getMap() {
         return map;
+    }
+
+    public boolean isOnline() {
+        return online;
+    }
+
+    public boolean isOpen() {
+        return open;
+    }
+
+    public P2pServer setOpen(boolean open) {
+        this.open = open;
+        return this;
     }
 
     public P2pServer setMap(P2pServerMap map) {
@@ -98,17 +113,4 @@ public class P2pServer {
             '}';
     }
 
-    public static final class P2pServerMap {
-        private String mapGithubURL;
-
-        public String getMapGithubURL() {
-            return mapGithubURL;
-        }
-
-        public P2pServerMap setMapGithubURL(String mapGithubURL) {
-            this.mapGithubURL = mapGithubURL;
-            return this;
-        }
-
-    }
 }
