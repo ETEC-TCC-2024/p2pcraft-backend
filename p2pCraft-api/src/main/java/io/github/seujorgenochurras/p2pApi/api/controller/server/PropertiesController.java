@@ -1,5 +1,6 @@
 package io.github.seujorgenochurras.p2pApi.api.controller.server;
 
+import io.github.seujorgenochurras.p2pApi.api.controller.client.FindClientService;
 import io.github.seujorgenochurras.p2pApi.domain.exception.ServerNotFoundException;
 import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess;
@@ -21,7 +22,7 @@ import static org.springframework.http.ResponseEntity.ok;
 public class PropertiesController {
 
     @Autowired
-    private ClientService clientService;
+    private FindClientService clientService;
 
 
     //TODO refactor this shit

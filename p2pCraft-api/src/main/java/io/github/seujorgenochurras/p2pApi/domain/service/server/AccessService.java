@@ -1,5 +1,6 @@
 package io.github.seujorgenochurras.p2pApi.domain.service.server;
 
+import io.github.seujorgenochurras.p2pApi.api.controller.client.FindClientService;
 import io.github.seujorgenochurras.p2pApi.api.dto.client.ClientAccessDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.AddAccessDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.UpdateAccessDto;
@@ -25,6 +26,9 @@ public class AccessService {
     private ClientService clientService;
 
     @Autowired
+    private FindClientService findClientService;
+
+    @Autowired
     private ServerService serverService;
 
     public List<ClientAccessDto> getClientAccesses(Server server) {
@@ -44,7 +48,7 @@ public class AccessService {
         ServerClientAccess clientAccess = accessRepository.findByClientUuidAndServerUuid(accessDto.getClientUuid(), accessDto.getServerUuid()).orElse(null);
         if (clientAccess != null) return clientAccess;
         clientAccess = new ServerClientAccess();
-        Client client = clientService.findById(accessDto.getClientUuid());
+        Client client = findClientService.findById(accessDto.getClientUuid());
         Server server = serverService.findServerById(accessDto.getServerUuid());
 
         clientAccess.setClient(client);

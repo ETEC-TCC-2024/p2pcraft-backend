@@ -3,6 +3,7 @@ package io.github.seujorgenochurras.p2pApi.domain.service;
 import io.github.seujorgenochurras.p2pApi.api.dto.client.ClientLoginDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.client.ClientRegisterDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.client.ClientTokenDto;
+import io.github.seujorgenochurras.p2pApi.api.dto.client.UpdateClientDto;
 import io.github.seujorgenochurras.p2pApi.api.security.detail.UserDetailsImplService;
 import io.github.seujorgenochurras.p2pApi.domain.exception.ClientNotFoundException;
 import io.github.seujorgenochurras.p2pApi.domain.exception.EmailExistsException;
@@ -18,7 +19,6 @@ import java.util.List;
 
 @Service
 public class ClientService {
-
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -39,7 +39,7 @@ public class ClientService {
      */
     public ClientTokenDto register(ClientRegisterDto clientDto) {
         Client client = saveClient(clientDto);
-
+        client.setActive(true);
         String token = jwtService.createJwt(userDetailsImplService.loadUserByUsername(client.getUuid()));
 
         return new ClientTokenDto(token);
@@ -52,7 +52,7 @@ public class ClientService {
 
     public ClientTokenDto login(ClientLoginDto clientDto) {
         Client client = findByEmail(clientDto.getEmail());
-        if (client == null)
+        if (client == null || !client.isActive())
             throw new InvalidEmailException("Invalid email " + clientDto.getEmail());
 
         boolean valid = passwordEncoder.matches(clientDto.getPassword(), client.getPassword());
@@ -89,11 +89,20 @@ public class ClientService {
         return clientRepository.findByEmail(email).orElse(null);
     }
 
-    public Client findById(String uuid) {
-        return clientRepository.findById(uuid).orElseThrow(() -> new ClientNotFoundException("Client with UUID :'" + uuid + "' not found"));
-    }
-
     public Client findByName(String clientName) {
         return clientRepository.findByName(clientName).orElseThrow(() -> new ClientNotFoundException("Client with name :'" + clientName + "' not found"));
+    }
+    public Client updateClient(Client client, UpdateClientDto updateClientDto){
+        Client newClient = new Client();
+        newClient.setUuid(client.getUuid())
+                .setEmail(updateClientDto.getEmail())
+                .setName(updateClientDto.getName())
+                .setPassword(passwordEncoder.encode(updateClientDto.getPassword()));
+        return clientRepository.save(client     );
+    }
+
+    public void deleteClient(Client client){
+        client.setActive(false);
+        clientRepository.save(client);
     }
 }

@@ -6,7 +6,8 @@ create table client(
 uuid varchar(36) primary key not null,
 name varchar(100) not null,
 email varchar(300) not null,
-password varchar(60) not null
+password varchar(60) not null,
+active boolean default true not null
 );
 
 create table client_friend(

@@ -4,6 +4,7 @@ import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.List;
 import java.util.Objects;
@@ -28,8 +29,21 @@ public class Client {
     @Size(max = 60)
     private String password;
 
+    @NotNull
+    @Column(name="active")
+    private boolean active = true;
+
     @OneToMany(mappedBy = "client")
     private List<ServerClientAccess> serverAccesses;
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public Client setActive(boolean active) {
+        this.active = active;
+        return this;
+    }
 
     public List<ServerClientAccess> getServerAccesses() {
         return serverAccesses.stream().filter(serverClientAccess -> serverClientAccess.getServer().isActive()).toList();

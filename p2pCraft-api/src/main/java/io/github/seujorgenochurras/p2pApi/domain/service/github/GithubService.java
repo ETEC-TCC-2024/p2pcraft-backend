@@ -13,7 +13,7 @@ import java.net.http.HttpResponse;
 import java.util.Base64;
 
 public class GithubService {
-    private static final Dotenv dotenv = Dotenv.configure().directory("p2pCraft-api").load();
+    private static final Dotenv dotenv = Dotenv.configure().load();
     private static final Gson gson = new Gson();
     private static final HttpUtil.Header REQUEST_HEADERS = new HttpUtil.Header("Authorization", "Bearer " + dotenv.get("GITHUB_TOKEN"));
 
@@ -48,8 +48,8 @@ public class GithubService {
 
     public String getFileFromGithub(String fileName, String repoUrl) {
         String rawPropertiesURL = repoUrl
-            .replaceAll("\\.git$", "")
-            .concat("/blob/main/" + fileName);
+                .replaceAll("\\.git$", "")
+                .concat("/blob/main/" + fileName);
         HttpResponse<String> response = HttpUtil.sendGetRequest(rawPropertiesURL, REQUEST_HEADERS);
         String rawHtml = response.body();
         Document doc = Jsoup.parse(rawHtml);
