@@ -92,16 +92,17 @@ public class ClientService {
     public Client findByName(String clientName) {
         return clientRepository.findByName(clientName).orElseThrow(() -> new ClientNotFoundException("Client with name :'" + clientName + "' not found"));
     }
-    public Client updateClient(Client client, UpdateClientDto updateClientDto){
+
+    public Client updateClient(Client client, UpdateClientDto updateClientDto) {
         Client newClient = new Client();
         newClient.setUuid(client.getUuid())
-                .setEmail(updateClientDto.getEmail())
-                .setName(updateClientDto.getName())
-                .setPassword(passwordEncoder.encode(updateClientDto.getPassword()));
-        return clientRepository.save(client     );
+            .setEmail(updateClientDto.getEmail())
+            .setName(updateClientDto.getName())
+            .setPassword(passwordEncoder.encode(updateClientDto.getPassword()));
+        return clientRepository.save(client);
     }
 
-    public void deleteClient(Client client){
+    public void deleteClient(Client client) {
         client.setActive(false);
         clientRepository.save(client);
     }

@@ -1,4 +1,4 @@
-package io.github.seujorgenochurras.p2pApi.api.dto.server;
+package io.github.seujorgenochurras.p2pApi.api.dto.server.access;
 
 import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerAccessTypes;
 

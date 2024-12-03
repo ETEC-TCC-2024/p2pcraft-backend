@@ -13,12 +13,12 @@ public class UserDetailsImpl implements UserDetails {
 
     private final Client user;
 
-    public Client getUser() {
-        return user;
-    }
-
     public UserDetailsImpl(Client user) {
         this.user = user;
+    }
+
+    public Client getUser() {
+        return user;
     }
 
     @Override

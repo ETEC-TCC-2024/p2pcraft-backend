@@ -20,9 +20,23 @@ import static io.github.seujorgenochurras.p2pApi.domain.service.server.Config.DE
 
 @Component
 public class ServerFilesService {
-    private final GithubService githubService = new GithubService();
     private static final Gson gson = new Gson();
+    private final GithubService githubService = new GithubService();
 
+    private static ServerProperties parseProperties(Properties properties) {
+        ServerProperties serverProperties = new ServerProperties();
+
+        serverProperties.setDifficulty(Difficulties.valueOf(properties.getProperty("difficulty").toUpperCase()));
+        serverProperties.setGameMode(GameModes.valueOf(properties.getProperty("gamemode").toUpperCase()));
+
+        serverProperties.setCracked(properties.getProperty("online-mode").equals("false"));
+        serverProperties.setPvpEnabled(properties.getProperty("pvp").equals("true"));
+        serverProperties.setWhitelist(properties.getProperty("white-list").equals("true"));
+
+        serverProperties.setPlayerSlots(Integer.valueOf(properties.getProperty("max-players")));
+
+        return serverProperties;
+    }
 
     public ArrayList<Player> addToWhitelist(Player player, String repoUrl) {
         final String whitelistFileName = "whitelist.json";
@@ -57,21 +71,6 @@ public class ServerFilesService {
 
         return gson.fromJson(rawWhitelistJson, new TypeToken<List<Player>>() {
         }.getType());
-    }
-
-    private static ServerProperties parseProperties(Properties properties) {
-        ServerProperties serverProperties = new ServerProperties();
-
-        serverProperties.setDifficulty(Difficulties.valueOf(properties.getProperty("difficulty").toUpperCase()));
-        serverProperties.setGameMode(GameModes.valueOf(properties.getProperty("gamemode").toUpperCase()));
-
-        serverProperties.setCracked(properties.getProperty("online-mode").equals("false"));
-        serverProperties.setPvpEnabled(properties.getProperty("pvp").equals("true"));
-        serverProperties.setWhitelist(properties.getProperty("white-list").equals("true"));
-
-        serverProperties.setPlayerSlots(Integer.valueOf(properties.getProperty("max-players")));
-
-        return serverProperties;
     }
 
     public void updateProperties(ServerProperties serverProperties, String repoUrl) {

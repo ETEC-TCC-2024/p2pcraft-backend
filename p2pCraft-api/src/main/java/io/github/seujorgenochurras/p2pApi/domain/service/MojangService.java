@@ -11,9 +11,6 @@ import java.net.http.HttpResponse;
 @Component
 public class MojangService {
 
-    private record PlayerResponse(String name, String id) {
-    }
-
     public Player findPlayerByName(String playerName) {
         HttpResponse<String> response = HttpUtil.sendGetRequest("https://api.mojang.com/users/profiles/minecraft/" + playerName);
 
@@ -29,6 +26,9 @@ public class MojangService {
             .setUuid(uuid);
         return player;
 
+    }
+
+    private record PlayerResponse(String name, String id) {
     }
 
 

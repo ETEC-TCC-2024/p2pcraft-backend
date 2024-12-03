@@ -15,11 +15,9 @@ import java.util.List;
 public class ServerService {
 
     @Autowired
-    private ServerRepository serverRepository;
-
-    @Autowired
     public MapConfigurationsService mapConfigurationsService;
-
+    @Autowired
+    private ServerRepository serverRepository;
     private ServerFilesService serverFilesService = new ServerFilesService();
 
 

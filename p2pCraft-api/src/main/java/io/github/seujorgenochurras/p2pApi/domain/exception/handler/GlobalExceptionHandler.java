@@ -54,6 +54,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus status = HttpStatus.NOT_FOUND;
         return ResponseEntity.status(status).body(genResponse(ex));
     }
+
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<?> handleUsernameNotFoundException(ServerNotFoundException ex) {
         HttpStatus status = HttpStatus.NOT_FOUND;

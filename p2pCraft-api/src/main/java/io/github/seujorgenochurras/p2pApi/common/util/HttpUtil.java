@@ -33,10 +33,6 @@ public class HttpUtil {
         return trySendRequest(request);
     }
 
-
-    public record Header(String name, String value) {
-    }
-
     public static HttpResponse<String> sendPutRequest(Object body, String url, Header... headers) {
         String jsonBody = gson.toJson(body);
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
@@ -72,5 +68,8 @@ public class HttpUtil {
         } catch (IOException | InterruptedException e) {
             return null;
         }
+    }
+
+    public record Header(String name, String value) {
     }
 }

@@ -16,6 +16,11 @@ public class ServerDto {
         return open;
     }
 
+    public ServerDto setOpen(Boolean open) {
+        this.open = open;
+        return this;
+    }
+
     public Boolean getActive() {
         return active;
     }
@@ -27,11 +32,6 @@ public class ServerDto {
 
     public Boolean isOpen() {
         return open;
-    }
-
-    public ServerDto setOpen(Boolean open) {
-        this.open = open;
-        return this;
     }
 
     public ServerProperties getProperties() {

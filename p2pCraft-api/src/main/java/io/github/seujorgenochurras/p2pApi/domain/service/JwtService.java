@@ -31,11 +31,11 @@ public class JwtService {
 
     public String createJwt(UserDetails userDetails, Instant expiresAt, Instant issuedAt) {
         return JWT.create()
-                .withIssuer(ISSUER)
-                .withIssuedAt(issuedAt)
-                .withExpiresAt(expiresAt)
-                .withSubject(userDetails.getUsername())
-                .sign(SIGN_ALGORITHM);
+            .withIssuer(ISSUER)
+            .withIssuedAt(issuedAt)
+            .withExpiresAt(expiresAt)
+            .withSubject(userDetails.getUsername())
+            .sign(SIGN_ALGORITHM);
     }
 
     public DecodedJWT decodeJwt(String jwt) throws JWTDecodeException {

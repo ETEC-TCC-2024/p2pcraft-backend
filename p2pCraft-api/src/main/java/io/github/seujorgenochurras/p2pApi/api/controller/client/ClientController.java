@@ -30,7 +30,7 @@ public class ClientController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteClient(Principal principal){
+    public ResponseEntity<?> deleteClient(Principal principal) {
         Client client = findClientService.findById(principal.getName());
         clientService.deleteClient(client);
         return ResponseEntity.noContent().build();
@@ -63,11 +63,12 @@ public class ClientController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateClient(@RequestBody UpdateClientDto updateClientDto, Principal principal){
+    public ResponseEntity<?> updateClient(@RequestBody UpdateClientDto updateClientDto, Principal principal) {
         Client currentClient = findClientService.findById(principal.getName());
         clientService.updateClient(currentClient, updateClientDto);
         return ResponseEntity.ok(currentClient);
     }
+
     private ClientResponseDto genClientResponse(Client client) {
 
         return new ClientResponseDto().setEmail(client.getEmail())

@@ -12,42 +12,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Entity
 public class Server {
 
+    @Autowired
+    @Transient
+    private final ServerFilesService serverFilesService = new ServerFilesService();
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String uuid;
-
     @NotNull
     private String name;
-
     @NotNull
     @Size(max = 150)
     @Column(name = "static_ip")
     private String staticIp;
-
     @Column(name = "last_volatile_ip")
     private String volatileIp;
-
-
     @OneToOne
     @JoinColumn(name = "map_config")
     private ServerMapConfigurations mapConfigurations;
-
     @Column(name = "open")
     private boolean open = false;
-
     @Transient
     @JsonInclude
     private ServerProperties properties;
-
     @Column(name = "active")
     private boolean active = true;
 
-    @Autowired
-    @Transient
-    private final ServerFilesService serverFilesService = new ServerFilesService();
-
     public boolean isOpen() {
         return open;
+    }
+
+    public Server setOpen(boolean open) {
+        this.open = open;
+        return this;
     }
 
     public boolean isActive() {
@@ -56,11 +52,6 @@ public class Server {
 
     public Server setActive(boolean active) {
         this.active = active;
-        return this;
-    }
-
-    public Server setOpen(boolean open) {
-        this.open = open;
         return this;
     }
 

@@ -1,8 +1,8 @@
 package io.github.seujorgenochurras.p2pApi.api.controller.server;
 
-import io.github.seujorgenochurras.p2pApi.api.dto.server.AddAccessDto;
-import io.github.seujorgenochurras.p2pApi.api.dto.server.NamedAddAccessDto;
-import io.github.seujorgenochurras.p2pApi.api.dto.server.UpdateAccessDto;
+import io.github.seujorgenochurras.p2pApi.api.dto.server.access.AddAccessDto;
+import io.github.seujorgenochurras.p2pApi.api.dto.server.access.NamedAddAccessDto;
+import io.github.seujorgenochurras.p2pApi.api.dto.server.access.UpdateAccessDto;
 import io.github.seujorgenochurras.p2pApi.domain.exception.ServerNotFoundException;
 import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.Server;

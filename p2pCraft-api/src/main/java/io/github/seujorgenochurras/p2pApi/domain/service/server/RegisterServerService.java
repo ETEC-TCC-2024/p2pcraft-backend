@@ -1,7 +1,7 @@
 package io.github.seujorgenochurras.p2pApi.domain.service.server;
 
-import io.github.seujorgenochurras.p2pApi.api.dto.server.AddAccessDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.RegisterServerDto;
+import io.github.seujorgenochurras.p2pApi.api.dto.server.access.AddAccessDto;
 import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidIpAddressException;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.*;
 import io.github.seujorgenochurras.p2pApi.domain.service.MapConfigurationsService;
