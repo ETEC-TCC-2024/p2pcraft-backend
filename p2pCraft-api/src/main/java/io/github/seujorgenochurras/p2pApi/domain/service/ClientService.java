@@ -39,7 +39,8 @@ public class ClientService {
     public ClientTokenDto register(ClientRegisterDto clientDto) {
         Client client = saveClient(clientDto);
         client.setActive(true);
-        String token = jwtService.createJwt(userDetailsImplService.loadUserByUsername(client.getUuid()));
+
+        String token = createJwt(client);
 
         return new ClientTokenDto(token);
     }
@@ -50,8 +51,8 @@ public class ClientService {
 
     public ClientTokenDto login(ClientLoginDto clientDto) {
         Client client = findByEmail(clientDto.getEmail());
-        if (client == null || !client.isActive()) throw new InvalidEmailException("Invalid email " + clientDto
-            .getEmail());
+        if (client == null || !client.isActive())
+            throw new InvalidEmailException("Invalid email " + clientDto.getEmail());
 
         boolean valid = passwordEncoder.matches(clientDto.getPassword(), client.getPassword());
         if (!valid) throw new InvalidPasswordException("Invalid password");
@@ -85,7 +86,8 @@ public class ClientService {
     }
 
     public Client findByEmail(String email) {
-        return clientRepository.findByEmail(email).orElse(null);
+        return clientRepository.findByEmail(email)
+            .orElse(null);
     }
 
     public Client findByName(String clientName) {

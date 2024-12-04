@@ -20,7 +20,7 @@ public class ServerService {
     @Autowired
     private ServerRepository serverRepository;
 
-    private ServerFilesService serverFilesService = new ServerFilesService();
+    private final ServerFilesService serverFilesService = new ServerFilesService();
 
     protected Server save(Server server) {
         return serverRepository.save(server);
@@ -28,7 +28,8 @@ public class ServerService {
 
     @Nullable
     public Server findByStaticIp(String staticIp) {
-        Server fetchedServer = serverRepository.findByStaticIp(staticIp).orElse(null);
+        Server fetchedServer = serverRepository.findByStaticIp(staticIp)
+            .orElse(null);
 
         if (fetchedServer == null || !fetchedServer.isActive()) return null;
         return fetchedServer;
@@ -36,7 +37,8 @@ public class ServerService {
 
     @Nullable
     public Server findByName(String name) {
-        Server fetchedServer = serverRepository.findByStaticIp("p2pcraft.connect." + name + ".xyz").orElse(null);
+        Server fetchedServer = serverRepository.findByStaticIp("p2pcraft.connect." + name + ".xyz")
+            .orElse(null);
         if (fetchedServer == null || !fetchedServer.isActive()) return null;
         return fetchedServer;
     }
@@ -49,7 +51,8 @@ public class ServerService {
         if (serverDto.isOpen() != null) newServer.setOpen(serverDto.isOpen());
         if (serverDto.getStaticIp() != null) newServer.setStaticIp(serverDto.getStaticIp());
         if (serverDto.getVolatileIp() != null) newServer.setVolatileIp(serverDto.getVolatileIp());
-        if (serverDto.getMapUrl() != null) newServer.getMapConfigurations().setMapUrl(serverDto.getMapUrl());
+        if (serverDto.getMapUrl() != null) newServer.getMapConfigurations()
+            .setMapUrl(serverDto.getMapUrl());
         if (serverDto.getActive() != null) newServer.setActive(serverDto.getActive());
         if (serverDto.getProperties() != null) {
             serverFilesService.updateProperties(serverDto.getProperties(), newServer.getMapConfigurations()
@@ -60,12 +63,16 @@ public class ServerService {
     }
 
     public Server findServerById(String uuid) {
-        Server fetchedServer = serverRepository.findById(uuid).orElse(null);
+        Server fetchedServer = serverRepository.findById(uuid)
+            .orElse(null);
         if (fetchedServer == null || !fetchedServer.isActive()) return null;
         return fetchedServer;
     }
 
     public List<Server> findAll() {
-        return serverRepository.findAll().stream().filter(Server::isActive).toList();
+        return serverRepository.findAll()
+            .stream()
+            .filter(Server::isActive)
+            .toList();
     }
 }
