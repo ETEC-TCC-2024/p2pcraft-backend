@@ -74,14 +74,8 @@ public class ServerProperties {
 
     @Override
     public String toString() {
-        return
-            "gamemode=" + gameMode + "\n" +
-                "difficulty=" + difficulty + "\n" +
-                "max-players=" + playerSlots + "\n" +
-                "pvp=" + pvpEnabled + "\n" +
-                "white-list=" + whitelist + "\n" +
-                "level-seed=" + seed + "\n" +
-                "online-mode=" + cracked;
-
+        return "gamemode=" + gameMode + "\n" + "difficulty=" + difficulty + "\n" + "max-players=" + playerSlots + "\n"
+            + "pvp=" + pvpEnabled + "\n" + "white-list=" + whitelist + "\n" + "level-seed=" + seed + "\n"
+            + "online-mode=" + cracked;
     }
 }

@@ -4,11 +4,10 @@ import io.github.seujorgenochurras.p2pApi.api.dto.server.PlayerDto;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.player.Player;
 import io.github.seujorgenochurras.p2pApi.domain.service.server.ServerService;
 import io.github.seujorgenochurras.p2pApi.domain.service.server.WhitelistService;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/server")
@@ -32,7 +31,8 @@ public class WhitelistController {
     }
 
     @DeleteMapping(value = "/{serverName}/whitelist/{playerName}")
-    public ResponseEntity<?> removePlayerFromWhitelist(@PathVariable String serverName, @PathVariable String playerName) {
+    public ResponseEntity<?> removePlayerFromWhitelist(@PathVariable String serverName,
+                                                       @PathVariable String playerName) {
         ArrayList<Player> whitelist = whitelistService.removeFromWhitelist(playerName, serverName);
         return ResponseEntity.ok(whitelist);
     }

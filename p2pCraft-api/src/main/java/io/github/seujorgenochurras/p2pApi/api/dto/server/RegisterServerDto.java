@@ -22,5 +22,4 @@ public class RegisterServerDto {
         this.name = name;
         return this;
     }
-
 }

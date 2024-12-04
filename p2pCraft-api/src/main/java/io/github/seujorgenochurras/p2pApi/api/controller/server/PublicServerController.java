@@ -24,7 +24,8 @@ public class PublicServerController {
     }
 
     @PutMapping(value = "/public/{serverStaticIp}")
-    public ResponseEntity<?> setServerVolatileIp(@PathVariable String serverStaticIp, @RequestBody UpdateServerVolatileIpDto volatileIpDto) {
+    public ResponseEntity<?> setServerVolatileIp(@PathVariable String serverStaticIp,
+                                                 @RequestBody UpdateServerVolatileIpDto volatileIpDto) {
         Server server = serverService.findByStaticIp(serverStaticIp);
         if (server == null) throw new ServerNotFoundException("Server not found");
 

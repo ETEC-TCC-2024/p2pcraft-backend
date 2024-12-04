@@ -1,5 +1,8 @@
 package io.github.seujorgenochurras.p2pApi.api.controller.server;
 
+import static org.springframework.http.ResponseEntity.noContent;
+import static org.springframework.http.ResponseEntity.ok;
+
 import io.github.seujorgenochurras.p2pApi.api.controller.client.FindClientService;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.RegisterServerDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.ServerDto;
@@ -13,15 +16,11 @@ import io.github.seujorgenochurras.p2pApi.domain.service.ClientService;
 import io.github.seujorgenochurras.p2pApi.domain.service.server.AccessService;
 import io.github.seujorgenochurras.p2pApi.domain.service.server.RegisterServerService;
 import io.github.seujorgenochurras.p2pApi.domain.service.server.ServerService;
+import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
-
-import static org.springframework.http.ResponseEntity.noContent;
-import static org.springframework.http.ResponseEntity.ok;
 
 @RestController()
 @RequestMapping("/server")
@@ -47,10 +46,13 @@ public class ServerController {
         String clientUuid = principal.getName();
         Client client = findClientService.findById(clientUuid);
 
-        ServerClientAccess access = client.getServerAccesses().stream()
-            .filter((serverClientAccess -> serverClientAccess.getServer().isActive() &&
-                serverClientAccess.getServer().getName().equals(name)))
-            .findFirst().orElse(null);
+        ServerClientAccess access = client.getServerAccesses()
+            .stream()
+            .filter((serverClientAccess -> serverClientAccess.getServer().isActive() && serverClientAccess.getServer()
+                .getName()
+                .equals(name)))
+            .findFirst()
+            .orElse(null);
 
         if (access == null) {
             throw new ServerNotFoundException("No server with name '" + name + "' found");
@@ -59,7 +61,8 @@ public class ServerController {
     }
 
     @PutMapping(value = "/{serverName}")
-    public ResponseEntity<?> putServer(@PathVariable String serverName, @RequestBody ServerDto serverDto, Principal principal) {
+    public ResponseEntity<?> putServer(@PathVariable String serverName, @RequestBody ServerDto serverDto,
+                                       Principal principal) {
         Server fetchedServer = serverService.findByName(serverName);
         if (fetchedServer == null) {
             throw new InvalidIpAddressException("No server with ip " + serverName + " found");

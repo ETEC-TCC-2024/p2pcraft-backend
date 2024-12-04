@@ -12,6 +12,8 @@ public class FindClientService {
     private ClientRepository clientRepository;
 
     public Client findById(String uuid) {
-        return clientRepository.findById(uuid).filter(Client::isActive).orElseThrow(() -> new ClientNotFoundException("Client with UUID :'" + uuid + "' not found"));
+        return clientRepository.findById(uuid)
+            .filter(Client::isActive)
+            .orElseThrow(() -> new ClientNotFoundException("Client with UUID :'" + uuid + "' not found"));
     }
 }

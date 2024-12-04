@@ -19,5 +19,4 @@ public class LoginController {
 
         return ResponseEntity.ok(clientService.login(loginDto));
     }
-
 }

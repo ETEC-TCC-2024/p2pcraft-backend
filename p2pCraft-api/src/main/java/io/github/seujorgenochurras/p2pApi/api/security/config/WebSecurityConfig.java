@@ -41,12 +41,16 @@ public class WebSecurityConfig {
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
         UserDetails user = User.withUsername("user")
-            .password(encoder().encode("simManoSequiserPodePa")) //this is super dangerous remove this later pls add secret in a .env or smth
+            .password(encoder().encode("simManoSequiserPodePa")) // this is super dangerous
+            // remove this later pls
+            // add secret in a .env or smth
             .roles("USER")
             .build();
 
         UserDetails admin = User.withUsername("admin")
-            .password(encoder().encode("senhadoadminmano")) //this is super dangerous remove this later pls add secret in a .env or smth
+            .password(encoder().encode("senhadoadminmano")) // this is super dangerous
+            // remove this later pls add
+            // secret in a .env or smth
             .roles("ADMIN")
             .build();
 
@@ -55,8 +59,7 @@ public class WebSecurityConfig {
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
-        final DaoAuthenticationProvider daoAuthenticationProvider =
-            new DaoAuthenticationProvider();
+        final DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsImplService);
         daoAuthenticationProvider.setPasswordEncoder(encoder());
         return daoAuthenticationProvider;
@@ -84,7 +87,6 @@ public class WebSecurityConfig {
 
         return http.build();
     }
-
 
     @Bean
     public PasswordEncoder encoder() {

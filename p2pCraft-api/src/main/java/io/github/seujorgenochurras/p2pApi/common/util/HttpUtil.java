@@ -1,15 +1,14 @@
 package io.github.seujorgenochurras.p2pApi.common.util;
 
-import com.google.gson.Gson;
+import static java.net.http.HttpRequest.BodyPublishers;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Arrays;
-
-import static java.net.http.HttpRequest.BodyPublishers;
 
 public class HttpUtil {
 
@@ -27,6 +26,7 @@ public class HttpUtil {
             .uri(URI.create(url))
             .setHeader("Content-Type", "application/json")
             .POST(BodyPublishers.ofString(jsonBody));
+
         Arrays.stream(headers).forEach((header) -> requestBuilder.header(header.name, header.value));
 
         HttpRequest request = requestBuilder.build();

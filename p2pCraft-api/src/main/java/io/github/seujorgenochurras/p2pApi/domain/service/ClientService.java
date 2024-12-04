@@ -32,7 +32,6 @@ public class ClientService {
     @Autowired
     private UserDetailsImplService userDetailsImplService;
 
-
     /**
      * @param clientDto clientDto
      * @return jwt client token
@@ -49,11 +48,10 @@ public class ClientService {
         return jwtService.createJwt(userDetailsImplService.loadUserByUsername(client));
     }
 
-
     public ClientTokenDto login(ClientLoginDto clientDto) {
         Client client = findByEmail(clientDto.getEmail());
-        if (client == null || !client.isActive())
-            throw new InvalidEmailException("Invalid email " + clientDto.getEmail());
+        if (client == null || !client.isActive()) throw new InvalidEmailException("Invalid email " + clientDto
+            .getEmail());
 
         boolean valid = passwordEncoder.matches(clientDto.getPassword(), client.getPassword());
         if (!valid) throw new InvalidPasswordException("Invalid password");
@@ -69,9 +67,10 @@ public class ClientService {
 
         Client client = new Client();
 
-        client.setPassword(passwordEncoder.encode(dtoPassword));
-        client.setName(clientDto.getName());
-        client.setEmail(clientDto.getEmail());
+        client.setPassword(passwordEncoder.encode(dtoPassword))
+            .setName(clientDto.getName())
+            .setEmail(clientDto.getEmail());
+
         client = clientRepository.save(client);
 
         return client;
@@ -90,7 +89,8 @@ public class ClientService {
     }
 
     public Client findByName(String clientName) {
-        return clientRepository.findByName(clientName).orElseThrow(() -> new ClientNotFoundException("Client with name :'" + clientName + "' not found"));
+        return clientRepository.findByName(clientName)
+            .orElseThrow(() -> new ClientNotFoundException("Client with name :'" + clientName + "' not found"));
     }
 
     public Client updateClient(Client client, UpdateClientDto updateClientDto) {

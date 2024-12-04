@@ -4,7 +4,6 @@ import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -107,9 +106,6 @@ public class Client {
 
     @Override
     public String toString() {
-        return "Client{" +
-            "uuid='" + uuid + '\'' +
-            ", name='" + name + '\'' +
-            '}';
+        return "Client{" + "uuid='" + uuid + '\'' + ", name='" + name + '\'' + '}';
     }
 }

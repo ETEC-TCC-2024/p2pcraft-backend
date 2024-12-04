@@ -14,7 +14,6 @@ public class AddAccessDto {
         this.serverUuid = serverUuid;
         this.clientUuid = clientUuid;
         this.role = role;
-
     }
 
     public String getServerUuid() {

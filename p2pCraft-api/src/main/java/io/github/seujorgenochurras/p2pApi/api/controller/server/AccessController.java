@@ -10,6 +10,7 @@ import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess
 import io.github.seujorgenochurras.p2pApi.domain.service.ClientService;
 import io.github.seujorgenochurras.p2pApi.domain.service.server.AccessService;
 import io.github.seujorgenochurras.p2pApi.domain.service.server.ServerService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,24 +35,20 @@ public class AccessController {
         if (server == null) throw new ServerNotFoundException("No server with name '" + serverName + "' found");
 
         return ResponseEntity.ok(accessService.getClientAccesses(server));
-
     }
 
     @PostMapping(value = "/{serverName}/access")
-    public ResponseEntity<?> addServerAccesses(@PathVariable String serverName, @RequestBody NamedAddAccessDto accessDto) {
+    public ResponseEntity<?> addServerAccesses(@PathVariable String serverName,
+                                               @RequestBody NamedAddAccessDto accessDto) {
         Server server = serverService.findByName(serverName);
         Client client = clientService.findByName(accessDto.getClientName());
         if (server == null) throw new ServerNotFoundException("No server with name '" + serverName + "' found");
 
         AddAccessDto addAccessDto = new AddAccessDto();
-        addAccessDto
-            .setServerUuid(server.getUuid())
-            .setClientUuid(client.getUuid())
-            .setRole(accessDto.getRole());
+        addAccessDto.setServerUuid(server.getUuid()).setClientUuid(client.getUuid()).setRole(accessDto.getRole());
 
         accessService.addAccess(addAccessDto);
         return ResponseEntity.ok(accessService.getClientAccesses(server));
-
     }
 
     @DeleteMapping(value = "/{serverName}/access/{clientName}")
@@ -64,7 +61,9 @@ public class AccessController {
     }
 
     @PutMapping(value = "/{serverName}/access/{clientName}")
-    public ResponseEntity<?> updateAccess(@PathVariable String serverName, @PathVariable String clientName, @RequestBody UpdateAccessDto updateAccessDto) {
+    public ResponseEntity<?> updateAccess(@PathVariable String serverName, @PathVariable String clientName,
+                                          @RequestBody UpdateAccessDto updateAccessDto) {
+
         Server server = serverService.findByName(serverName);
         Client client = clientService.findByName(clientName);
         if (server == null) throw new ServerNotFoundException("No server with name '" + serverName + "' found");

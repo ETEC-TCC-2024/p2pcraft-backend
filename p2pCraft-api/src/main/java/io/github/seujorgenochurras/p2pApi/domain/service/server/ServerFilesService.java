@@ -26,14 +26,12 @@ public class ServerFilesService {
     private static ServerProperties parseProperties(Properties properties) {
         ServerProperties serverProperties = new ServerProperties();
 
-        serverProperties.setDifficulty(Difficulties.valueOf(properties.getProperty("difficulty").toUpperCase()));
-        serverProperties.setGameMode(GameModes.valueOf(properties.getProperty("gamemode").toUpperCase()));
-
-        serverProperties.setCracked(properties.getProperty("online-mode").equals("false"));
-        serverProperties.setPvpEnabled(properties.getProperty("pvp").equals("true"));
-        serverProperties.setWhitelist(properties.getProperty("white-list").equals("true"));
-
-        serverProperties.setPlayerSlots(Integer.valueOf(properties.getProperty("max-players")));
+        serverProperties.setDifficulty(Difficulties.valueOf(properties.getProperty("difficulty").toUpperCase()))
+            .setGameMode(GameModes.valueOf(properties.getProperty("gamemode").toUpperCase()))
+            .setCracked(properties.getProperty("online-mode").equals("false"))
+            .setPvpEnabled(properties.getProperty("pvp").equals("true"))
+            .setWhitelist(properties.getProperty("white-list").equals("true"))
+            .setPlayerSlots(Integer.valueOf(properties.getProperty("max-players")));
 
         return serverProperties;
     }
@@ -53,7 +51,8 @@ public class ServerFilesService {
         final String whitelistFileName = "whitelist.json";
         ArrayList<Player> whitelistPlayers = getWhitelist(repoUrl);
 
-        boolean whiteListChanged = whitelistPlayers.removeIf((whitePlayer) -> whitePlayer.getName().equals(player.getName()));
+        boolean whiteListChanged = whitelistPlayers.removeIf((whitePlayer) -> whitePlayer.getName()
+            .equals(player.getName()));
         if (whiteListChanged) {
             githubService.updateFile(whitelistFileName, gson.toJson(whitelistPlayers), repoUrl);
         }
@@ -81,16 +80,14 @@ public class ServerFilesService {
         String newProperties;
 
         if (serverProperties.getSeed() == null) {
-            newProperties = oldProperties
-                .replaceAll("(?<=white-list=).*", serverProperties.isWhitelist().toString())
+            newProperties = oldProperties.replaceAll("(?<=white-list=).*", serverProperties.isWhitelist().toString())
                 .replaceAll("(?<=pvp=).*", serverProperties.isPvpEnabled().toString())
                 .replaceAll("(?<=online-mode=).*", String.valueOf((!serverProperties.isCracked())))
                 .replaceAll("(?<=max-players=).*", serverProperties.getPlayerSlots().toString())
                 .replaceAll("(?<=difficulty=).*", serverProperties.getDifficulty().toString().toLowerCase())
                 .replaceAll("(?<=gamemode=).*", serverProperties.getGameMode().toString().toLowerCase());
         } else {
-            newProperties = oldProperties
-                .replaceAll("(?<=level-seed=).*", serverProperties.getSeed());
+            newProperties = oldProperties.replaceAll("(?<=level-seed=).*", serverProperties.getSeed());
         }
         githubService.updateFile("server.properties", newProperties, repoUrl);
     }
@@ -115,10 +112,7 @@ public class ServerFilesService {
         return githubService.getFileFromGithub("server.properties", repoUrl);
     }
 
-
     public boolean createServer(String serverName) {
         return githubService.createRepository("minecraft-1.20-server-template", serverName);
     }
-
 }
-

@@ -26,7 +26,8 @@ public class P2pServerManager {
     private P2pServerManager() {
     }
 
-    public static void startServer(P2pServer p2pServer, Consumer<Text> screenTextConsumer) throws IOException, GitAPIException, InterruptedException {
+    public static void startServer(P2pServer p2pServer,
+                                   Consumer<Text> screenTextConsumer) throws IOException, GitAPIException, InterruptedException {
         P2pServerMap p2pServerMap = p2pServer.getMap();
         File mapDir = new File(RESOURCES_DIR + "/" + p2pServer.getName());
 
@@ -34,20 +35,13 @@ public class P2pServerManager {
             git = Git.open(mapDir);
         } else {
             screenTextConsumer.accept(Text.translatable("connect.p2pcraftmod.clonning_git"));
-            git = Git
-                .cloneRepository()
-                .setDirectory(mapDir)
-                .setURI(p2pServerMap.getMapUrl())
-                .call();
+            git = Git.cloneRepository().setDirectory(mapDir).setURI(p2pServerMap.getMapUrl()).call();
         }
         screenTextConsumer.accept(Text.translatable("connect.p2pcraftmod.fetching_git"));
 
         //TODO check for unsaved stuff and if there is do smth ;-;
         git.fetch().call();
-        git.pull()
-            .setRemote("origin")
-            .setRemoteBranchName("main")
-            .call();
+        git.pull().setRemote("origin").setRemoteBranchName("main").call();
         screenTextConsumer.accept(Text.translatable("connect.p2pcraftmod.starting_server_jar"));
 
         serverProcess = Terminal.execute(mapDir.getPath(), "java", "-Xmx2048M", "-jar", "server.jar", "nogui");
@@ -76,9 +70,7 @@ public class P2pServerManager {
     }
 
     public static void saveServer() throws GitAPIException {
-        git.add().addFilepattern(".")
-            .setRenormalize(false)
-            .call();
+        git.add().addFilepattern(".").setRenormalize(false).call();
 
         String playerName = P2pCraftConnectModClient.getPlayerName();
         String message = playerName + " has saved the server data at " + OffsetDateTime.now();

@@ -14,9 +14,7 @@ import static io.github.seujorgenochurras.p2pcraftmod.api.model.P2pServerState.*
 
 public class P2pCraftApi {
     private static final Logger logger = Logger.getLogger(P2pCraftApi.class.getName());
-    private static final Gson gson = new GsonBuilder()
-        .excludeFieldsWithoutExposeAnnotation()
-        .create();
+    private static final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
     public P2pCraftApi() {
     }

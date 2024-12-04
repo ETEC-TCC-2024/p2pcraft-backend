@@ -26,7 +26,6 @@ public class RegisterServerService {
     @Autowired
     private AccessService accessService;
 
-
     @Transactional
     public ServerClientAccess register(RegisterServerDto registerServerDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -38,20 +37,21 @@ public class RegisterServerService {
 
         Server server = new Server();
 
-        ServerMapConfigurations mapConfigurations = mapConfigurationsService.save(registerServerDto.getMapConfig(), registerServerDto.getName());
+        ServerMapConfigurations mapConfigurations = mapConfigurationsService.save(registerServerDto.getMapConfig(),
+            registerServerDto.getName());
 
         server.setMapConfigurations(mapConfigurations);
         server.setStaticIp(serverIp);
         server.setName(registerServerDto.getName().replace(" ", "-"));
         server = serverService.save(server);
 
-        AddAccessDto accessDto = new AddAccessDto();
-        accessDto.setServerUuid(server.getUuid());
-        accessDto.setClientUuid(authentication.getName());
-        accessDto.setRole(ServerAccessTypes.OWNER);
+        AddAccessDto accessDto = new AddAccessDto().setServerUuid(server.getUuid())
+            .setClientUuid(authentication.getName())
+            .setRole(ServerAccessTypes.OWNER);
 
         ServerProperties newProperties = new ServerProperties();
         newProperties.setSeed(mapConfigurations.getSeed());
+
         serverFilesService.createServer(server.getName());
         try {
             Thread.sleep(3000);

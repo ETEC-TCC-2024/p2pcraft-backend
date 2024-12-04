@@ -23,5 +23,4 @@ public class NamedAddAccessDto {
         this.clientName = clientName;
         return this;
     }
-
 }

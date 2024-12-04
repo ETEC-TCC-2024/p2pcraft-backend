@@ -4,18 +4,18 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import io.github.cdimascio.dotenv.Dotenv;
 import io.github.seujorgenochurras.p2pApi.common.util.HttpUtil;
+import java.net.http.HttpResponse;
+import java.util.Base64;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.net.http.HttpResponse;
-import java.util.Base64;
-
 public class GithubService {
     private static final Dotenv dotenv = Dotenv.configure().load();
     private static final Gson gson = new Gson();
-    private static final HttpUtil.Header REQUEST_HEADERS = new HttpUtil.Header("Authorization", "Bearer " + dotenv.get("GITHUB_TOKEN"));
+    private static final HttpUtil.Header REQUEST_HEADERS = new HttpUtil.Header("Authorization", "Bearer " + dotenv.get(
+        "GITHUB_TOKEN"));
 
     public void updateFile(String fileName, String fileContent, String repoUrl) {
         EditFileDto editFileDto = new EditFileDto();
@@ -40,9 +40,7 @@ public class GithubService {
     }
 
     public String getFileFromGithub(String fileName, String repoUrl) {
-        String rawPropertiesURL = repoUrl
-            .replaceAll("\\.git$", "")
-            .concat("/blob/main/" + fileName);
+        String rawPropertiesURL = repoUrl.replaceAll("\\.git$", "").concat("/blob/main/" + fileName);
         HttpResponse<String> response = HttpUtil.sendGetRequest(rawPropertiesURL, REQUEST_HEADERS);
         String rawHtml = response.body();
         Document doc = Jsoup.parse(rawHtml);
@@ -63,16 +61,11 @@ public class GithubService {
         CreateRepositoryBody body = new CreateRepositoryBody(repositoryName, "");
         HttpResponse<String> response = HttpUtil.sendPostRequest(body, url, REQUEST_HEADERS);
         return response.statusCode() == 201;
-
     }
 
-    public record GetGithubFileResponse(String sha,
-                                        @SerializedName("content")
-                                        String base64Content) {
+    public record GetGithubFileResponse(String sha, @SerializedName("content") String base64Content) {
     }
 
     public record CreateRepositoryBody(String name, String description) {
     }
 }
-
-

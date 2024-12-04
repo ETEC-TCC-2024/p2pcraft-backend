@@ -45,7 +45,10 @@ public class JwtService {
     public boolean validateJwt(String jwt, UserDetails userDetails) throws JWTDecodeException {
         DecodedJWT decodedJWT = decodeJwt(jwt);
         String requestSignature = decodedJWT.getSignature();
-        DecodedJWT validJwt = decodeJwt(createJwt(userDetails, decodedJWT.getExpiresAtAsInstant(), decodedJWT.getIssuedAtAsInstant()));
+
+        DecodedJWT validJwt = decodeJwt(createJwt(userDetails, decodedJWT.getExpiresAtAsInstant(), decodedJWT
+            .getIssuedAtAsInstant()));
+
         Instant expiresAt = decodedJWT.getExpiresAtAsInstant();
         Client client = findClientService.findById(userDetails.getUsername());
         return requestSignature.equals(validJwt.getSignature()) && expiresAt.isAfter(currentTime()) && client != null;

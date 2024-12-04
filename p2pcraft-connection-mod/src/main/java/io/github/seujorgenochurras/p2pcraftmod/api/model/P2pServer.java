@@ -103,14 +103,8 @@ public class P2pServer {
 
     @Override
     public String toString() {
-        return "P2pServer{" +
-            "state=" + state +
-            ", staticAddress='" + staticAddress + '\'' +
-            ", volatileIp='" + volatileIp + '\'' +
-            ", name='" + name + '\'' +
-            ", online=" + online +
-            ", map=" + map +
-            '}';
+        return "P2pServer{" + "state=" + state + ", staticAddress='" + staticAddress + '\'' + ", volatileIp='"
+            + volatileIp + '\'' + ", name='" + name + '\'' + ", online=" + online + ", map=" + map + '}';
     }
 
 }

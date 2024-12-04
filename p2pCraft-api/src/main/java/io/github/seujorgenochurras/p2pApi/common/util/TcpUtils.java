@@ -1,7 +1,6 @@
 package io.github.seujorgenochurras.p2pApi.common.util;
 
 import io.github.seujorgenochurras.p2pApi.common.HostAndPort;
-
 import java.io.IOException;
 import java.net.Socket;
 

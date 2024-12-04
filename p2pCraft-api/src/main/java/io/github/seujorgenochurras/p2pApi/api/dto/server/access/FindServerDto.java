@@ -4,7 +4,6 @@ public class FindServerDto {
 
     private String staticServerIp;
 
-
     public FindServerDto() {
     }
 
@@ -19,13 +18,10 @@ public class FindServerDto {
     public FindServerDto setStaticServerIp(String staticServerIp) {
         this.staticServerIp = staticServerIp;
         return this;
-
     }
 
     @Override
     public String toString() {
-        return "FindServerDto{" +
-            "staticServerIp='" + staticServerIp + '\'' +
-            '}';
+        return "FindServerDto{" + "staticServerIp='" + staticServerIp + '\'' + '}';
     }
 }

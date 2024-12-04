@@ -54,9 +54,7 @@ public class ClientController {
         Client fetchedClient = findClientService.findById(id);
 
         if (fetchedClient == null) {
-            return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body("Client not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client not found");
         }
 
         return ResponseEntity.ok(genClientResponse(fetchedClient));

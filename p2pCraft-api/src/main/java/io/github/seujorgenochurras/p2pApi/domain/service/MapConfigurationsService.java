@@ -16,7 +16,7 @@ public class MapConfigurationsService {
 
     public ServerMapConfigurations save(MapConfigurationsDto dto, String serverName) {
         ServerMapConfigurations configurations = new ServerMapConfigurations();
-        //TODO github service
+        // TODO github service
         configurations.setVersion(dto.getVersion())
             .setSeed(dto.getSeed())
             .setMapUrl("https://github.com/P2PCraft-bot/" + serverName);

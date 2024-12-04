@@ -26,12 +26,13 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private JwtService jwtService;
 
-
     public JwtFilter() {
     }
 
     @Override
-    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                 FilterChain filterChain) throws ServletException, IOException {
+
         String requestToken = getToken(request);
         if (requestToken != null) {
             DecodedJWT decodedRequestToken = jwtService.decodeJwt(requestToken);
@@ -41,9 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
             boolean validJwt = jwtService.validateJwt(requestToken, requestClient);
             if (validJwt) {
-                var userNamePasswordAuthToken = new UsernamePasswordAuthenticationToken(
-                    requestClient,
-                    null,
+                var userNamePasswordAuthToken = new UsernamePasswordAuthenticationToken(requestClient, null,
                     requestClient.getAuthorities());
 
                 userNamePasswordAuthToken.setDetails(new WebAuthenticationDetails(request));
@@ -52,7 +51,6 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
-
     }
 
     private String getToken(HttpServletRequest request) {

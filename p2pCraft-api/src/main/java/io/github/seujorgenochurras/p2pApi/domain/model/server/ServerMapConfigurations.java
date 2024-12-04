@@ -58,5 +58,4 @@ public class ServerMapConfigurations {
         this.seed = seed;
         return this;
     }
-
 }

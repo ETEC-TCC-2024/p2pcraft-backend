@@ -3,7 +3,6 @@ package io.github.seujorgenochurras.p2pcraftmod.api.dto;
 public class FindServerDto {
     private String staticServerIp;
 
-
     public FindServerDto(String staticServerIp) {
         this.staticServerIp = staticServerIp;
     }

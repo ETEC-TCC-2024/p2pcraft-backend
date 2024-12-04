@@ -6,7 +6,6 @@ public class ClientAccessDto {
     private String clientName;
     private ServerAccessTypes accessRole;
 
-
     public ClientAccessDto(String clientName, ServerAccessTypes accessRole) {
         this.clientName = clientName;
         this.accessRole = accessRole;

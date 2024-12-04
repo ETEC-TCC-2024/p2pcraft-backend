@@ -1,6 +1,5 @@
 package io.github.seujorgenochurras.p2pApi.api.dto.server;
 
-
 public class SendNewHostDto {
 
     private String staticIp;
@@ -34,9 +33,6 @@ public class SendNewHostDto {
 
     @Override
     public String toString() {
-        return "SendNewHostDto{" +
-            "staticIp='" + staticIp + '\'' +
-            ", realIp='" + realIp + '\'' +
-            '}';
+        return "SendNewHostDto{" + "staticIp='" + staticIp + '\'' + ", realIp='" + realIp + '\'' + '}';
     }
 }

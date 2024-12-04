@@ -16,7 +16,8 @@ public class ClientNotFoundException extends RuntimeException {
         super(cause);
     }
 
-    public ClientNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public ClientNotFoundException(String message, Throwable cause, boolean enableSuppression,
+                                   boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

@@ -59,11 +59,7 @@ public class P2pServerMap {
 
     @Override
     public String toString() {
-        return "P2pServerMap{" +
-            "uuid='" + uuid + '\'' +
-            ", mapUrl='" + mapUrl + '\'' +
-            ", version='" + version + '\'' +
-            ", seed='" + seed + '\'' +
-            '}';
+        return "P2pServerMap{" + "uuid='" + uuid + '\'' + ", mapUrl='" + mapUrl + '\'' + ", version='" + version + '\''
+            + ", seed='" + seed + '\'' + '}';
     }
 }
