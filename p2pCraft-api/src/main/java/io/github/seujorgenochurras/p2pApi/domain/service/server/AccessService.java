@@ -32,19 +32,21 @@ public class AccessService {
 
     public List<ClientAccessDto> getClientAccesses(Server server) {
         return getAccesses(server).stream()
-            .map((serverClientAccesses -> new ClientAccessDto(serverClientAccesses.getClient().getName(),
-                serverClientAccesses.getRole())))
+            .map((serverClientAccesses -> new ClientAccessDto(serverClientAccesses.getClient()
+                .getName(), serverClientAccesses.getRole())))
             .toList();
     }
 
     private List<ServerClientAccess> getAccesses(Server server) {
-        return accessRepository.findByServerUuid(server.getUuid()).orElse(new ArrayList<>());
+        return accessRepository.findByServerUuid(server.getUuid())
+            .orElse(new ArrayList<>());
     }
 
     public ServerClientAccess addAccess(AddAccessDto accessDto) {
 
         ServerClientAccess clientAccess = accessRepository.findByClientUuidAndServerUuid(accessDto.getClientUuid(),
-            accessDto.getServerUuid()).orElse(null);
+            accessDto.getServerUuid())
+            .orElse(null);
         if (clientAccess != null) return clientAccess;
         clientAccess = new ServerClientAccess();
         Client client = findClientService.findById(accessDto.getClientUuid());
@@ -69,12 +71,14 @@ public class AccessService {
         ServerClientAccess access = accessRepository.findByClientUuidAndServerUuid(client.getUuid(), server.getUuid())
             .orElse(null);
         if (access == null) return null;
-        if (access.getRole().equals(accessDto.getAccessType())) return access;
+        if (access.getRole()
+            .equals(accessDto.getAccessType())) return access;
         access.setRole(accessDto.getAccessType());
         return accessRepository.save(access);
     }
 
     public ServerClientAccess getAccessLevel(Server server, Client client) {
-        return accessRepository.findByClientUuidAndServerUuid(client.getUuid(), server.getUuid()).orElse(null);
+        return accessRepository.findByClientUuidAndServerUuid(client.getUuid(), server.getUuid())
+            .orElse(null);
     }
 }

@@ -51,8 +51,8 @@ public class ClientService {
 
     public ClientTokenDto login(ClientLoginDto clientDto) {
         Client client = findByEmail(clientDto.getEmail());
-        if (client == null || !client.isActive())
-            throw new InvalidEmailException("Invalid email " + clientDto.getEmail());
+        if (client == null || !client.isActive()) throw new InvalidEmailException("Invalid email " + clientDto
+            .getEmail());
 
         boolean valid = passwordEncoder.matches(clientDto.getPassword(), client.getPassword());
         if (!valid) throw new InvalidPasswordException("Invalid password");

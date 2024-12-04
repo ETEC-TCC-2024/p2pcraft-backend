@@ -45,7 +45,9 @@ public class AccessController {
         if (server == null) throw new ServerNotFoundException("No server with name '" + serverName + "' found");
 
         AddAccessDto addAccessDto = new AddAccessDto();
-        addAccessDto.setServerUuid(server.getUuid()).setClientUuid(client.getUuid()).setRole(accessDto.getRole());
+        addAccessDto.setServerUuid(server.getUuid())
+            .setClientUuid(client.getUuid())
+            .setRole(accessDto.getRole());
 
         accessService.addAccess(addAccessDto);
         return ResponseEntity.ok(accessService.getClientAccesses(server));
@@ -57,7 +59,8 @@ public class AccessController {
         Client client = clientService.findByName(clientName);
         if (server == null) throw new ServerNotFoundException("No server with name '" + serverName + "' found");
         accessService.deleteAccess(server, client);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent()
+            .build();
     }
 
     @PutMapping(value = "/{serverName}/access/{clientName}")

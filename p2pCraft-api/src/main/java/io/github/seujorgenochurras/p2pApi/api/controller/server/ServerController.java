@@ -48,9 +48,10 @@ public class ServerController {
 
         ServerClientAccess access = client.getServerAccesses()
             .stream()
-            .filter((serverClientAccess -> serverClientAccess.getServer().isActive() && serverClientAccess.getServer()
-                .getName()
-                .equals(name)))
+            .filter((serverClientAccess -> serverClientAccess.getServer()
+                .isActive() && serverClientAccess.getServer()
+                    .getName()
+                    .equals(name)))
             .findFirst()
             .orElse(null);
 

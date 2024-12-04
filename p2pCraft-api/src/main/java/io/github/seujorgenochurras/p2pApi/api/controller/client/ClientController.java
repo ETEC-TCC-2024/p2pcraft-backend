@@ -33,7 +33,8 @@ public class ClientController {
     public ResponseEntity<?> deleteClient(Principal principal) {
         Client client = findClientService.findById(principal.getName());
         clientService.deleteClient(client);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent()
+            .build();
     }
 
     @GetMapping("/servers")
@@ -45,7 +46,9 @@ public class ClientController {
     @GetMapping("/all")
     public ResponseEntity<?> getClients() {
         List<Client> clients = clientService.getAllClients();
-        List<ClientResponseDto> clientResponses = clients.stream().map(this::genClientResponse).toList();
+        List<ClientResponseDto> clientResponses = clients.stream()
+            .map(this::genClientResponse)
+            .toList();
         return new ResponseEntity<>(clientResponses, HttpStatus.OK);
     }
 
@@ -54,7 +57,8 @@ public class ClientController {
         Client fetchedClient = findClientService.findById(id);
 
         if (fetchedClient == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("Client not found");
         }
 
         return ResponseEntity.ok(genClientResponse(fetchedClient));

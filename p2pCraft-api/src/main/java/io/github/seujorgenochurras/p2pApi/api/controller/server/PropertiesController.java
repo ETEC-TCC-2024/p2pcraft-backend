@@ -30,14 +30,17 @@ public class PropertiesController {
 
         ServerClientAccess access = client.getServerAccesses()
             .stream()
-            .filter((serverClientAccess -> serverClientAccess.getServer().getName().equals(name)))
+            .filter((serverClientAccess -> serverClientAccess.getServer()
+                .getName()
+                .equals(name)))
             .findFirst()
             .orElse(null);
 
         if (access == null) {
             throw new ServerNotFoundException("No server with name '" + name + "' found");
         }
-        access.getServer().updateProperties();
+        access.getServer()
+            .updateProperties();
         return ok(access);
     }
 }

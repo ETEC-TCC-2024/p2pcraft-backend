@@ -22,7 +22,8 @@ public class WhitelistService {
 
     public ArrayList<Player> getWhitelist(String serverName) {
         Server server = serverService.findByName(serverName);
-        return serverFilesService.getWhitelist(server.getMapConfigurations().getMapUrl());
+        return serverFilesService.getWhitelist(server.getMapConfigurations()
+            .getMapUrl());
     }
 
     public ArrayList<Player> addToWhitelist(String playerName, String serverName) {
@@ -30,7 +31,8 @@ public class WhitelistService {
         Server server = serverService.findByName(serverName);
         if (server == null) throw new ServerNotFoundException("Didn't find server");
 
-        return serverFilesService.addToWhitelist(player, server.getMapConfigurations().getMapUrl());
+        return serverFilesService.addToWhitelist(player, server.getMapConfigurations()
+            .getMapUrl());
     }
 
     public ArrayList<Player> removeFromWhitelist(String playerName, String serverName) {
@@ -38,6 +40,7 @@ public class WhitelistService {
         Server server = serverService.findByName(serverName);
         if (server == null) throw new ServerNotFoundException("Didn't find server");
 
-        return serverFilesService.removeFromWhitelist(player, server.getMapConfigurations().getMapUrl());
+        return serverFilesService.removeFromWhitelist(player, server.getMapConfigurations()
+            .getMapUrl());
     }
 }

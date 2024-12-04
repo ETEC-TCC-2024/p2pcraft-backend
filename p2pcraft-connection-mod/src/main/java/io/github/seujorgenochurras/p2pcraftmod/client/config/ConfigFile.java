@@ -28,7 +28,9 @@ public class ConfigFile {
         try {
             File configFile = new File(P2pCraftConnectModClient.getResourcesDirPath() + "/config.yaml");
             if (!configFile.exists()) {
-                Dotenv dotenv = Dotenv.configure().directory("../").load();
+                Dotenv dotenv = Dotenv.configure()
+                    .directory("../")
+                    .load();
                 FileWriter fileWriter = new FileWriter(configFile);
                 fileWriter.write("P2PCRAFT_API_URL: \"http://127.0.0.1:8080\"\n");
                 fileWriter.write("P2PCRAFT_GITHUB_BOT_TOKEN: \"" + dotenv.get("P2PCRAFT_GITHUB_BOT_TOKEN") + "\"\n");

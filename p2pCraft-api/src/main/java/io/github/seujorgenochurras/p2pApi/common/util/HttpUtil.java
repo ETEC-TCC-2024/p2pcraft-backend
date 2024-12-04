@@ -27,7 +27,8 @@ public class HttpUtil {
             .setHeader("Content-Type", "application/json")
             .POST(BodyPublishers.ofString(jsonBody));
 
-        Arrays.stream(headers).forEach((header) -> requestBuilder.header(header.name, header.value));
+        Arrays.stream(headers)
+            .forEach((header) -> requestBuilder.header(header.name, header.value));
 
         HttpRequest request = requestBuilder.build();
         return trySendRequest(request);
@@ -38,7 +39,8 @@ public class HttpUtil {
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
             .uri(URI.create(url))
             .PUT(BodyPublishers.ofString(jsonBody));
-        Arrays.stream(headers).forEach((header) -> requestBuilder.header(header.name, header.value));
+        Arrays.stream(headers)
+            .forEach((header) -> requestBuilder.header(header.name, header.value));
         HttpRequest request = requestBuilder.build();
         return trySendRequest(request);
     }
@@ -52,7 +54,8 @@ public class HttpUtil {
             .uri(URI.create(url))
             .setHeader("Content-Type", "application/json")
             .GET();
-        Arrays.stream(headers).forEach((header) -> requestBuilder.header(header.name, header.value));
+        Arrays.stream(headers)
+            .forEach((header) -> requestBuilder.header(header.name, header.value));
         HttpRequest request = requestBuilder.build();
         return trySendRequest(request);
     }

@@ -28,7 +28,8 @@ public class RegisterServerService {
 
     @Transactional
     public ServerClientAccess register(RegisterServerDto registerServerDto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext()
+            .getAuthentication();
 
         String serverIp = "p2pcraft.connect." + registerServerDto.getName() + ".xyz";
         if (serverService.findByStaticIp(serverIp) != null) {
@@ -42,7 +43,8 @@ public class RegisterServerService {
 
         server.setMapConfigurations(mapConfigurations);
         server.setStaticIp(serverIp);
-        server.setName(registerServerDto.getName().replace(" ", "-"));
+        server.setName(registerServerDto.getName()
+            .replace(" ", "-"));
         server = serverService.save(server);
 
         AddAccessDto accessDto = new AddAccessDto().setServerUuid(server.getUuid())

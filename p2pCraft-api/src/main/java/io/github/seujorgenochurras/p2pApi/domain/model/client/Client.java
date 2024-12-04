@@ -44,7 +44,10 @@ public class Client {
     }
 
     public List<ServerClientAccess> getServerAccesses() {
-        return serverAccesses.stream().filter(serverClientAccess -> serverClientAccess.getServer().isActive()).toList();
+        return serverAccesses.stream()
+            .filter(serverClientAccess -> serverClientAccess.getServer()
+                .isActive())
+            .toList();
     }
 
     public Client setServerAccesses(List<ServerClientAccess> serverAccesses) {

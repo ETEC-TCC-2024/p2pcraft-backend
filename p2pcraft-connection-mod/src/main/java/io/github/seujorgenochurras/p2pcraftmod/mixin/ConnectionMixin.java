@@ -51,7 +51,8 @@ public abstract class ConnectionMixin {
 
         String staticAddress = serverAddress.getAddress();
         P2pServer p2pServer = p2pApi.findServer(staticAddress);
-        if (p2pServer.getState().equals(P2pServerState.NONEXISTENT) || !p2pServer.isOpen()) return;
+        if (p2pServer.getState()
+            .equals(P2pServerState.NONEXISTENT) || !p2pServer.isOpen()) return;
         ci.cancel();
         new Thread(() -> {
             setScreenText(Text.translatable("connect.p2pcraftmod.connecting"));

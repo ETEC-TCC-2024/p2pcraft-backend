@@ -73,7 +73,8 @@ public class Server {
     }
 
     public void updateProperties() {
-        this.properties = serverFilesService.getProperties(this.getMapConfigurations().getMapUrl());
+        this.properties = serverFilesService.getProperties(this.getMapConfigurations()
+            .getMapUrl());
     }
 
     public ServerProperties getProperties() {

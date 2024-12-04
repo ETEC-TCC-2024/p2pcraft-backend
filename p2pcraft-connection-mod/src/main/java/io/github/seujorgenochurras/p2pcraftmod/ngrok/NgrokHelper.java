@@ -18,13 +18,17 @@ public class NgrokHelper {
 
         final NgrokClient ngrokClient = new NgrokClient.Builder().withJavaNgrokConfig(new JavaNgrokConfig.Builder()
             .withAuthToken(NGROK_TOKEN)
-            .build()).build();
-        final CreateTunnel sshCreateTunnel = new CreateTunnel.Builder().withProto(Proto.TCP).withAddr(25565).build();
+            .build())
+            .build();
+        final CreateTunnel sshCreateTunnel = new CreateTunnel.Builder().withProto(Proto.TCP)
+            .withAddr(25565)
+            .build();
 
         final Tunnel namedTunnel = ngrokClient.connect(sshCreateTunnel);
         logger.info("Openned tcp tunnel on address: '" + namedTunnel.getPublicUrl() + "'");
 
-        return namedTunnel.getPublicUrl().replace("tcp://", "");
+        return namedTunnel.getPublicUrl()
+            .replace("tcp://", "");
     }
 
 }

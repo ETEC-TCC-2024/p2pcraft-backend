@@ -18,7 +18,8 @@ import java.time.ZonedDateTime;
 @Service
 public class JwtService {
 
-    private static final Dotenv env = Dotenv.configure().load();
+    private static final Dotenv env = Dotenv.configure()
+        .load();
     private static final Algorithm SIGN_ALGORITHM = Algorithm.HMAC256(env.get("JWT_SECRET"));
     private static final String ISSUER = "p2pcraft-api";
 
@@ -55,10 +56,13 @@ public class JwtService {
     }
 
     private Instant currentTime() {
-        return ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toInstant();
+        return ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"))
+            .toInstant();
     }
 
     private Instant expirationDate() {
-        return ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).plusHours(6).toInstant();
+        return ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"))
+            .plusHours(6)
+            .toInstant();
     }
 }
