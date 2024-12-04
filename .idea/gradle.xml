@@ -10,7 +10,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/p2pCraft-api" />
-            <option value="$PROJECT_DIR$/p2pCraft-github-api-helper" />
             <option value="$PROJECT_DIR$/p2pcraft-connection-mod" />
           </set>
         </option>
