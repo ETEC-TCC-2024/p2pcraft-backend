@@ -3,11 +3,11 @@ package io.github.seujorgenochurras.p2pApi.api.controller.client;
 import io.github.seujorgenochurras.p2pApi.api.dto.client.UpdateClientDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.client.response.ClientResponseDto;
 import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
-import io.github.seujorgenochurras.p2pApi.domain.service.ClientService;
+import io.github.seujorgenochurras.p2pApi.domain.service.client.ClientService;
+import io.github.seujorgenochurras.p2pApi.domain.service.client.FindClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -23,23 +23,22 @@ public class ClientController {
     @Autowired
     private FindClientService findClientService;
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<?> getCurrentClient(Principal principal) {
-        Client client = findClientService.findById(principal.getName());
-        return ResponseEntity.ok(genClientResponse(client));
+        return ResponseEntity.ok(genClientResponse(findClientService.getCurrentClient()));
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteClient(Principal principal) {
-        Client client = findClientService.findById(principal.getName());
+    public ResponseEntity<?> deleteClient() {
+        Client client = findClientService.getCurrentClient();
         clientService.deleteClient(client);
         return ResponseEntity.noContent()
             .build();
     }
 
     @GetMapping("/servers")
-    public ResponseEntity<?> getServers(Authentication authentication) {
-        Client client = findClientService.findById(authentication.getName());
+    public ResponseEntity<?> getServers() {
+        Client client = findClientService.getCurrentClient();
         return ResponseEntity.ok(client.getServerAccesses());
     }
 
@@ -65,14 +64,13 @@ public class ClientController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateClient(@RequestBody UpdateClientDto updateClientDto, Principal principal) {
-        Client currentClient = findClientService.findById(principal.getName());
+    public ResponseEntity<?> updateClient(@RequestBody UpdateClientDto updateClientDto) {
+        Client currentClient = findClientService.getCurrentClient();
         clientService.updateClient(currentClient, updateClientDto);
-        return ResponseEntity.ok(currentClient);
+        return ResponseEntity.ok(genClientResponse(currentClient));
     }
 
     private ClientResponseDto genClientResponse(Client client) {
-
         return new ClientResponseDto().setEmail(client.getEmail())
             .setName(client.getName())
             .setUuid(client.getUuid())

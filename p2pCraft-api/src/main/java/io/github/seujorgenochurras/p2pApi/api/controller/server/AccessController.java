@@ -7,10 +7,9 @@ import io.github.seujorgenochurras.p2pApi.domain.exception.ServerNotFoundExcepti
 import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.Server;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess;
-import io.github.seujorgenochurras.p2pApi.domain.service.ClientService;
+import io.github.seujorgenochurras.p2pApi.domain.service.client.ClientService;
 import io.github.seujorgenochurras.p2pApi.domain.service.server.AccessService;
 import io.github.seujorgenochurras.p2pApi.domain.service.server.ServerService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

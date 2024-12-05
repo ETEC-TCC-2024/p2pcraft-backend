@@ -9,9 +9,9 @@ import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidEmailException
 import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidPasswordException;
 import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
 import io.github.seujorgenochurras.p2pApi.domain.repository.ClientRepository;
-import io.github.seujorgenochurras.p2pApi.domain.service.ClientService;
 import io.github.seujorgenochurras.p2pApi.domain.service.JwtService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -42,54 +42,65 @@ public class ClientServiceTest {
     @InjectMocks
     private ClientService clientService;
 
+    private static final String VALID_EMAIL = "jhondoe@gmail.com";
+    private static final String VALID_NAME = "John Doe";
+    private static final String VALID_PASSWORD = "123445678";
+    private static final String ENCODED_PASSWORD = "encodedPassword";
+    private static final String JWT_TOKEN = "jwtToken";
+
+    private ClientRegisterDto validRegisterDto;
+    private ClientLoginDto validLoginDto;
+    private Client validClient;
+
+    @BeforeEach
+    void setUp() {
+        validRegisterDto = new ClientRegisterDto().setEmail(VALID_EMAIL)
+            .setName(VALID_NAME)
+            .setPassword(VALID_PASSWORD);
+
+        validLoginDto = new ClientLoginDto().setEmail(VALID_EMAIL)
+            .setPassword(VALID_PASSWORD);
+
+        validClient = new Client().setName(VALID_NAME)
+            .setEmail(VALID_EMAIL)
+            .setActive(true);
+    }
+
     @Test
     void register_ShouldReturnToken_WhenClientIsRegisteredSuccessfully() {
-        Client savedClient = new Client().setName("Jhon doe")
-            .setEmail("jhondoe@gmail.com");
 
-        ClientRegisterDto registerDto = new ClientRegisterDto().setEmail(savedClient.getEmail())
-            .setName(savedClient.getName())
-            .setPassword("123445678");
+        when(clientRepository.findByEmail(validRegisterDto.getEmail())).thenReturn(Optional.empty());
 
-        when(clientRepository.findByEmail(registerDto.getEmail())).thenReturn(Optional.empty());
+        when(clientRepository.save(validClient)).thenReturn(validClient);
+        when(jwtService.createJwt(any())).thenReturn(JWT_TOKEN);
+        when(passwordEncoder.encode(validRegisterDto.getPassword())).thenReturn(ENCODED_PASSWORD);
 
-        when(clientRepository.save(savedClient)).thenReturn(savedClient);
-        when(jwtService.createJwt(any())).thenReturn("newJwt");
-        when(passwordEncoder.encode(registerDto.getPassword())).thenReturn("encodedPassword");
-
-        ClientTokenDto tokenDto = clientService.register(registerDto);
-        Assertions.assertEquals("newJwt", tokenDto.getToken());
+        ClientTokenDto tokenDto = clientService.register(validRegisterDto);
+        Assertions.assertEquals(JWT_TOKEN, tokenDto.getToken());
 
     }
 
     @Test
     void register_ShouldThrowException_WhenEmailAlreadyExists() {
-        ClientRegisterDto registerDto = new ClientRegisterDto().setEmail("jhondoe@gmail.com")
-            .setName("Jhon doe")
-            .setPassword("123445678");
 
-        when(clientRepository.findByEmail(registerDto.getEmail())).thenReturn(Optional.of(new Client()));
+        when(clientRepository.findByEmail(validRegisterDto.getEmail())).thenReturn(Optional.of(validClient));
 
-        Assertions.assertThrows(EmailExistsException.class, () -> clientService.register(registerDto));
+        Assertions.assertThrows(EmailExistsException.class, () -> clientService.register(validRegisterDto));
+
         verify(clientRepository, never()).save(any(Client.class));
     }
 
 
     @Test
     void login_ShouldReturnToken_WhenLoginSuccessful() {
-        Client savedClient = new Client().setEmail("jhondoe@gmail.com")
-            .setActive(true);
 
-        ClientLoginDto loginDto = new ClientLoginDto().setEmail(savedClient.getEmail())
-            .setPassword("123445678");
-
-        when(clientRepository.findByEmail(loginDto.getEmail())).thenReturn(Optional.of(savedClient));
+        when(clientRepository.findByEmail(validLoginDto.getEmail())).thenReturn(Optional.of(validClient));
         when(passwordEncoder.matches(any(), any())).thenReturn(true);
         when(jwtService.createJwt(any())).thenReturn("jwtToken");
 
-        ClientTokenDto tokenDto = clientService.login(loginDto);
+        ClientTokenDto tokenDto = clientService.login(validLoginDto);
 
-        Assertions.assertEquals("jwtToken", tokenDto.getToken());
+        Assertions.assertEquals(JWT_TOKEN, tokenDto.getToken());
 
 
     }
@@ -97,32 +108,26 @@ public class ClientServiceTest {
     @Test
     void login_ShouldThrowException_WhenInvalidEmail() {
 
-        ClientLoginDto loginDto = new ClientLoginDto();
-        when(clientRepository.findByEmail(loginDto.getEmail())).thenReturn(Optional.empty());
+        when(clientRepository.findByEmail(validLoginDto.getEmail())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(InvalidEmailException.class, () -> clientService.login(loginDto));
+        Assertions.assertThrows(InvalidEmailException.class, () -> clientService.login(validLoginDto));
     }
 
     @Test
     void login_ShouldThrowException_WhenAccountInactive() {
-
-        ClientLoginDto loginDto = new ClientLoginDto();
-
-        Client innactiveClient = new Client().setActive(false);
+        Client innactiveClient = validClient.setActive(false);
 
         when(clientRepository.findByEmail(any())).thenReturn(Optional.of(innactiveClient));
 
-        Assertions.assertThrows(InvalidEmailException.class, () -> clientService.login(loginDto));
+        Assertions.assertThrows(InvalidEmailException.class, () -> clientService.login(validLoginDto));
     }
 
     @Test
     void login_ShouldThrowException_WhenPasswordIncorrect() {
-        ClientLoginDto loginDto = new ClientLoginDto().setPassword("123454");
+        when(clientRepository.findByEmail(any())).thenReturn(Optional.of(validClient));
+        when(passwordEncoder.matches(eq(validLoginDto.getPassword()), any())).thenReturn(false);
 
-        when(clientRepository.findByEmail(any())).thenReturn(Optional.of(new Client()));
-        when(passwordEncoder.matches(eq(loginDto.getPassword()), any())).thenReturn(false);
-
-        Assertions.assertThrows(InvalidPasswordException.class, () -> clientService.login(loginDto));
+        Assertions.assertThrows(InvalidPasswordException.class, () -> clientService.login(validLoginDto));
     }
 
 }

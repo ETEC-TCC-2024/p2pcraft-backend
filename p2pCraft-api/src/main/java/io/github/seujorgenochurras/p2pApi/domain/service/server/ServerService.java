@@ -3,7 +3,6 @@ package io.github.seujorgenochurras.p2pApi.domain.service.server;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.ServerDto;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.Server;
 import io.github.seujorgenochurras.p2pApi.domain.repository.ServerRepository;
-import io.github.seujorgenochurras.p2pApi.domain.service.MapConfigurationsService;
 import jakarta.annotation.Nullable;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ import java.util.List;
 @Service
 public class ServerService {
 
-    @Autowired
+    @Autowired()
     public MapConfigurationsService mapConfigurationsService;
 
     @Autowired

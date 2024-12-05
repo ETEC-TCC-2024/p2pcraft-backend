@@ -4,7 +4,6 @@ import io.github.seujorgenochurras.p2pApi.api.dto.server.RegisterServerDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.access.AddAccessDto;
 import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidIpAddressException;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.*;
-import io.github.seujorgenochurras.p2pApi.domain.service.MapConfigurationsService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

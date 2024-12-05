@@ -1,9 +1,9 @@
 package io.github.seujorgenochurras.p2pApi.api.controller.server;
 
-import io.github.seujorgenochurras.p2pApi.api.controller.client.FindClientService;
 import io.github.seujorgenochurras.p2pApi.domain.exception.ServerNotFoundException;
 import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess;
+import io.github.seujorgenochurras.p2pApi.domain.service.client.FindClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

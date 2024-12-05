@@ -1,7 +1,7 @@
 package io.github.seujorgenochurras.p2pApi.api.controller.client;
 
 import io.github.seujorgenochurras.p2pApi.api.dto.client.ClientLoginDto;
-import io.github.seujorgenochurras.p2pApi.domain.service.ClientService;
+import io.github.seujorgenochurras.p2pApi.domain.service.client.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

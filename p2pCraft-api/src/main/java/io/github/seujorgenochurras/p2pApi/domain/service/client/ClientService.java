@@ -1,4 +1,4 @@
-package io.github.seujorgenochurras.p2pApi.domain.service;
+package io.github.seujorgenochurras.p2pApi.domain.service.client;
 
 import io.github.seujorgenochurras.p2pApi.api.dto.client.ClientLoginDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.client.ClientRegisterDto;
@@ -11,6 +11,7 @@ import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidEmailException
 import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidPasswordException;
 import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
 import io.github.seujorgenochurras.p2pApi.domain.repository.ClientRepository;
+import io.github.seujorgenochurras.p2pApi.domain.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

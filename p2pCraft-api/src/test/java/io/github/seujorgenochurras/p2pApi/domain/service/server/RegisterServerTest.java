@@ -3,73 +3,79 @@ package io.github.seujorgenochurras.p2pApi.domain.service.server;
 
 import io.github.seujorgenochurras.p2pApi.api.dto.server.MapConfigurationsDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.RegisterServerDto;
+import io.github.seujorgenochurras.p2pApi.api.security.detail.UserDetailsImplService;
 import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidIpAddressException;
 import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.Server;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerMapConfigurations;
-import io.github.seujorgenochurras.p2pApi.domain.service.MapConfigurationsService;
+import io.github.seujorgenochurras.p2pApi.domain.service.JwtService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 @ExtendWith(MockitoExtension.class)
+@WebMvcTest(RegisterServerService.class)
 public class RegisterServerTest {
 
-
-    @Mock
+    @MockBean
     private ServerService serverService;
 
-    @Mock
+    @MockBean
     private MapConfigurationsService mapConfigurationsService;
 
-    @Mock
+    @MockBean
     private ServerFilesService serverFilesService;
 
-    @Mock
+    @MockBean
     private AccessService accessService;
 
-    @Mock
-    private SecurityContextHolder securityContextHolder;
+    @MockBean
+    private UserDetailsImplService userDetailsImplService;
+
+    @MockBean
+    private JwtService jwtService;
 
     @InjectMocks
     private RegisterServerService registerServerService;
 
-    @Test
-    @WithMockUser(username = "jhondoe")
-    void register_ShouldReturnServerAccess_WhenSuccessfulRegister() {
-        RegisterServerDto registerDto = new RegisterServerDto();
-        ServerClientAccess savedAccess = new ServerClientAccess().setServer(new Server().setName("JhonServer"))
-            .setClient(new Client().setName("Jhon Doe"));
+    private RegisterServerDto validRegister;
 
-        registerDto.setName(savedAccess.getServer()
-                .getName())
+    private ServerClientAccess validClientAccess;
+
+    @BeforeEach
+    void setup() {
+        validRegister = new RegisterServerDto().setName("JhonServer")
             .setMapConfig(new MapConfigurationsDto().setSeed("12039812")
                 .setVersion("1.20.0"));
 
+        validClientAccess = new ServerClientAccess().setServer(new Server().setName("JhonServer"))
+            .setClient(new Client().setName("Jhon Doe"));
+    }
+
+    @Test
+    @WithMockUser(username = "jhondoe")
+    void register_ShouldReturnServerAccess_WhenSuccessfulRegister() {
+
         when(serverService.findByStaticIp(any())).thenReturn(null);
-
         when(serverService.save(any())).thenReturn(new Server());
-
-        when(mapConfigurationsService.save(registerDto.getMapConfig(), registerDto.getName())).thenReturn(
+        when(mapConfigurationsService.save(validRegister.getMapConfig(), validRegister.getName())).thenReturn(
             new ServerMapConfigurations());
-
         when(serverFilesService.createServer(any())).thenReturn(true);
-        when(accessService.addAccess(any())).thenReturn(savedAccess);
+        when(accessService.addAccess(any())).thenReturn(validClientAccess);
 
-        Assertions.assertEquals(savedAccess, registerServerService.register(registerDto));
+        Assertions.assertEquals(validClientAccess, registerServerService.register(validRegister));
     }
 
 
@@ -85,6 +91,5 @@ public class RegisterServerTest {
 
         Assertions.assertThrows(InvalidIpAddressException.class, () -> registerServerService.register(registerDto));
     }
-
 
 }
