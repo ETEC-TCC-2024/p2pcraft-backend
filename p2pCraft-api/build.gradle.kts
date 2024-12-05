@@ -18,6 +18,7 @@ dependencies {
     implementation("org.eclipse.jgit:org.eclipse.jgit:6.10.0.202406032230-r")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.security:spring-security-test:6.4.1")
     implementation("org.springframework.boot:spring-boot-devtools")
     implementation("org.springframework.data:spring-data-jpa:3.2.5")
     implementation("org.springframework.boot:spring-boot-starter-security")
@@ -29,7 +30,6 @@ dependencies {
     runtimeOnly("com.mysql:mysql-connector-j")
 
     implementation("com.auth0:java-jwt:4.4.0")
-
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 

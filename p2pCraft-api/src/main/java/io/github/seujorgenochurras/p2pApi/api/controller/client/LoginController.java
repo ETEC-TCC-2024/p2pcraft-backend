@@ -16,7 +16,6 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody ClientLoginDto loginDto) {
-
         return ResponseEntity.ok(clientService.login(loginDto));
     }
 }

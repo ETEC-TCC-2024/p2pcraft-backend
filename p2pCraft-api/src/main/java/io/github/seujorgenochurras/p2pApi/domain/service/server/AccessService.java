@@ -10,10 +10,11 @@ import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess
 import io.github.seujorgenochurras.p2pApi.domain.repository.ServerClientAccessRepository;
 import io.github.seujorgenochurras.p2pApi.domain.service.ClientService;
 import jakarta.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AccessService {
@@ -32,8 +33,9 @@ public class AccessService {
 
     public List<ClientAccessDto> getClientAccesses(Server server) {
         return getAccesses(server).stream()
-            .map((serverClientAccesses -> new ClientAccessDto(serverClientAccesses.getClient()
-                .getName(), serverClientAccesses.getRole())))
+            .map((
+                serverClientAccesses -> new ClientAccessDto(serverClientAccesses.getClient()
+                    .getName(), serverClientAccesses.getRole())))
             .toList();
     }
 
@@ -45,7 +47,7 @@ public class AccessService {
     public ServerClientAccess addAccess(AddAccessDto accessDto) {
 
         ServerClientAccess clientAccess = accessRepository.findByClientUuidAndServerUuid(accessDto.getClientUuid(),
-            accessDto.getServerUuid())
+                accessDto.getServerUuid())
             .orElse(null);
         if (clientAccess != null) return clientAccess;
         clientAccess = new ServerClientAccess();

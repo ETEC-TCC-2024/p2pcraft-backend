@@ -14,7 +14,7 @@ public class SignUpControllerTest {
     private SignUpController signUpController;
 
     void givenRegisterDto_whenSigningUp_thenReturnToken() {
-
+        
     }
 
 }

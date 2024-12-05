@@ -12,7 +12,6 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
-
 subprojects {
     apply(plugin = "com.diffplug.spotless")
 
@@ -23,5 +22,3 @@ subprojects {
         }
     }
 }
-
-
