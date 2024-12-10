@@ -5,10 +5,7 @@ import io.github.seujorgenochurras.p2pApi.api.dto.server.MapConfigurationsDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.RegisterServerDto;
 import io.github.seujorgenochurras.p2pApi.api.security.detail.UserDetailsImplService;
 import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidIpAddressException;
-import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
-import io.github.seujorgenochurras.p2pApi.domain.model.server.Server;
-import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess;
-import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerMapConfigurations;
+import io.github.seujorgenochurras.p2pApi.domain.model.server.*;
 import io.github.seujorgenochurras.p2pApi.domain.service.JwtService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,23 +53,19 @@ public class RegisterServerTest {
 
     @BeforeEach
     void setup() {
-        validRegister = new RegisterServerDto().setName("JhonServer")
-            .setMapConfig(new MapConfigurationsDto().setSeed("12039812")
-                .setVersion("1.20.0"));
-
-        validClientAccess = new ServerClientAccess().setServer(new Server().setName("JhonServer"))
-            .setClient(new Client().setName("Jhon Doe"));
+        validRegister = ServerDataFactory.createValidRegisterServerDto();
+        validClientAccess = ClientAccessDataFactory.createValidClientAccess();
     }
 
     @Test
     @WithMockUser(username = "jhondoe")
     void register_ShouldReturnServerAccess_WhenSuccessfulRegister() {
-
         when(serverService.findByStaticIp(any())).thenReturn(null);
-        when(serverService.save(any())).thenReturn(new Server());
         when(mapConfigurationsService.save(validRegister.getMapConfig(), validRegister.getName())).thenReturn(
             new ServerMapConfigurations());
+
         when(serverFilesService.createServer(any())).thenReturn(true);
+        when(serverService.save(any())).thenReturn(new Server());
         when(accessService.addAccess(any())).thenReturn(validClientAccess);
 
         Assertions.assertEquals(validClientAccess, registerServerService.register(validRegister));

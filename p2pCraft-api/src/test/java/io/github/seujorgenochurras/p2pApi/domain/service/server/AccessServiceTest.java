@@ -4,9 +4,8 @@ package io.github.seujorgenochurras.p2pApi.domain.service.server;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.access.AddAccessDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.access.UpdateAccessDto;
 import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
-import io.github.seujorgenochurras.p2pApi.domain.model.server.Server;
-import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerAccessTypes;
-import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess;
+import io.github.seujorgenochurras.p2pApi.domain.model.client.ClientDataFactory;
+import io.github.seujorgenochurras.p2pApi.domain.model.server.*;
 import io.github.seujorgenochurras.p2pApi.domain.repository.ServerClientAccessRepository;
 import io.github.seujorgenochurras.p2pApi.domain.service.client.ClientService;
 import io.github.seujorgenochurras.p2pApi.domain.service.client.FindClientService;
@@ -47,23 +46,18 @@ public class AccessServiceTest {
 
     private Client validClient;
     private Server validServer;
-
-    private final String validServerUuid = "serverUuid";
-    private final String validClientUuid = "clientUuid";
+    private final String validClientUuid = ClientDataFactory.VALID_UUID;
+    private final String validServerUuid = ServerDataFactory.VALID_SERVER_UUID;
 
     @BeforeEach
     void setup() {
-        validClient = new Client().setUuid(validClientUuid);
-        validServer = new Server().setUuid(validServerUuid);
+        validClient = ClientDataFactory.createValidClient();
 
-        ServerAccessTypes role = ServerAccessTypes.ADMIN;
-        validAccessDto = new AddAccessDto().setClientUuid(validClientUuid)
-            .setRole(role)
-            .setServerUuid(validServerUuid);
+        validServer = ServerDataFactory.createValidServer();
 
-        validAccess = new ServerClientAccess().setClient(validClient)
-            .setRole(role)
-            .setServer(validServer);
+        validAccessDto = ClientAccessDataFactory.createValidAddAccessDto();
+
+        validAccess = ClientAccessDataFactory.createValidClientAccess();
     }
 
     @Test

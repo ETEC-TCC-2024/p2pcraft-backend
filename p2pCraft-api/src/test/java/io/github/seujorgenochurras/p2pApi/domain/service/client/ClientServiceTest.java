@@ -8,6 +8,7 @@ import io.github.seujorgenochurras.p2pApi.domain.exception.EmailExistsException;
 import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidEmailException;
 import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidPasswordException;
 import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
+import io.github.seujorgenochurras.p2pApi.domain.model.client.ClientDataFactory;
 import io.github.seujorgenochurras.p2pApi.domain.repository.ClientRepository;
 import io.github.seujorgenochurras.p2pApi.domain.service.JwtService;
 import org.junit.jupiter.api.Assertions;
@@ -21,6 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
+import static io.github.seujorgenochurras.p2pApi.domain.model.client.ClientDataFactory.VALID_ENCODED_PASSWORD;
+import static io.github.seujorgenochurras.p2pApi.domain.model.client.ClientDataFactory.VALID_JWT_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -42,41 +45,28 @@ public class ClientServiceTest {
     @InjectMocks
     private ClientService clientService;
 
-    private static final String VALID_EMAIL = "jhondoe@gmail.com";
-    private static final String VALID_NAME = "John Doe";
-    private static final String VALID_PASSWORD = "123445678";
-    private static final String ENCODED_PASSWORD = "encodedPassword";
-    private static final String JWT_TOKEN = "jwtToken";
-
     private ClientRegisterDto validRegisterDto;
     private ClientLoginDto validLoginDto;
     private Client validClient;
 
     @BeforeEach
     void setUp() {
-        validRegisterDto = new ClientRegisterDto().setEmail(VALID_EMAIL)
-            .setName(VALID_NAME)
-            .setPassword(VALID_PASSWORD);
+        validRegisterDto = ClientDataFactory.createValidRegisterDto();
+        validLoginDto = ClientDataFactory.createValidLoginDto();
+        validClient = ClientDataFactory.createValidClient();
 
-        validLoginDto = new ClientLoginDto().setEmail(VALID_EMAIL)
-            .setPassword(VALID_PASSWORD);
-
-        validClient = new Client().setName(VALID_NAME)
-            .setEmail(VALID_EMAIL)
-            .setActive(true);
     }
 
     @Test
     void register_ShouldReturnToken_WhenClientIsRegisteredSuccessfully() {
 
         when(clientRepository.findByEmail(validRegisterDto.getEmail())).thenReturn(Optional.empty());
-
-        when(clientRepository.save(validClient)).thenReturn(validClient);
-        when(jwtService.createJwt(any())).thenReturn(JWT_TOKEN);
-        when(passwordEncoder.encode(validRegisterDto.getPassword())).thenReturn(ENCODED_PASSWORD);
+        when(clientRepository.save(any())).thenReturn(validClient);
+        when(jwtService.createJwt(any())).thenReturn(VALID_JWT_TOKEN);
+        when(passwordEncoder.encode(validRegisterDto.getPassword())).thenReturn(VALID_ENCODED_PASSWORD);
 
         ClientTokenDto tokenDto = clientService.register(validRegisterDto);
-        Assertions.assertEquals(JWT_TOKEN, tokenDto.getToken());
+        Assertions.assertEquals(VALID_JWT_TOKEN, tokenDto.getToken());
 
     }
 
@@ -100,8 +90,7 @@ public class ClientServiceTest {
 
         ClientTokenDto tokenDto = clientService.login(validLoginDto);
 
-        Assertions.assertEquals(JWT_TOKEN, tokenDto.getToken());
-
+        Assertions.assertEquals(VALID_JWT_TOKEN, tokenDto.getToken());
 
     }
 
