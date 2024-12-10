@@ -42,7 +42,6 @@ public class ClientService {
         client.setActive(true);
 
         String token = createJwt(client);
-
         return new ClientTokenDto(token);
     }
 

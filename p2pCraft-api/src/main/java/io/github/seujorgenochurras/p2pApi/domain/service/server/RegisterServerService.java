@@ -57,7 +57,6 @@ public class RegisterServerService {
         try {
             Thread.sleep(3000);
         } catch (InterruptedException ignored) {
-
         }
         serverFilesService.updateProperties(newProperties, mapConfigurations.getMapUrl());
 

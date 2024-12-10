@@ -120,4 +120,11 @@ public class Server {
         this.volatileIp = volatileIp;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "Server{" + "serverFilesService=" + serverFilesService + ", uuid='" + uuid + '\'' + ", name='" + name
+            + '\'' + ", staticIp='" + staticIp + '\'' + ", volatileIp='" + volatileIp + '\'' + ", mapConfigurations="
+            + mapConfigurations + ", open=" + open + ", properties=" + properties + ", active=" + active + '}';
+    }
 }

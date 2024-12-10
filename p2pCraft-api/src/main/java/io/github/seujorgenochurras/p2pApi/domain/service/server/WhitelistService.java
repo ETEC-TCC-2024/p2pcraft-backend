@@ -4,9 +4,10 @@ import io.github.seujorgenochurras.p2pApi.domain.exception.ServerNotFoundExcepti
 import io.github.seujorgenochurras.p2pApi.domain.model.server.Server;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.player.Player;
 import io.github.seujorgenochurras.p2pApi.domain.service.MojangService;
-import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 public class WhitelistService {
@@ -22,6 +23,7 @@ public class WhitelistService {
 
     public ArrayList<Player> getWhitelist(String serverName) {
         Server server = serverService.findByName(serverName);
+        if (server == null) throw ServerNotFoundException.defaultMessage(serverName);
         return serverFilesService.getWhitelist(server.getMapConfigurations()
             .getMapUrl());
     }
@@ -29,8 +31,7 @@ public class WhitelistService {
     public ArrayList<Player> addToWhitelist(String playerName, String serverName) {
         Player player = mojangService.findPlayerByName(playerName);
         Server server = serverService.findByName(serverName);
-        if (server == null) throw new ServerNotFoundException("Didn't find server");
-
+        if (server == null) throw ServerNotFoundException.defaultMessage(serverName);
         return serverFilesService.addToWhitelist(player, server.getMapConfigurations()
             .getMapUrl());
     }
@@ -38,7 +39,7 @@ public class WhitelistService {
     public ArrayList<Player> removeFromWhitelist(String playerName, String serverName) {
         Player player = mojangService.findPlayerByName(playerName);
         Server server = serverService.findByName(serverName);
-        if (server == null) throw new ServerNotFoundException("Didn't find server");
+        if (server == null) throw ServerNotFoundException.defaultMessage(serverName);
 
         return serverFilesService.removeFromWhitelist(player, server.getMapConfigurations()
             .getMapUrl());
