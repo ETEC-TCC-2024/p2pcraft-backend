@@ -8,6 +8,10 @@ public class InvalidIpAddressException extends RuntimeException {
         super(message);
     }
 
+    public static InvalidIpAddressException defaultMessage(String serverIp) {
+        return new InvalidIpAddressException("No server with ip: '" + serverIp + "' was found");
+    }
+
     public InvalidIpAddressException(String message, Throwable cause) {
         super(message, cause);
     }

@@ -1,18 +1,21 @@
 package io.github.seujorgenochurras.p2pApi.domain.exception.handler;
 
 import io.github.seujorgenochurras.p2pApi.domain.exception.*;
-import java.time.LocalDateTime;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(InvalidPasswordException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<?> handleInvalidPasswordException(InvalidPasswordException ex) {
         HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
         return ResponseEntity.status(httpStatus)
@@ -20,6 +23,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ClientNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<?> handleUsernameNotFoundException(ClientNotFoundException ex) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         return ResponseEntity.status(status)
@@ -27,6 +31,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(InvalidEmailException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<?> handleUsernameNotFoundException(InvalidEmailException ex) {
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         return ResponseEntity.status(status)
@@ -34,6 +39,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(EmailExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<?> handleEmailExistsException(EmailExistsException ex) {
         HttpStatus status = HttpStatus.CONFLICT;
         return ResponseEntity.status(status)
@@ -41,6 +47,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(InvalidTokenException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<?> handleEmailExistsException(InvalidTokenException ex) {
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         return ResponseEntity.status(status)
@@ -48,6 +55,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(InvalidIpAddressException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<?> handleIpAddressException(InvalidIpAddressException ex) {
         HttpStatus status = HttpStatus.CONFLICT;
         return ResponseEntity.status(status)
@@ -55,6 +63,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ServerNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<?> handleServerNotFoundException(ServerNotFoundException ex) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         return ResponseEntity.status(status)
@@ -62,6 +71,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<?> handleUsernameNotFoundException(ServerNotFoundException ex) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         return ResponseEntity.status(status)

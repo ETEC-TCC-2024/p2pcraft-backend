@@ -37,7 +37,7 @@ public class PropertiesController {
             .orElse(null);
 
         if (access == null) {
-            throw new ServerNotFoundException("No server with name '" + name + "' found");
+            throw ServerNotFoundException.defaultMessage(name);
         }
         access.getServer()
             .updateProperties();

@@ -8,6 +8,10 @@ public class ServerNotFoundException extends RuntimeException {
         super(message);
     }
 
+    public static ServerNotFoundException defaultMessage(String serverName) {
+        return new ServerNotFoundException("No server with name: '" + serverName + "' found");
+    }
+
     public ServerNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }

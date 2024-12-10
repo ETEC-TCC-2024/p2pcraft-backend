@@ -31,7 +31,7 @@ public class AccessController {
     @GetMapping(value = "/{serverName}/access")
     public ResponseEntity<?> findServerAccesses(@PathVariable String serverName) {
         Server server = serverService.findByName(serverName);
-        if (server == null) throw new ServerNotFoundException("No server with name '" + serverName + "' found");
+        if (server == null) throw ServerNotFoundException.defaultMessage(serverName);
 
         return ResponseEntity.ok(accessService.getClientAccesses(server));
     }
@@ -41,7 +41,7 @@ public class AccessController {
                                                @RequestBody NamedAddAccessDto accessDto) {
         Server server = serverService.findByName(serverName);
         Client client = clientService.findByName(accessDto.getClientName());
-        if (server == null) throw new ServerNotFoundException("No server with name '" + serverName + "' found");
+        if (server == null) throw ServerNotFoundException.defaultMessage(serverName);
 
         AddAccessDto addAccessDto = new AddAccessDto();
         addAccessDto.setServerUuid(server.getUuid())
@@ -56,7 +56,7 @@ public class AccessController {
     public ResponseEntity<?> deleteAccess(@PathVariable String serverName, @PathVariable String clientName) {
         Server server = serverService.findByName(serverName);
         Client client = clientService.findByName(clientName);
-        if (server == null) throw new ServerNotFoundException("No server with name '" + serverName + "' found");
+        if (server == null) throw ServerNotFoundException.defaultMessage(serverName);
         accessService.deleteAccess(server, client);
         return ResponseEntity.noContent()
             .build();
@@ -65,10 +65,9 @@ public class AccessController {
     @PutMapping(value = "/{serverName}/access/{clientName}")
     public ResponseEntity<?> updateAccess(@PathVariable String serverName, @PathVariable String clientName,
                                           @RequestBody UpdateAccessDto updateAccessDto) {
-
         Server server = serverService.findByName(serverName);
         Client client = clientService.findByName(clientName);
-        if (server == null) throw new ServerNotFoundException("No server with name '" + serverName + "' found");
+        if (server == null) throw ServerNotFoundException.defaultMessage(serverName);
         ServerClientAccess access = accessService.updateAccess(server, client, updateAccessDto);
         return new ResponseEntity<>(access, HttpStatus.CREATED);
     }

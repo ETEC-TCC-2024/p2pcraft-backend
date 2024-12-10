@@ -2,7 +2,6 @@ package io.github.seujorgenochurras.p2pApi.api.controller.server;
 
 import io.github.seujorgenochurras.p2pApi.api.dto.server.RegisterServerDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.ServerDto;
-import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidIpAddressException;
 import io.github.seujorgenochurras.p2pApi.domain.exception.ServerNotFoundException;
 import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.Server;
@@ -57,7 +56,7 @@ public class ServerController {
             .orElse(null);
 
         if (access == null) {
-            throw new ServerNotFoundException("No server with name '" + name + "' found");
+            throw ServerNotFoundException.defaultMessage(name);
         }
         return ok(access);
     }
@@ -67,7 +66,7 @@ public class ServerController {
                                        Principal principal) {
         Server fetchedServer = serverService.findByName(serverName);
         if (fetchedServer == null) {
-            throw new InvalidIpAddressException("No server with ip " + serverName + " found");
+            throw ServerNotFoundException.defaultMessage(serverName);
         }
         Client client = findClientService.findById(principal.getName());
         ServerClientAccess access = accessService.getAccessLevel(fetchedServer, client);
@@ -97,6 +96,9 @@ public class ServerController {
     @DeleteMapping(value = "/{name}")
     public ResponseEntity<?> deleteServer(@PathVariable String name) {
         Server server = serverService.findByName(name);
+        if (server == null) {
+            throw ServerNotFoundException.defaultMessage(name);
+        }
         serverService.update(server.getUuid(), new ServerDto().setActive(false));
         return noContent().build();
     }
