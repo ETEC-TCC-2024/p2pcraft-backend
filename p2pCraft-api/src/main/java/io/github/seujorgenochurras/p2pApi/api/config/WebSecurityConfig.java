@@ -1,4 +1,4 @@
-package io.github.seujorgenochurras.p2pApi.api.security.config;
+package io.github.seujorgenochurras.p2pApi.api.config;
 
 import io.github.seujorgenochurras.p2pApi.api.security.auth.JwtFilter;
 import io.github.seujorgenochurras.p2pApi.api.security.detail.UserDetailsImplService;
@@ -68,12 +68,12 @@ public class WebSecurityConfig {
     @Bean
     @Order(1)
     public SecurityFilterChain clientFilterChain(HttpSecurity http) throws Exception {
-        http.securityMatcher("/home", "/", "/signup", "/login", "/server/public/**")
+        http.securityMatcher("/home", "/signup", "/login", "/server/public/**", "/swagger-ui/**", "/api-docs/**", "/")
             .authorizeHttpRequests(authorize -> authorize.anyRequest()
                 .permitAll())
             .httpBasic(Customizer.withDefaults())
             .csrf(AbstractHttpConfigurer::disable)
-            .exceptionHandling(configurer -> configurer.authenticationEntryPoint(exceptionHandler));
+            .exceptionHandling(configure -> configure.authenticationEntryPoint(exceptionHandler));
 
         return http.build();
     }
