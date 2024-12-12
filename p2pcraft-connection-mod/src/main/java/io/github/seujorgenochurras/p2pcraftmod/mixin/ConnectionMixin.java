@@ -45,14 +45,14 @@ public abstract class ConnectionMixin {
     @Shadow
     protected abstract void connect(MinecraftClient client, ServerAddress address, @Nullable ServerInfo info);
 
-    @Inject(method = "connect(Lnet/minecraft/client/MinecraftClient;Lnet/minecraft/client/network/ServerAddress;Lnet/minecraft/client/network/ServerInfo;)V",
-        at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "connect(Lnet/minecraft/client/MinecraftClient;Lnet/minecraft/client/network/ServerAddress;Lnet/minecraft/client/network/ServerInfo;)V", at = @At(value = "HEAD"), cancellable = true)
     private void connect(MinecraftClient client, ServerAddress serverAddress, ServerInfo serverInfo, CallbackInfo ci) {
         this.client = client;
 
         String staticAddress = serverAddress.getAddress();
         P2pServer p2pServer = p2pApi.findServer(staticAddress);
-        if (p2pServer.getState().equals(P2pServerState.NONEXISTENT) || !p2pServer.isOpen()) return;
+        if (p2pServer.getState()
+            .equals(P2pServerState.NONEXISTENT) || !p2pServer.isOpen()) return;
         ci.cancel();
         new Thread(() -> {
             setScreenText(Text.translatable("connect.p2pcraftmod.connecting"));

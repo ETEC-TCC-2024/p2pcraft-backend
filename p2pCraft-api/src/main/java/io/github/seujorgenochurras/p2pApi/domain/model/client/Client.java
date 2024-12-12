@@ -4,8 +4,6 @@ import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.springframework.boot.context.properties.bind.DefaultValue;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -30,7 +28,7 @@ public class Client {
     private String password;
 
     @NotNull
-    @Column(name="active")
+    @Column(name = "active")
     private boolean active = true;
 
     @OneToMany(mappedBy = "client")
@@ -46,7 +44,10 @@ public class Client {
     }
 
     public List<ServerClientAccess> getServerAccesses() {
-        return serverAccesses.stream().filter(serverClientAccess -> serverClientAccess.getServer().isActive()).toList();
+        return serverAccesses.stream()
+            .filter(serverClientAccess -> serverClientAccess.getServer()
+                .isActive())
+            .toList();
     }
 
     public Client setServerAccesses(List<ServerClientAccess> serverAccesses) {
@@ -58,17 +59,17 @@ public class Client {
         return password;
     }
 
+    public Client setPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public Client setEmail(String email) {
         this.email = email;
-        return this;
-    }
-
-    public Client setPassword(String password) {
-        this.password = password;
         return this;
     }
 
@@ -108,9 +109,6 @@ public class Client {
 
     @Override
     public String toString() {
-        return "Client{" +
-            "uuid='" + uuid + '\'' +
-            ", name='" + name + '\'' +
-            '}';
+        return "Client{" + "uuid='" + uuid + '\'' + ", name='" + name + '\'' + '}';
     }
 }

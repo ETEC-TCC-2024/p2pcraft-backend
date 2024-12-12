@@ -16,7 +16,8 @@ public class InvalidPasswordException extends RuntimeException {
         super(cause);
     }
 
-    public InvalidPasswordException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public InvalidPasswordException(String message, Throwable cause, boolean enableSuppression,
+                                    boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

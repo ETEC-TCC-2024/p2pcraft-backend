@@ -1,15 +1,14 @@
 package io.github.seujorgenochurras.p2pApi.api.controller.server;
 
-import io.github.seujorgenochurras.p2pApi.api.controller.client.FindClientService;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.RegisterServerDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.server.ServerDto;
-import io.github.seujorgenochurras.p2pApi.domain.exception.InvalidIpAddressException;
 import io.github.seujorgenochurras.p2pApi.domain.exception.ServerNotFoundException;
 import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.Server;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerAccessTypes;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess;
-import io.github.seujorgenochurras.p2pApi.domain.service.ClientService;
+import io.github.seujorgenochurras.p2pApi.domain.service.client.ClientService;
+import io.github.seujorgenochurras.p2pApi.domain.service.client.FindClientService;
 import io.github.seujorgenochurras.p2pApi.domain.service.server.AccessService;
 import io.github.seujorgenochurras.p2pApi.domain.service.server.RegisterServerService;
 import io.github.seujorgenochurras.p2pApi.domain.service.server.ServerService;
@@ -47,22 +46,27 @@ public class ServerController {
         String clientUuid = principal.getName();
         Client client = findClientService.findById(clientUuid);
 
-        ServerClientAccess access = client.getServerAccesses().stream()
-            .filter((serverClientAccess -> serverClientAccess.getServer().isActive() &&
-                serverClientAccess.getServer().getName().equals(name)))
-            .findFirst().orElse(null);
+        ServerClientAccess access = client.getServerAccesses()
+            .stream()
+            .filter((serverClientAccess -> serverClientAccess.getServer()
+                .isActive() && serverClientAccess.getServer()
+                    .getName()
+                    .equals(name)))
+            .findFirst()
+            .orElse(null);
 
         if (access == null) {
-            throw new ServerNotFoundException("No server with name '" + name + "' found");
+            throw ServerNotFoundException.defaultMessage(name);
         }
         return ok(access);
     }
 
     @PutMapping(value = "/{serverName}")
-    public ResponseEntity<?> putServer(@PathVariable String serverName, @RequestBody ServerDto serverDto, Principal principal) {
+    public ResponseEntity<?> putServer(@PathVariable String serverName, @RequestBody ServerDto serverDto,
+                                       Principal principal) {
         Server fetchedServer = serverService.findByName(serverName);
         if (fetchedServer == null) {
-            throw new InvalidIpAddressException("No server with ip " + serverName + " found");
+            throw ServerNotFoundException.defaultMessage(serverName);
         }
         Client client = findClientService.findById(principal.getName());
         ServerClientAccess access = accessService.getAccessLevel(fetchedServer, client);
@@ -92,6 +96,9 @@ public class ServerController {
     @DeleteMapping(value = "/{name}")
     public ResponseEntity<?> deleteServer(@PathVariable String name) {
         Server server = serverService.findByName(name);
+        if (server == null) {
+            throw ServerNotFoundException.defaultMessage(name);
+        }
         serverService.update(server.getUuid(), new ServerDto().setActive(false));
         return noContent().build();
     }

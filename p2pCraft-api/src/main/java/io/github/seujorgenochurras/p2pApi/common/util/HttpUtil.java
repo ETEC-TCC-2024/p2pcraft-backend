@@ -1,15 +1,14 @@
 package io.github.seujorgenochurras.p2pApi.common.util;
 
-import com.google.gson.Gson;
+import static java.net.http.HttpRequest.BodyPublishers;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Arrays;
-
-import static java.net.http.HttpRequest.BodyPublishers;
 
 public class HttpUtil {
 
@@ -27,14 +26,12 @@ public class HttpUtil {
             .uri(URI.create(url))
             .setHeader("Content-Type", "application/json")
             .POST(BodyPublishers.ofString(jsonBody));
-        Arrays.stream(headers).forEach((header) -> requestBuilder.header(header.name, header.value));
+
+        Arrays.stream(headers)
+            .forEach((header) -> requestBuilder.header(header.name, header.value));
 
         HttpRequest request = requestBuilder.build();
         return trySendRequest(request);
-    }
-
-
-    public record Header(String name, String value) {
     }
 
     public static HttpResponse<String> sendPutRequest(Object body, String url, Header... headers) {
@@ -42,7 +39,8 @@ public class HttpUtil {
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
             .uri(URI.create(url))
             .PUT(BodyPublishers.ofString(jsonBody));
-        Arrays.stream(headers).forEach((header) -> requestBuilder.header(header.name, header.value));
+        Arrays.stream(headers)
+            .forEach((header) -> requestBuilder.header(header.name, header.value));
         HttpRequest request = requestBuilder.build();
         return trySendRequest(request);
     }
@@ -56,7 +54,8 @@ public class HttpUtil {
             .uri(URI.create(url))
             .setHeader("Content-Type", "application/json")
             .GET();
-        Arrays.stream(headers).forEach((header) -> requestBuilder.header(header.name, header.value));
+        Arrays.stream(headers)
+            .forEach((header) -> requestBuilder.header(header.name, header.value));
         HttpRequest request = requestBuilder.build();
         return trySendRequest(request);
     }
@@ -72,5 +71,8 @@ public class HttpUtil {
         } catch (IOException | InterruptedException e) {
             return null;
         }
+    }
+
+    public record Header(String name, String value) {
     }
 }

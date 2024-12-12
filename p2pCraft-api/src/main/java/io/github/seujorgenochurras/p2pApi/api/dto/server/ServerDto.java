@@ -1,6 +1,5 @@
 package io.github.seujorgenochurras.p2pApi.api.dto.server;
 
-
 import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerProperties;
 
 public class ServerDto {
@@ -16,6 +15,11 @@ public class ServerDto {
         return open;
     }
 
+    public ServerDto setOpen(Boolean open) {
+        this.open = open;
+        return this;
+    }
+
     public Boolean getActive() {
         return active;
     }
@@ -27,11 +31,6 @@ public class ServerDto {
 
     public Boolean isOpen() {
         return open;
-    }
-
-    public ServerDto setOpen(Boolean open) {
-        this.open = open;
-        return this;
     }
 
     public ServerProperties getProperties() {
@@ -81,13 +80,7 @@ public class ServerDto {
 
     @Override
     public String toString() {
-        return "ServerDto{" +
-            "name='" + name + '\'' +
-            ", staticIp='" + staticIp + '\'' +
-            ", volatileIp='" + volatileIp + '\'' +
-            ", mapUrl='" + mapUrl + '\'' +
-            ", properties=" + properties +
-            ", open=" + open +
-            '}';
+        return "ServerDto{" + "name='" + name + '\'' + ", staticIp='" + staticIp + '\'' + ", volatileIp='" + volatileIp
+            + '\'' + ", mapUrl='" + mapUrl + '\'' + ", properties=" + properties + ", open=" + open + '}';
     }
 }

@@ -1,4 +1,4 @@
-package io.github.seujorgenochurras.p2pApi.api.security.config;
+package io.github.seujorgenochurras.p2pApi.api.config;
 
 import io.github.seujorgenochurras.p2pApi.api.security.auth.JwtFilter;
 import io.github.seujorgenochurras.p2pApi.api.security.detail.UserDetailsImplService;
@@ -41,12 +41,16 @@ public class WebSecurityConfig {
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
         UserDetails user = User.withUsername("user")
-            .password(encoder().encode("simManoSequiserPodePa")) //this is super dangerous remove this later pls add secret in a .env or smth
+            .password(encoder().encode("simManoSequiserPodePa")) // this is super dangerous
+            // remove this later pls
+            // add secret in a .env or smth
             .roles("USER")
             .build();
 
         UserDetails admin = User.withUsername("admin")
-            .password(encoder().encode("senhadoadminmano")) //this is super dangerous remove this later pls add secret in a .env or smth
+            .password(encoder().encode("senhadoadminmano")) // this is super dangerous
+            // remove this later pls add
+            // secret in a .env or smth
             .roles("ADMIN")
             .build();
 
@@ -55,8 +59,7 @@ public class WebSecurityConfig {
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
-        final DaoAuthenticationProvider daoAuthenticationProvider =
-            new DaoAuthenticationProvider();
+        final DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsImplService);
         daoAuthenticationProvider.setPasswordEncoder(encoder());
         return daoAuthenticationProvider;
@@ -65,11 +68,12 @@ public class WebSecurityConfig {
     @Bean
     @Order(1)
     public SecurityFilterChain clientFilterChain(HttpSecurity http) throws Exception {
-        http.securityMatcher("/home", "/", "/signup", "/login", "/server/public/**")
-            .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
+        http.securityMatcher("/home", "/signup", "/login", "/server/public/**", "/swagger-ui/**", "/api-docs/**", "/")
+            .authorizeHttpRequests(authorize -> authorize.anyRequest()
+                .permitAll())
             .httpBasic(Customizer.withDefaults())
             .csrf(AbstractHttpConfigurer::disable)
-            .exceptionHandling(configurer -> configurer.authenticationEntryPoint(exceptionHandler));
+            .exceptionHandling(configure -> configure.authenticationEntryPoint(exceptionHandler));
 
         return http.build();
     }
@@ -77,14 +81,14 @@ public class WebSecurityConfig {
     @Bean
     @Order(2)
     public SecurityFilterChain blockAllRequest(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+        http.authorizeHttpRequests(authorize -> authorize.anyRequest()
+            .authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
-
 
     @Bean
     public PasswordEncoder encoder() {

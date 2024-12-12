@@ -12,6 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Entity
 public class Server {
 
+    @Autowired
+    @Transient
+    private final ServerFilesService serverFilesService = new ServerFilesService();
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String uuid;
@@ -27,7 +31,6 @@ public class Server {
     @Column(name = "last_volatile_ip")
     private String volatileIp;
 
-
     @OneToOne
     @JoinColumn(name = "map_config")
     private ServerMapConfigurations mapConfigurations;
@@ -42,12 +45,13 @@ public class Server {
     @Column(name = "active")
     private boolean active = true;
 
-    @Autowired
-    @Transient
-    private final ServerFilesService serverFilesService = new ServerFilesService();
-
     public boolean isOpen() {
         return open;
+    }
+
+    public Server setOpen(boolean open) {
+        this.open = open;
+        return this;
     }
 
     public boolean isActive() {
@@ -56,11 +60,6 @@ public class Server {
 
     public Server setActive(boolean active) {
         this.active = active;
-        return this;
-    }
-
-    public Server setOpen(boolean open) {
-        this.open = open;
         return this;
     }
 
@@ -74,7 +73,8 @@ public class Server {
     }
 
     public void updateProperties() {
-        this.properties = serverFilesService.getProperties(this.getMapConfigurations().getMapUrl());
+        this.properties = serverFilesService.getProperties(this.getMapConfigurations()
+            .getMapUrl());
     }
 
     public ServerProperties getProperties() {
@@ -119,5 +119,12 @@ public class Server {
     public Server setVolatileIp(String volatileIp) {
         this.volatileIp = volatileIp;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Server{" + "serverFilesService=" + serverFilesService + ", uuid='" + uuid + '\'' + ", name='" + name
+            + '\'' + ", staticIp='" + staticIp + '\'' + ", volatileIp='" + volatileIp + '\'' + ", mapConfigurations="
+            + mapConfigurations + ", open=" + open + ", properties=" + properties + ", active=" + active + '}';
     }
 }

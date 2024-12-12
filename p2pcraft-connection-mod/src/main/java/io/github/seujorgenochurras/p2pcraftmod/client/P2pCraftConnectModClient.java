@@ -9,7 +9,9 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import java.io.File;
 
 public class P2pCraftConnectModClient implements ClientModInitializer {
-    private static final String MINECRAFT_DIR_PATH = FabricLoader.getInstance().getGameDir().toString();
+    private static final String MINECRAFT_DIR_PATH = FabricLoader.getInstance()
+        .getGameDir()
+        .toString();
     private static final String P2PCRAFT_RESOURCES_PATH = MINECRAFT_DIR_PATH + "/p2pcraft";
     private static String playerName;
 
@@ -30,7 +32,8 @@ public class P2pCraftConnectModClient implements ClientModInitializer {
     }
 
     public void setClientName(MinecraftClient client) {
-        playerName = client.getSession().getUsername();
+        playerName = client.getSession()
+            .getUsername();
     }
 
     public void onClientClose() {

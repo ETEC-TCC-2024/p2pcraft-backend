@@ -11,14 +11,13 @@ import java.net.http.HttpResponse;
 @Component
 public class MojangService {
 
-    private record PlayerResponse(String name, String id) {
-    }
-
     public Player findPlayerByName(String playerName) {
-        HttpResponse<String> response = HttpUtil.sendGetRequest("https://api.mojang.com/users/profiles/minecraft/" + playerName);
+        HttpResponse<String> response = HttpUtil.sendGetRequest("https://api.mojang.com/users/profiles/minecraft/"
+            + playerName);
 
         if (response.statusCode() == 404) {
-            return new Player().setUuid("null").setName("null");
+            return new Player().setUuid("null")
+                .setName("null");
         }
 
         Gson gson = new Gson();
@@ -28,8 +27,8 @@ public class MojangService {
         player.setName(playerResponse.name)
             .setUuid(uuid);
         return player;
-
     }
 
-
+    private record PlayerResponse(String name, String id) {
+    }
 }

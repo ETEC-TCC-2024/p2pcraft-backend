@@ -16,7 +16,8 @@ public class InvalidTokenException extends RuntimeException {
         super(cause);
     }
 
-    public InvalidTokenException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public InvalidTokenException(String message, Throwable cause, boolean enableSuppression,
+                                 boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

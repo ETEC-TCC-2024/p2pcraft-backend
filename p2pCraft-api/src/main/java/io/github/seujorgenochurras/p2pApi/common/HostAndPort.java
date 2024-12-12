@@ -4,7 +4,6 @@ public class HostAndPort {
     private String host;
     private int port = 80;
 
-
     public HostAndPort(String host, int port) {
         this.host = host;
         this.port = port;

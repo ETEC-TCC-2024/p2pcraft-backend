@@ -1,9 +1,8 @@
-package io.github.seujorgenochurras.p2pApi.domain.service;
+package io.github.seujorgenochurras.p2pApi.domain.service.server;
 
 import io.github.seujorgenochurras.p2pApi.api.dto.server.MapConfigurationsDto;
 import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerMapConfigurations;
 import io.github.seujorgenochurras.p2pApi.domain.repository.MapConfigurationsRepository;
-import io.github.seujorgenochurras.p2pApi.domain.service.server.ServerFilesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,7 @@ public class MapConfigurationsService {
 
     public ServerMapConfigurations save(MapConfigurationsDto dto, String serverName) {
         ServerMapConfigurations configurations = new ServerMapConfigurations();
-        //TODO github service
+        // TODO github service
         configurations.setVersion(dto.getVersion())
             .setSeed(dto.getSeed())
             .setMapUrl("https://github.com/P2PCraft-bot/" + serverName);

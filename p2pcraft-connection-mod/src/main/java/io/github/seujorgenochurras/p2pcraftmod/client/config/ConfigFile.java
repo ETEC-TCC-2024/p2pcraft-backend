@@ -28,8 +28,7 @@ public class ConfigFile {
         try {
             File configFile = new File(P2pCraftConnectModClient.getResourcesDirPath() + "/config.yaml");
             if (!configFile.exists()) {
-                Dotenv dotenv = Dotenv
-                    .configure()
+                Dotenv dotenv = Dotenv.configure()
                     .directory("../")
                     .load();
                 FileWriter fileWriter = new FileWriter(configFile);
