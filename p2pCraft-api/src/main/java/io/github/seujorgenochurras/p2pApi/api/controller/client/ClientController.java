@@ -1,5 +1,6 @@
 package io.github.seujorgenochurras.p2pApi.api.controller.client;
 
+import io.github.seujorgenochurras.p2pApi.api.controller.swagger.PrivateRouteDocumentation;
 import io.github.seujorgenochurras.p2pApi.api.dto.client.UpdateClientDto;
 import io.github.seujorgenochurras.p2pApi.api.dto.client.response.ClientResponseDto;
 import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
@@ -30,15 +31,23 @@ public class ClientController {
     private FindClientService findClientService;
 
     @Operation(summary = "Get the currently authenticated client")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Successfully retrieved client", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClientResponseDto.class)))})
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",
+            description = "Successfully retrieved client",
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = ClientResponseDto.class)))})
     @GetMapping
+    @PrivateRouteDocumentation
     public ResponseEntity<?> getCurrentClient(Principal principal) {
         return ResponseEntity.ok(genClientResponse(findClientService.getCurrentClient()));
     }
 
     @Operation(summary = "Delete the currently authenticated client")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Successfully deleted client"), @ApiResponse(responseCode = "401", description = "Unauthorized")})
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204",
+            description = "Successfully deleted client")})
     @DeleteMapping
+    @PrivateRouteDocumentation
     public ResponseEntity<?> deleteClient() {
         Client client = findClientService.getCurrentClient();
         clientService.deleteClient(client);
@@ -47,16 +56,25 @@ public class ClientController {
     }
 
     @Operation(summary = "Get the servers accessible by the currently authenticated client")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Successfully retrieved servers", content = @Content(mediaType = "application/json"))})
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",
+            description = "Successfully retrieved servers",
+            content = @Content(mediaType = "application/json"))})
     @GetMapping("/servers")
+    @PrivateRouteDocumentation
     public ResponseEntity<?> getServers() {
         Client client = findClientService.getCurrentClient();
         return ResponseEntity.ok(client.getServerAccesses());
     }
 
     @Operation(summary = "Get a list of all clients")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Successfully retrieved all clients", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClientResponseDto.class)))})
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",
+            description = "Successfully retrieved all clients",
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = ClientResponseDto.class)))})
     @GetMapping("/all")
+    @PrivateRouteDocumentation
     public ResponseEntity<?> getClients() {
         List<Client> clients = clientService.getAllClients();
         List<ClientResponseDto> clientResponses = clients.stream()
@@ -66,9 +84,16 @@ public class ClientController {
     }
 
     @Operation(summary = "Find a client by ID")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Successfully found client", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClientResponseDto.class))), @ApiResponse(responseCode = "404", description = "Client not found")})
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",
+            description = "Successfully found client",
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = ClientResponseDto.class)))})
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> findClientById(@Parameter(description = "ID of the client to be fetched") @PathVariable(value = "id") String id) {
+    @PrivateRouteDocumentation
+    public ResponseEntity<?> findClientById(@Parameter(description = "ID of the client to be fetched") @PathVariable(
+        value = "id")
+    String id) {
         Client fetchedClient = findClientService.findById(id);
 
         if (fetchedClient == null) {
@@ -79,19 +104,25 @@ public class ClientController {
         return ResponseEntity.ok(genClientResponse(fetchedClient));
     }
 
-    @Operation(summary = "Update the currently authenticated client")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Successfully updated client", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClientResponseDto.class))), @ApiResponse(responseCode = "400", description = "Invalid request data")})
-    @PutMapping
-    public ResponseEntity<?> updateClient(@RequestBody UpdateClientDto updateClientDto) {
-        Client currentClient = findClientService.getCurrentClient();
-        clientService.updateClient(currentClient, updateClientDto);
-        return ResponseEntity.ok(genClientResponse(currentClient));
-    }
-
     private ClientResponseDto genClientResponse(Client client) {
         return new ClientResponseDto().setEmail(client.getEmail())
             .setName(client.getName())
             .setUuid(client.getUuid())
             .setServerAccesses(client.getServerAccesses());
+    }
+
+    @Operation(summary = "Update the currently authenticated client")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",
+            description = "Successfully updated client",
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = ClientResponseDto.class)))})
+    @PrivateRouteDocumentation
+    @PutMapping
+    public ResponseEntity<?> updateClient(@RequestBody
+    UpdateClientDto updateClientDto) {
+        Client currentClient = findClientService.getCurrentClient();
+        clientService.updateClient(currentClient, updateClientDto);
+        return ResponseEntity.ok(genClientResponse(currentClient));
     }
 }

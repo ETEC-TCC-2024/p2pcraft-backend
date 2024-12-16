@@ -42,7 +42,8 @@ public class ServerController {
     private RegisterServerService registerServerService;
 
     @GetMapping(value = "/{name}")
-    public ResponseEntity<?> findByName(@PathVariable String name, Principal principal) {
+    public ResponseEntity<?> findByName(@PathVariable
+    String name, Principal principal) {
         String clientUuid = principal.getName();
         Client client = findClientService.findById(clientUuid);
 
@@ -62,8 +63,9 @@ public class ServerController {
     }
 
     @PutMapping(value = "/{serverName}")
-    public ResponseEntity<?> putServer(@PathVariable String serverName, @RequestBody ServerDto serverDto,
-                                       Principal principal) {
+    public ResponseEntity<?> putServer(@PathVariable
+    String serverName, @RequestBody
+    ServerDto serverDto, Principal principal) {
         Server fetchedServer = serverService.findByName(serverName);
         if (fetchedServer == null) {
             throw ServerNotFoundException.defaultMessage(serverName);
@@ -80,7 +82,8 @@ public class ServerController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> registerServer(@RequestBody RegisterServerDto serverDto) {
+    public ResponseEntity<?> registerServer(@RequestBody
+    RegisterServerDto serverDto) {
         ServerClientAccess access = registerServerService.register(serverDto);
 
         return new ResponseEntity<>(access.getServer(), HttpStatus.CREATED);
@@ -94,7 +97,8 @@ public class ServerController {
     }
 
     @DeleteMapping(value = "/{name}")
-    public ResponseEntity<?> deleteServer(@PathVariable String name) {
+    public ResponseEntity<?> deleteServer(@PathVariable
+    String name) {
         Server server = serverService.findByName(name);
         if (server == null) {
             throw ServerNotFoundException.defaultMessage(name);

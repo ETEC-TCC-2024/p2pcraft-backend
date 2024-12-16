@@ -4,31 +4,28 @@ import io.github.seujorgenochurras.p2pApi.domain.model.server.ServerClientAccess
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 public class Client {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @NotNull
+    @Id @GeneratedValue(strategy = GenerationType.UUID) @NotNull
     private String uuid;
 
-    @NotNull
-    @Size(max = 100, min = 1)
+    @NotNull @Size(max = 100,
+        min = 1)
     private String name;
 
-    @NotNull
-    @Size(max = 300, min = 10)
+    @NotNull @Size(max = 300,
+        min = 10)
     private String email;
 
-    @NotNull
-    @Size(max = 60)
+    @NotNull @Size(max = 60)
     private String password;
 
-    @NotNull
-    @Column(name = "active")
+    @NotNull @Column(name = "active")
     private boolean active = true;
 
     @OneToMany(mappedBy = "client")

@@ -8,23 +8,16 @@ import jakarta.validation.constraints.NotNull;
 @Entity(name = "server_access")
 public class ServerClientAccess {
 
-    @Id
-    @NotNull
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @JsonIgnore
+    @Id @NotNull @GeneratedValue(strategy = GenerationType.UUID) @JsonIgnore
     private String uuid;
 
-    @ManyToOne
-    @JoinColumn(name = "client_uuid")
-    @JsonIgnore
+    @ManyToOne @JoinColumn(name = "client_uuid") @JsonIgnore
     private Client client;
 
-    @ManyToOne
-    @JoinColumn(name = "server_uuid")
+    @ManyToOne @JoinColumn(name = "server_uuid")
     private Server server;
 
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
+    @Column(name = "role") @Enumerated(EnumType.STRING)
     private ServerAccessTypes role;
 
     public String getUuid() {

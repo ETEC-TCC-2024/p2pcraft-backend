@@ -17,15 +17,17 @@ public class PublicServerController {
     private ServerService serverService;
 
     @GetMapping(value = "/public/{serverStaticIp}")
-    public ResponseEntity<?> getPublicServerInfo(@PathVariable String serverStaticIp) {
+    public ResponseEntity<?> getPublicServerInfo(@PathVariable
+    String serverStaticIp) {
         Server server = serverService.findByStaticIp(serverStaticIp);
         if (server == null) throw ServerNotFoundException.defaultMessage(serverStaticIp);
         return ResponseEntity.ok(server);
     }
 
     @PutMapping(value = "/public/{serverStaticIp}")
-    public ResponseEntity<?> setServerVolatileIp(@PathVariable String serverStaticIp,
-                                                 @RequestBody UpdateServerVolatileIpDto volatileIpDto) {
+    public ResponseEntity<?> setServerVolatileIp(@PathVariable
+    String serverStaticIp, @RequestBody
+    UpdateServerVolatileIpDto volatileIpDto) {
         Server server = serverService.findByStaticIp(serverStaticIp);
         if (server == null) throw ServerNotFoundException.defaultMessage(serverStaticIp);
 

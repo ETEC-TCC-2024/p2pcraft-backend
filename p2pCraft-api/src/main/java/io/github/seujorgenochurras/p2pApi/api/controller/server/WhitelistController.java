@@ -20,19 +20,23 @@ public class WhitelistController {
     private WhitelistService whitelistService;
 
     @GetMapping(value = "/{serverName}/whitelist")
-    public ResponseEntity<?> getWhitelist(@PathVariable String serverName) {
+    public ResponseEntity<?> getWhitelist(@PathVariable
+    String serverName) {
         return ResponseEntity.ok(whitelistService.getWhitelist(serverName));
     }
 
     @PostMapping(value = "/{serverName}/whitelist")
-    public ResponseEntity<?> addPlayerToWhitelist(@PathVariable String serverName, @RequestBody PlayerDto playerDto) {
+    public ResponseEntity<?> addPlayerToWhitelist(@PathVariable
+    String serverName, @RequestBody
+    PlayerDto playerDto) {
         ArrayList<Player> whitelist = whitelistService.addToWhitelist(playerDto.getPlayerName(), serverName);
         return ResponseEntity.ok(whitelist);
     }
 
     @DeleteMapping(value = "/{serverName}/whitelist/{playerName}")
-    public ResponseEntity<?> removePlayerFromWhitelist(@PathVariable String serverName,
-                                                       @PathVariable String playerName) {
+    public ResponseEntity<?> removePlayerFromWhitelist(@PathVariable
+    String serverName, @PathVariable
+    String playerName) {
         ArrayList<Player> whitelist = whitelistService.removeFromWhitelist(playerName, serverName);
         return ResponseEntity.ok(whitelist);
     }
