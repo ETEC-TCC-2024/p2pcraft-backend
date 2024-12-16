@@ -9,29 +9,22 @@ public class P2pServer {
     @Expose
     private P2pServerState state;
 
-    @Expose
-    @SerializedName("staticIp")
+    @Expose @SerializedName("staticIp")
     private String staticAddress;
 
-    @Expose
-    @Nullable
-    @SerializedName("volatileIp")
+    @Expose @Nullable @SerializedName("volatileIp")
     private String volatileIp;
 
-    @SerializedName("name")
-    @Expose
+    @SerializedName("name") @Expose
     private String name;
 
-    @Expose
-    @SerializedName("online")
+    @Expose @SerializedName("online")
     private boolean online;
 
-    @Expose
-    @SerializedName("open")
+    @Expose @SerializedName("open")
     private boolean open;
 
-    @Expose
-    @SerializedName("mapConfigurations")
+    @Expose @SerializedName("mapConfigurations")
     private P2pServerMap map;
 
     public P2pServerMap getMap() {

@@ -42,7 +42,7 @@ public class P2pServerManager {
         }
         screenTextConsumer.accept(Text.translatable("connect.p2pcraftmod.fetching_git"));
 
-        //TODO check for unsaved stuff and if there is do smth ;-;
+        // TODO check for unsaved stuff and if there is do smth ;-;
         git.fetch()
             .call();
         git.pull()
@@ -53,7 +53,7 @@ public class P2pServerManager {
 
         serverProcess = Terminal.execute(mapDir.getPath(), "java", "-Xmx2048M", "-jar", "server.jar", "nogui");
 
-        //TODO properly wait for server to start
+        // TODO properly wait for server to start
         int secondsInMillis = 1000;
         Thread.sleep(secondsInMillis * 14);
 

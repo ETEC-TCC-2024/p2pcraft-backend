@@ -33,7 +33,7 @@ public class P2pCraftApi {
 
         HttpResponse<String> apiResponse = P2pApiHttpUtils.findServer(staticAddress);
 
-        //TODO send an error message saying api might be offline to the user
+        // TODO send an error message saying api might be offline to the user
         if (apiResponse == null) return p2pServer.setState(NONEXISTENT);
 
         if (apiResponse.statusCode() == 404) {

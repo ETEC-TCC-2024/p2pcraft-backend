@@ -43,9 +43,13 @@ public abstract class ConnectionMixin {
     public abstract void tick();
 
     @Shadow
-    protected abstract void connect(MinecraftClient client, ServerAddress address, @Nullable ServerInfo info);
+    protected abstract void connect(MinecraftClient client, ServerAddress address, @Nullable
+    ServerInfo info);
 
-    @Inject(method = "connect(Lnet/minecraft/client/MinecraftClient;Lnet/minecraft/client/network/ServerAddress;Lnet/minecraft/client/network/ServerInfo;)V", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(
+        method = "connect(Lnet/minecraft/client/MinecraftClient;Lnet/minecraft/client/network/ServerAddress;Lnet/minecraft/client/network/ServerInfo;)V",
+        at = @At(value = "HEAD"),
+        cancellable = true)
     private void connect(MinecraftClient client, ServerAddress serverAddress, ServerInfo serverInfo, CallbackInfo ci) {
         this.client = client;
 

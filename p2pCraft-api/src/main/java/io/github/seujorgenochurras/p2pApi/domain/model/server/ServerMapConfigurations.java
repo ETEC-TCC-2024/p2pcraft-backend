@@ -9,9 +9,7 @@ import jakarta.validation.constraints.NotNull;
 @Entity(name = "map_configuration")
 public class ServerMapConfigurations {
 
-    @Id
-    @NotNull
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @Id @NotNull @GeneratedValue(strategy = GenerationType.UUID)
     private String uuid;
 
     @NotNull

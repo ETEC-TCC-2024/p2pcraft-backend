@@ -1,4 +1,4 @@
-package io.github.seujorgenochurras.p2pApi.domain.service.github;
+package io.github.seujorgenochurras.p2pApi.api.dto;
 
 public class EditFileDto {
     private String message;

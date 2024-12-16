@@ -3,13 +3,15 @@ package io.github.seujorgenochurras.p2pApi.domain.service.github;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import io.github.cdimascio.dotenv.Dotenv;
+import io.github.seujorgenochurras.p2pApi.api.dto.EditFileDto;
 import io.github.seujorgenochurras.p2pApi.common.util.HttpUtil;
-import java.net.http.HttpResponse;
-import java.util.Base64;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.net.http.HttpResponse;
+import java.util.Base64;
 
 public class GithubService {
     private static final Dotenv dotenv = Dotenv.configure()
@@ -70,7 +72,8 @@ public class GithubService {
         return response.statusCode() == 201;
     }
 
-    public record GetGithubFileResponse(String sha, @SerializedName("content") String base64Content) {
+    public record GetGithubFileResponse(String sha, @SerializedName("content")
+    String base64Content) {
     }
 
     public record CreateRepositoryBody(String name, String description) {
