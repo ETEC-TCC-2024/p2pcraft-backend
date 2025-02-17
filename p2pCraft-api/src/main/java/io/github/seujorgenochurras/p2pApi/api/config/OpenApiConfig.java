@@ -14,7 +14,7 @@ import java.util.List;
 @Configuration
 public class OpenApiConfig {
 
-    @Value("p2pApi.openApi.dev.url")
+    @Value("p2pApi.openApi.url")
     private String devUrlDomain;
 
     @Bean
