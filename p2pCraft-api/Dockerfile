@@ -1,8 +1,13 @@
-FROM gradle:8.7.0-jdk-graal as BUILD
-ENV APP_PATH=/usr/app/
-WORKDIR $APP_PATH
-COPY build.gradle.kts $APP_PATH
-COPY src src
-EXPOSE 8080
+FROM gradle:jdk-21-and-22-alpine AS builder
+WORKDIR /app
+COPY . .
 
-ENTRYPOINT gradle bootRun & gradle -t classes
+RUN gradle bootJar
+
+FROM openjdk:22-jdk-slim AS stage
+WORKDIR /app
+COPY --from=builder /app/build/libs/*.jar /app/app.jar
+COPY .env /app/.env
+
+CMD ["java", "-jar", "/app/app.jar"]
+
