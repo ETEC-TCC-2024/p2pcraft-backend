@@ -2,9 +2,31 @@ services:
   api:
     build: .
     ports:
-      - "8080:8080"
-    develop:
-      watch:
-        - action: sync
-          path: src/
-          target: usr/app/src/
+    - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - db_p2p_network
+
+  db:
+    build: ./db
+    restart: always
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_p2p
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "db" ]
+      interval: 2s
+      retries: 20
+      timeout: 5s
+    networks:
+      - db_p2p_network
+    volumes:
+      - p2p_db_volume:/var/lib/mysql
+volumes:
+  p2p_db_volume:
+
+networks:
+  db_p2p_network:
