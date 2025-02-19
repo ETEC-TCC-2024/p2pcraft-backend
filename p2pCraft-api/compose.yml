@@ -3,6 +3,13 @@ services:
     build: .
     ports:
     - "8080:8080"
+    env_file:
+      - .env
+
+    develop:
+      watch:
+        - action: rebuild
+          path: build/libs/
     depends_on:
       db:
         condition: service_healthy
