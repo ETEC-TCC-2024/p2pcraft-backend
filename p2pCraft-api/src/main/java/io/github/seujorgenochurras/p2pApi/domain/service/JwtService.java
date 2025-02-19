@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import io.github.cdimascio.dotenv.Dotenv;
 import io.github.seujorgenochurras.p2pApi.domain.model.client.Client;
 import io.github.seujorgenochurras.p2pApi.domain.service.client.FindClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,7 @@ import java.time.ZonedDateTime;
 @Service
 public class JwtService {
 
-    private static final Dotenv env = Dotenv.configure()
-        .load();
-    private static final Algorithm SIGN_ALGORITHM = Algorithm.HMAC256(env.get("JWT_SECRET"));
+    private static final Algorithm SIGN_ALGORITHM = Algorithm.HMAC256(System.getenv("JWT_SECRET"));
     private static final String ISSUER = "p2pcraft-api";
 
     @Autowired
