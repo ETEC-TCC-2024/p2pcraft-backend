@@ -2,7 +2,6 @@ package io.github.seujorgenochurras.p2pApi.domain.service.github;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-import io.github.cdimascio.dotenv.Dotenv;
 import io.github.seujorgenochurras.p2pApi.api.dto.EditFileDto;
 import io.github.seujorgenochurras.p2pApi.common.util.HttpUtil;
 import org.jsoup.Jsoup;
@@ -14,10 +13,8 @@ import java.net.http.HttpResponse;
 import java.util.Base64;
 
 public class GithubService {
-    private static final Dotenv dotenv = Dotenv.configure()
-        .load();
     private static final Gson gson = new Gson();
-    private static final HttpUtil.Header REQUEST_HEADERS = new HttpUtil.Header("Authorization", "Bearer " + dotenv.get(
+    private static final HttpUtil.Header REQUEST_HEADERS = new HttpUtil.Header("Authorization", "Bearer " + System.getenv(
         "GITHUB_TOKEN"));
 
     public void updateFile(String fileName, String fileContent, String repoUrl) {
