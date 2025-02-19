@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 plugins {
     java
     id("org.springframework.boot") version "3.2.5"
@@ -26,7 +28,6 @@ dependencies {
 
     implementation("org.eclipse.jgit:org.eclipse.jgit:6.10.0.202406032230-r")
     implementation("com.google.code.gson:gson:2.11.0")
-    implementation("io.github.cdimascio:dotenv-java:3.0.1")
 
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation:3.2.5")
@@ -53,4 +54,10 @@ tasks.jacocoTestReport {
 
 jacoco {
     reportsDirectory = layout.buildDirectory.dir("jacocoReport")
+}
+
+tasks.getByName<BootJar>("bootJar") {
+    layered {
+        includeLayerTools = true
+    }
 }
