@@ -1,16 +1,20 @@
-FROM bellsoft/liberica-openjre-alpine:21-cds AS builder
-WORKDIR /builder
+FROM bellsoft/liberica-openjre-alpine:22 AS layertools
+WORKDIR /extract
 
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} application.jar
 
-RUN java -Djarmode=layertools -jar application.jar extract --destination /builder/extracted
+RUN java -Djarmode=layertools -jar application.jar extract --destination /extract/
 
-FROM bellsoft/liberica-openjre-alpine:21-cds as staged
+FROM bellsoft/liberica-openjre-alpine:22 AS runtime
 WORKDIR /app
-COPY --from=builder /builder/extracted/dependencies/ ./
-COPY --from=builder /builder/extracted/spring-boot-loader/ ./
-COPY --from=builder /builder/extracted/snapshot-dependencies/ ./
-COPY --from=builder /builder/extracted/application/ ./
 
-ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
+COPY --from=layertools /extract/dependencies/ ./
+COPY --from=layertools /extract/spring-boot-loader/ ./
+COPY --from=layertools /extract/snapshot-dependencies/ ./
+COPY --from=layertools /extract/application/ ./
+COPY --from=layertools /extract/application.jar ./
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-Dspring.aot.enabled=true", "org.springframework.boot.loader.launch.JarLauncher"]
