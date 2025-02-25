@@ -13,7 +13,6 @@ COPY --from=layertools /extract/dependencies/ ./
 COPY --from=layertools /extract/spring-boot-loader/ ./
 COPY --from=layertools /extract/snapshot-dependencies/ ./
 COPY --from=layertools /extract/application/ ./
-COPY --from=layertools /extract/application.jar ./
 
 EXPOSE 8080
 
