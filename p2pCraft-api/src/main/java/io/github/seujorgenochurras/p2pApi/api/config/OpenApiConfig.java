@@ -14,13 +14,10 @@ import java.util.List;
 @Configuration
 public class OpenApiConfig {
 
-    @Value("p2pApi.openApi.url")
-    private String devUrlDomain;
-
     @Bean
     public OpenAPI customOpenApi() {
         Server devServer = new Server();
-        devServer.setUrl(devUrlDomain);
+        devServer.setUrl("");
         devServer.setDescription("Server URL in Development environment");
 
         Contact contact = new Contact();
