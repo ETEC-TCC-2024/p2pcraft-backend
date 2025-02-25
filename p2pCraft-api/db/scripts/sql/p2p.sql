@@ -1,46 +1,43 @@
-create database if not exists db_p2p;
-use db_p2p;
 
-create table if not exists client(
-    uuid varchar(36) primary key not null,
-    name varchar(100) not null,
-    email varchar(300) not null,
-    password varchar(60) not null,
-    active boolean default true not null
+CREATE TABLE IF NOT EXISTS client (
+    uuid UUID PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    password TEXT NOT NULL,
+    active BOOLEAN DEFAULT true NOT NULL
 );
 
-create table if not exists client_friend(
-    uuid varchar(36) primary key not null,
-    client_uuid varchar(36) not null,
-    friend_uuid varchar(36) not null
+CREATE TABLE IF NOT EXISTS client_friend (
+    uuid UUID PRIMARY KEY NOT NULL,
+    client_uuid UUID NOT NULL,
+    friend_uuid UUID NOT NULL,
+    FOREIGN KEY (client_uuid) REFERENCES client(uuid) ON DELETE CASCADE,
+    FOREIGN KEY (friend_uuid) REFERENCES client(uuid) ON DELETE CASCADE
 );
 
-create table if not exists  map_configuration(
-	uuid varchar(36) primary key not null,
-	map_url varchar(300) not null,
-    seed varchar(130) not null,
-    version varchar(10) not null
-
+CREATE TABLE IF NOT EXISTS map_configuration (
+    uuid UUID PRIMARY KEY NOT NULL,
+    map_url TEXT NOT NULL,
+    seed TEXT NOT NULL,
+    version TEXT NOT NULL
 );
 
-create table if not exists server(
-    uuid varchar(36) primary key not null,
-    map_config varchar(36) not null,
-    name varchar(100) not null,
-    static_ip varchar(150) not null,
-    last_volatile_ip varchar(150),
-    open boolean default false,
-    active boolean default true,
-    foreign key (map_config) references map_configuration(uuid)
-
+CREATE TABLE IF NOT EXISTS server (
+    uuid UUID PRIMARY KEY NOT NULL,
+    map_config UUID NOT NULL,
+    name TEXT NOT NULL,
+    static_ip TEXT NOT NULL,
+    last_volatile_ip TEXT,
+    open BOOLEAN DEFAULT false,
+    active BOOLEAN DEFAULT true,
+    FOREIGN KEY (map_config) REFERENCES map_configuration(uuid) ON DELETE CASCADE
 );
 
-create table if not exists server_access(
-	uuid varchar(36) primary key not null,
-    server_uuid varchar(36) not null,
-    client_uuid varchar(36) not null,
-    role varchar(20) not null,
-
-    foreign key (client_uuid) references client(uuid),
-    foreign key (server_uuid) references server(uuid)
+CREATE TABLE IF NOT EXISTS server_access (
+    uuid UUID PRIMARY KEY NOT NULL,
+    server_uuid UUID NOT NULL,
+    client_uuid UUID NOT NULL,
+    role TEXT NOT NULL,
+    FOREIGN KEY (client_uuid) REFERENCES client(uuid) ON DELETE CASCADE,
+    FOREIGN KEY (server_uuid) REFERENCES server(uuid) ON DELETE CASCADE
 );

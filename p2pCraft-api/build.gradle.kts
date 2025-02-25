@@ -34,7 +34,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation:3.2.5")
     implementation("com.auth0:java-jwt:4.4.0")
 
-    runtimeOnly("com.mysql:mysql-connector-j")
+    runtimeOnly("org.postgresql:postgresql:42.7.5")
 
     testImplementation("org.springframework.security:spring-security-test:6.4.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

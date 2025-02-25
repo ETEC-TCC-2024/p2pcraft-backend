@@ -12,7 +12,7 @@ services:
           path: build/libs/
     depends_on:
       db:
-        condition: service_healthy
+        condition: service_started
     networks:
       - db_p2p_network
 
@@ -21,13 +21,9 @@ services:
     restart: always
     container_name: db
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: db_p2p
-    healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "db" ]
-      interval: 2s
-      retries: 20
-      timeout: 5s
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
+      POSTGRES_DB: db_p2p
     networks:
       - db_p2p_network
     volumes:
